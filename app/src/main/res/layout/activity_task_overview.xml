@@ -28,23 +28,9 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_add"
-        app:layout_constraintVertical_bias="0.035" />
-
-    <Button
-        android:id="@+id/btn_add"
-        android:layout_width="130dp"
-        android:layout_height="108dp"
-        android:layout_marginTop="380dp"
-        android:background="@drawable/round_button"
-        android:text="+\nAdd Task"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskpage_tv" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_todo"
@@ -58,7 +44,7 @@
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskpage_tv"
-        app:layout_constraintVertical_bias="0.197"
+        app:layout_constraintVertical_bias="0.206"
         tools:itemCount="3"
         tools:listitem="@layout/task_layout" />
 
@@ -84,49 +70,73 @@
         app:layout_constraintStart_toEndOf="@+id/button3"
         app:layout_constraintTop_toBottomOf="@+id/taskpage_tv" />
 
-    <View
-        android:id="@+id/divider11"
-        android:layout_width="409dp"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="130dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="396dp"
+        android:background="@drawable/round_button"
+        android:text="+\nAdd Task"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_task"
-        app:layout_constraintVertical_bias="0.181" />
+        app:layout_constraintTop_toBottomOf="@+id/taskpage_tv" />
 
     <LinearLayout
-        android:layout_width="410dp"
-        android:layout_height="79dp"
-        android:orientation="horizontal"
+        android:layout_width="409dp"
+        android:layout_height="90dp"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider11">
+        app:layout_constraintTop_toBottomOf="@+id/et_task">
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="128dp"
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="#FFFFFF"
-            android:contentDescription="Friends"
-            app:srcCompat="@drawable/ic_baseline_groups_24" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider6"
+            app:layout_constraintVertical_bias="0.833">
 
-        <Space
-            android:layout_width="145dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/imageButton6"
+                android:layout_width="128dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#FFFFFF"
+                android:contentDescription="Friends"
+                app:srcCompat="@drawable/ic_baseline_groups_24" />
 
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="128dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:contentDescription="Tasks"
-            app:srcCompat="@drawable/ic_baseline_check_24" />
+            <Space
+                android:layout_width="145dp"
+                android:layout_height="59dp"
+                android:layout_weight="1"
+                android:background="#FFFFFF" />
+
+            <ImageButton
+                android:id="@+id/imageButton7"
+                android:layout_width="128dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#FFFFFF"
+                android:contentDescription="Tasks"
+                app:srcCompat="@drawable/ic_baseline_check_24" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
