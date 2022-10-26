@@ -37,12 +37,14 @@ class AddTaskActivity : AppCompatActivity() {
             //Splitting the taskDueDate to get the day, month and year
             val dueDate : List<String> = taskDueDate.text.split("/")
             day = dueDate.get(0).toInt()
-            month = dueDate.get(1).toInt()
+            //Decrementing the month to show the correct month in the dialog as the calander instance's month is from range 0 to 11.
+            month = dueDate.get(1).toInt().dec()
             year = dueDate.get(2).toInt()
         }
         val datePickerDialog = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { datePicker : DatePicker, pickedYear: Int, pickedMonth: Int, pickedDay : Int ->
-            //Setting the date into the EditText element with the id "taskDueDate"
-            taskDueDate.setText("$pickedDay/$pickedMonth/$pickedYear")
+            //Setting the date into the EditText element with the id "taskDueDate".
+            //Incrementing the month to give the correct month value as the calander instance's month is from range 0 to 11.
+            taskDueDate.setText("$pickedDay/${pickedMonth.inc()}/$pickedYear")
 
         }, year, month, day)
 
