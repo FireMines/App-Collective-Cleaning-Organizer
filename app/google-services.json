@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "851986222809",
+    "project_id": "prog2007---project",
+    "storage_bucket": "prog2007---project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851986222809:android:191152a7497844c16278c8",
+        "android_client_info": {
+          "package_name": "com.example.collectivecleaningorganizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851986222809-0q1brd98kmfh2ls6m3apdgseaedi57r3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9zQl5DauOq8g452wRsDBk40W8JOywmjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851986222809-0q1brd98kmfh2ls6m3apdgseaedi57r3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
