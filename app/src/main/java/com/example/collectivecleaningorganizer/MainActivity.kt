@@ -15,6 +15,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intentAddTask)
 
          */
+        /*
+        val newIntent = Intent(this, FriendsActivity::class.java)
+        startActivity(newIntent)
 
+         */
     }
 }

@@ -29,6 +29,12 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".CreateUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FriendsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
