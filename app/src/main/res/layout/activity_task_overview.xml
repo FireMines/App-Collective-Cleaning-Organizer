@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F7D4BE"
     tools:context=".TaskOverviewActivity">
 
     <TextView
@@ -29,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_add"
+        app:layout_constraintTop_toBottomOf="@+id/add_btn"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -44,7 +45,7 @@
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskpage_tv"
-        app:layout_constraintVertical_bias="0.206"
+        app:layout_constraintVertical_bias="0.239"
         tools:itemCount="3"
         tools:listitem="@layout/task_layout" />
 
@@ -70,8 +71,19 @@
         app:layout_constraintStart_toEndOf="@+id/button3"
         app:layout_constraintTop_toBottomOf="@+id/taskpage_tv" />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
+
     <Button
-        android:id="@+id/btn_add"
+        android:id="@+id/add_btn"
         android:layout_width="130dp"
         android:layout_height="108dp"
         android:layout_marginTop="396dp"
