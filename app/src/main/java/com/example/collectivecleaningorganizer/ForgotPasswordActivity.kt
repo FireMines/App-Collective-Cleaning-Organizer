@@ -9,3 +9,4 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setContentView(R.layout.activity_forgot_password)
     }
 }
+
