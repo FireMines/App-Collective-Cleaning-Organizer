@@ -45,6 +45,9 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, ForgotPasswordActivity::class.java))
                 Needs different activity here. Used ForgotPasswordActivity as test
             */
+            val intentTaskPage: Intent = Intent(this,TaskOverviewActivity::class.java)
+                intentTaskPage.putExtra("uid",task.result.user?.uid )
+                startActivity(intentTaskPage)
             } else {
                 Log.w("log in", "login:failure")
                 Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
