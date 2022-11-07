@@ -25,21 +25,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(newIntent)
 
          */
-        val db = Firebase.firestore
-        val user = hashMapOf(
-            "first" to "Ada",
-            "last" to "Lovelace",
-            "born" to 1815
-        )
 
-// Add a new document with a generated ID
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                println("added $documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                println("failed ")
-            }
     }
 }
