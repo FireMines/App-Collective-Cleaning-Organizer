@@ -1,6 +1,7 @@
 package com.example.collectivecleaningorganizer
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -23,6 +25,13 @@ class AddTaskActivity : AppCompatActivity() {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
+
+        val userID = intent.getStringExtra("uid")
+        if (userID == null) {
+            Log.d("TaskOverview: Error", "the userID is null")
+            return
+        }
+
         saveOrCreateButton.setOnClickListener{
             //Calling the function used to create the task by adding it to the DB
             createTask()
@@ -34,6 +43,12 @@ class AddTaskActivity : AppCompatActivity() {
         taskAssignListView.adapter = adapter
 
 
+
+        back_btn.setOnClickListener{
+            val intentTaskPage: Intent = Intent(this,TaskOverviewActivity::class.java)
+            intentTaskPage.putExtra("uid",userID)
+            startActivity(intentTaskPage)
+        }
 
 
 
