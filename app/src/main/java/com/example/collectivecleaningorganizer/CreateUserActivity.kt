@@ -3,7 +3,11 @@ package com.example.collectivecleaningorganizer
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_create_user.*
 
 
@@ -41,8 +45,19 @@ class CreateUserActivity : AppCompatActivity() {
                 DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
             alertDialog.show()
         }
+        //Helt tomt crasher appen foreløpig
         else{
-            CreateUserButton.text = "bruh"
+            val auth = FirebaseAuth.getInstance()
+
+            //Sjekk at suksess
+            auth.createUserWithEmailAndPassword(CreateEmail.text.toString(), CreatePassword.text.toString()).addOnCompleteListener(this) { task->
+                if(task.isSuccessful){
+                    Toast.makeText(this, "User created", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(this, "User not created", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }
