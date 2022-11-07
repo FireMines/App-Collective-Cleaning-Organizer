@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
                 Needs different activity here. Used ForgotPasswordActivity as test
             */
             val intentTaskPage: Intent = Intent(this,TaskOverviewActivity::class.java)
-                intentTaskPage.putExtra("uid",task.result.user?.uid )
+                intentTaskPage.putExtra("uid",task.result.user?.uid)
                 startActivity(intentTaskPage)
             } else {
                 Log.w("log in", "login:failure")

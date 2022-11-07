@@ -32,7 +32,6 @@ class AddTaskActivity : AppCompatActivity() {
 
 
 
-
     }
     private fun createTask() {
         val userID = intent.getStringExtra("uid")
