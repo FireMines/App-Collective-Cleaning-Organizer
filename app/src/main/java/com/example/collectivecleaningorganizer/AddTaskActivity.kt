@@ -3,19 +3,58 @@ package com.example.collectivecleaningorganizer
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.DatePicker
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
 import java.util.*
 
 class AddTaskActivity : AppCompatActivity() {
+    private val db = Firebase.firestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
 
+
+
+
+
+
+
+    }
+    fun createTask(view: View) {
+        val userID = intent.getStringExtra("uid")
+        if (taskName.text.toString() == "") {
+            Toast.makeText(this, "Please write a task name in order to create the task", Toast.LENGTH_SHORT).show()
+        }
+
+        val task = hashMapOf(
+            "name" to taskName.text.toString(),
+            "description" to taskDescription.text.toString(),
+            "dueDate" to taskDueDate.text.toString()
+        )
+        if (userID == null) {
+            Log.d("Create task: Error", "the userID is null")
+            return
+        }
+        db.collection("users").document(userID).collection("tasks")
+            .add(task)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Create task: DB success", "Add task to the DB with the id: $documentReference")
+            }
+            .addOnFailureListener {
+                Log.d("Create task: DB failure", "Failed to add the task")
+            }
+        //Finishing the AddTaskActivity and returning back to the TaskOverviewActivity
+        this.finish()
     }
 
     /**
