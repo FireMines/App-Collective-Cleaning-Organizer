@@ -21,6 +21,10 @@ class AddTaskActivity : AppCompatActivity() {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
+        saveOrCreateButton.setOnClickListener{
+            //Calling the function used to create the task by adding it to the DB
+            createTask()
+        }
 
 
 
@@ -30,7 +34,7 @@ class AddTaskActivity : AppCompatActivity() {
 
 
     }
-    fun createTask(view: View) {
+    private fun createTask() {
         val userID = intent.getStringExtra("uid")
         if (taskName.text.toString() == "") {
             Toast.makeText(this, "Please write a task name in order to create the task", Toast.LENGTH_SHORT).show()
