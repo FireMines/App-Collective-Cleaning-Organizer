@@ -44,16 +44,17 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
         <Space
-            android:layout_width="243dp"
+            android:layout_width="215dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button"
+            android:id="@+id/saveButton"
             android:layout_width="18dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Save" />
+            android:onClick="createTask"
+            android:text="Create" />
     </LinearLayout>
 
     <LinearLayout
@@ -78,9 +79,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Task name"
             android:inputType="textPersonName"
             android:minHeight="48dp"
-            android:text="Name"
             android:textColor="#000000" />
 
         <Space
