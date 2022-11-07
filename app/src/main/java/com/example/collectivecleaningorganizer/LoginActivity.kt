@@ -21,7 +21,9 @@ class LoginActivity : AppCompatActivity() {
         forgotPassword.setOnClickListener {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
-
+        signup.setOnClickListener {
+            startActivity(Intent(this, CreateUserActivity::class.java))
+        }
         // initializes instance of FirebaseAuth
         auth = FirebaseAuth.getInstance()
 
