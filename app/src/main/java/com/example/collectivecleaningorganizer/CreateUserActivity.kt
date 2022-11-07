@@ -52,6 +52,7 @@ class CreateUserActivity : AppCompatActivity() {
             //Sjekk at suksess
             auth.createUserWithEmailAndPassword(CreateEmail.text.toString(), CreatePassword.text.toString()).addOnCompleteListener(this) { task->
                 if(task.isSuccessful){
+                    println("UID:" + task.result.user?.uid)
                     Toast.makeText(this, "User created", Toast.LENGTH_SHORT).show()
                 }
                 else{
