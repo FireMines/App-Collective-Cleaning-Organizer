@@ -25,6 +25,7 @@ class TaskOverviewActivity : AppCompatActivity() {
         db.collection("users").document(userID).collection("tasks").get().addOnSuccessListener { tasks ->
             for (task in tasks) {
                 Log.d(TAG, "${task.id} => ${task.data}")
+                Log.d("entries here: ", task.data.entries.toString())
             }
         }
 
