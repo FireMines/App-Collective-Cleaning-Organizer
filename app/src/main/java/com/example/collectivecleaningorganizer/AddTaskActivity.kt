@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
+import kotlinx.android.synthetic.main.activity_task_overview.view.*
 import java.util.*
 
 class AddTaskActivity : AppCompatActivity() {
@@ -25,6 +27,13 @@ class AddTaskActivity : AppCompatActivity() {
             //Calling the function used to create the task by adding it to the DB
             createTask()
         }
+        val itemList = arrayListOf<String>()
+        itemList.add("tomas")
+        itemList.add("tomas")
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,itemList)
+        taskAssignListView.adapter = adapter
+
+
 
 
 
