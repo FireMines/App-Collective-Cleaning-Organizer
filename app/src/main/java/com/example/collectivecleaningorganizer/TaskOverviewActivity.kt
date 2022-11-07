@@ -32,7 +32,7 @@ class TaskOverviewActivity : AppCompatActivity() {
         intentAddTaskPage.putExtra("uid",userID)
 
 
-        // Starts ForgotPasswordActivity when clicking on forgotPassword
+        // Starts addTaskActivity when clicking on Add Task button
         add_btn.setOnClickListener {
             startActivity(intentAddTaskPage)
         }
