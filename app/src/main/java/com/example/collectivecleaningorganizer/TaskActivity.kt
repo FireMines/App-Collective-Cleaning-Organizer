@@ -1,41 +1,39 @@
-package com.example.boardtogether
+package com.example.collectivecleaningorganizer
 
 import android.os.Bundle
-import android.widget.ImageView
+import android.util.Log
 import android.widget.TextView
-import com.example.boardtogether.databinding.ActivityFriendsprofileBinding
-import com.example.boardtogether.venneprofil.FriendProfileModel
+import androidx.appcompat.app.AppCompatActivity
 
-class FriendProfileActivity : HamburgerBaseActivity() {
-    //private lateinit var button             : Button
-    private lateinit var binding                : ActivityFriendsprofileBinding
-    private lateinit var name                   : TextView
-    private lateinit var username               : TextView
-    private lateinit var profilepicture         : ImageView
-    private lateinit var profiledescription     : TextView
+class TaskActivity : AppCompatActivity() {
+    private lateinit var taskName       : TextView
+    private lateinit var description    : TextView
+    private lateinit var dueDate        : TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val userID = intent.getStringExtra("uid")
+        if (userID == null) {
+            Log.d("TaskOverview: Error", "the userID is null")
+            return
+        }
 
-        binding = ActivityFriendsprofileBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setTitle("Friends profile")
 
-        //setContentView(R.layout.activity_friendsprofile)
+        setContentView(R.layout.activity_view_task)
+        setTitle("Task description page")
 
-        name = findViewById(R.id.profileName_tv)
-        username = findViewById(R.id.friendUsername_tv)
-        profiledescription = findViewById(R.id.profileDescription_tv)
-        profilepicture = findViewById(R.id.vennebilde_iv)
+
+        taskName = findViewById(R.id.taskName)
+        dueDate = findViewById(R.id.duedate_tv)
+        description = findViewById(R.id.taskDescription)
 
         intent?.let {
-            val profil = intent.extras?.getParcelable("profil") as FriendProfileModel?
-            if (profil != null) {
-                name.text = profil.name
-                username.text = profil.username
-                //profilbeskrivelse.text = profil.brukerBeskrivelse
-                profilepicture.setImageResource(profil.picture)
+            val task = intent.extras?.getParcelable("task") as TaskModel?
+            if (task != null) {
+                taskName.text = task.name
+                dueDate.text = task.dueDate
+                description.text = task.description
             }
         }
         //button = findViewById(R.id.button)
