@@ -11,7 +11,8 @@ class EditTaskActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
         taskPageTitle.text = "Edit Task Page"
-        saveButton.text = "Save"
+        saveOrCreateButton.text = "Save"
+
 
 
     }

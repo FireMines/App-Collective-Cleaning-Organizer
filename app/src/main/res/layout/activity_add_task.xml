@@ -49,7 +49,7 @@
             android:layout_weight="1" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/saveButton"
+            android:id="@+id/saveOrCreateButton"
             android:layout_width="18dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
