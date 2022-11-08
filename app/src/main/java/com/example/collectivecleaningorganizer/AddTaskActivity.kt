@@ -1,10 +1,13 @@
 package com.example.collectivecleaningorganizer
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.ArrayAdapter
@@ -16,6 +19,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.activity_task_overview.view.*
+import kotlinx.android.synthetic.main.popup_create_category.view.*
 import java.util.*
 
 class AddTaskActivity : AppCompatActivity() {
@@ -57,6 +61,18 @@ class AddTaskActivity : AppCompatActivity() {
 
 
     }
+    fun createPopUpToCreateNewCategory(view: View) {
+        val alertDialogBuilder : AlertDialog.Builder = AlertDialog.Builder(this)
+        val layoutInflater : LayoutInflater = layoutInflater
+        alertDialogBuilder.setTitle("With EditText")
+        val dialogLayout = layoutInflater.inflate(R.layout.popup_create_category, null)
+        val editText  = dialogLayout.categoryName
+        alertDialogBuilder.setView(dialogLayout)
+        alertDialogBuilder.setPositiveButton("OK",DialogInterface.OnClickListener { dialogInterface, i ->  })
+        alertDialogBuilder.setNegativeButton("Cancel", null)
+        alertDialogBuilder.show()
+    }
+
     private fun createTask() {
         val userID = intent.getStringExtra("uid")
         if (taskName.text.toString() == "") {
