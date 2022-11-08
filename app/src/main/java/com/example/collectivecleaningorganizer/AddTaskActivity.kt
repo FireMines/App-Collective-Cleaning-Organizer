@@ -2,6 +2,7 @@ package com.example.collectivecleaningorganizer
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,15 @@ class AddTaskActivity : AppCompatActivity() {
             val intentTaskPage: Intent = Intent(this,TaskOverviewActivity::class.java)
             intentTaskPage.putExtra("uid",userID)
             startActivity(intentTaskPage)
+        }
+        db.collection("users").document(userID).collection("category").get().addOnSuccessListener { tasks ->
+            for (task in tasks) {
+                Log.d(ContentValues.TAG, "${task.id} => ${task.data}")
+                //Log.d("entries here: ", task.data)
+                //tasklist.add(TaskModel(task.data["name"] as String, task.data["dueDate"] as String, task.data["description"] as String))
+                //Log.d("Hallaballa", tasklist.toString())
+                //adapter.notifyDataSetChanged()
+            }
         }
 
 
