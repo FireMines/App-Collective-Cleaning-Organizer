@@ -14,12 +14,9 @@ import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
-import kotlinx.android.synthetic.main.activity_task_overview.view.*
 import kotlinx.android.synthetic.main.popup_create_category.view.*
 import java.util.*
 
@@ -45,7 +42,7 @@ class AddTaskActivity : AppCompatActivity() {
         itemList.add("tomas")
         itemList.add("tomas")
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,itemList)
-        taskAssignListView.adapter = adapter
+        membersListView.adapter = adapter
 
 
 
