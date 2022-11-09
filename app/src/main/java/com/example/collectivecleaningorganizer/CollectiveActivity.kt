@@ -27,6 +27,16 @@ class CollectiveActivity : AppCompatActivity() {
 
         }
     }
+    fun checkIfUserIsInACollective() {
+
+        val documents = db.collection("usersExample").document("bolt32").get().addOnSuccessListener { document ->
+            val collectiveName = document.data?.get("collectiveID").toString()
+            println(collectiveName)
+        }
+
+
+
+    }
 
 
     fun createCollective(view: View) {
