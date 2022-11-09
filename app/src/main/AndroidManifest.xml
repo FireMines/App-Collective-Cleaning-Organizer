@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
-            android:name=".CollectiveActivity"
+            android:name=".collective.SpecificCollectiveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".collective.CollectiveActivity"
             android:exported="false" />
         <activity
             android:name=".ForgotPasswordActivity"
