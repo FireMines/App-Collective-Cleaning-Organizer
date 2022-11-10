@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.collectiveDocuments
+import com.example.collectivecleaningorganizer.database
 import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.firebase.firestore.*
@@ -19,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_collective.*
 
 class CollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
-    private var collectiveDocuments = mutableMapOf<String,QueryDocumentSnapshot>()
+
     private var userDocumentData = mutableMapOf<String, DocumentSnapshot>()
     private var tettst = mutableListOf<DocumentSnapshot>()
     private var tag = "CollectiveActivity"
@@ -28,8 +30,9 @@ class CollectiveActivity : AppCompatActivity() {
         setContentView(R.layout.activity_collective)
 
         val userID = intent.getStringExtra("uid")
-        getAllCollectivesFromDB()
-        getUserDocumentDataFromDB()
+
+        database().getAllCollectivesFromDB()
+
 
 
         /*
@@ -68,31 +71,6 @@ class CollectiveActivity : AppCompatActivity() {
         }
     }
 
-    //WHEN IT COMES TO CHECK IF CATAGORY EXISTS ALREADY
-    //Get all the documents with their IDs and add them to a list/map.
-    //Compare the documentID in the list with the collectiveID.
-
-    fun getAllCollectivesFromDB() {
-        db.collection("collective").get().addOnSuccessListener { documents ->
-            for (document in documents) {
-               //println(document)
-                collectiveDocuments[document.id] = document
-            }
-        }
-
-    }
-    @SuppressLint("LongLogTag")
-    fun getUserDocumentDataFromDB() {
-        db.collection("usersExample").document("nBSu5tDXO9LuXEnKjsNR")
-            .get()
-            .addOnSuccessListener { document ->
-                Log.d(tag, "Success in getting user's document data")
-                userDocumentData[document.id] = document
-            }
-            .addOnFailureListener { e ->
-                Log.e(tag, "Error retrieving user's document data", e)
-            }
-    }
     fun createCollective(view:View) {
         val inputEditTextField = EditText(this)
         val dialog = AlertDialog.Builder(this)
@@ -140,7 +118,11 @@ class CollectiveActivity : AppCompatActivity() {
     }
 
     fun sendCollectiveJoinRequest(view:View) {
-        collectiveIdEditText.text.toString()
+        val enteredCollectiveID : String = collectiveIdEditText.text.toString()
+        if (!collectiveDocuments.contains(enteredCollectiveID)) {
+            //Print alert dialog explaning that the entered collectiveID is wrong and to try again
+            return
+        }
 
     }
 
@@ -156,6 +138,10 @@ class CollectiveActivity : AppCompatActivity() {
         db.collection("collective").document(collectiveID).set(collectiveInfo)
             .addOnSuccessListener {
                 Log.d(tag, "Collective successfully added to DB!")
+
+                //calling getAllCollectivesFromDB() function to retrieve the newest collective data from dB
+                database().getAllCollectivesFromDB()
+
                 //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
                 addCollectiveIDToUser(collectiveID,userID)
             }
@@ -169,6 +155,8 @@ class CollectiveActivity : AppCompatActivity() {
         db.collection("users").document(userID).set(collectiveInfo)
             .addOnSuccessListener {
             Log.d(tag, "Successfully added the collectiveID to user $userID")
+                //Calling updateUserData() function to update the mutablelist with the updated userdata
+                database().updateUserData()
                 startActivity(Intent(this, TaskOverviewActivity::class.java))
             }
             .addOnFailureListener { e ->
