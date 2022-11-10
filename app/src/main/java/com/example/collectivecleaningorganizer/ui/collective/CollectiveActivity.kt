@@ -2,12 +2,15 @@ package com.example.collectivecleaningorganizer.ui.collective
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -136,6 +139,11 @@ class CollectiveActivity : AppCompatActivity() {
 
     }
 
+    fun sendCollectiveJoinRequest(view:View) {
+        collectiveIdEditText.text.toString()
+
+    }
+
 
     private fun addCollectiveToDB(collectiveID : String, userID:String) {
         val members = mutableMapOf<String,String>()
@@ -158,6 +166,7 @@ class CollectiveActivity : AppCompatActivity() {
         db.collection("users").document(userID).set("collectiveID" to collectiveID)
             .addOnSuccessListener {
             Log.d(tag, "Successfully added the collectiveID to user $userID")
+                startActivity(Intent(this, TaskOverviewActivity::class.java))
             }
             .addOnFailureListener { e ->
                 Log.e(tag, "Error adding collectiveID to user: $userID", e) }
