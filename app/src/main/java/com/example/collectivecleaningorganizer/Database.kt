@@ -22,8 +22,8 @@ class database {
     }
 
     @SuppressLint("LongLogTag")
-    fun updateUserData() {
-        db.collection("usersExample").document("")
+    fun updateUserData(userID:String) {
+        db.collection("usersExample").document(userID)
             .get()
             .addOnSuccessListener { document ->
                 //Log.d(tag, "Success in getting user's document data")
