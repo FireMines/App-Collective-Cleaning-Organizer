@@ -1,5 +1,6 @@
 package com.example.collectivecleaningorganizer.ui.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -11,6 +12,11 @@ class ForgotPasswordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
+
+        forgottPasswordBackButton.setOnClickListener {
+            // sends user back to login page
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
 
         submitButton.setOnClickListener {
             val email = forgotPasswordEmail.text.toString() // gets email entered by user
