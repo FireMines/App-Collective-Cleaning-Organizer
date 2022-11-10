@@ -17,7 +17,6 @@ class LoginActivity : AppCompatActivity() {
     // declares instance of firebaseAuth
     private lateinit var auth: FirebaseAuth
     private val db = Firebase.firestore
-    var userData = mutableMapOf<String,DocumentSnapshot>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -52,7 +51,10 @@ class LoginActivity : AppCompatActivity() {
                 //DB request to retrieve amy user data
                 db.collection("users").document(task.result.user?.uid.toString()).get().addOnSuccessListener { e ->
                     //Adding the userData to a mutable map
-                    userData[e.id] = e
+                    userData[task.result.user?.uid.toString()] = e
+
+                    println("uhm ${userData}")
+
 
                     val intent: Intent
                     //Checking if the user is apart of a collective or not
