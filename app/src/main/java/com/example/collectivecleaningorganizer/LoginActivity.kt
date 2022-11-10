@@ -51,10 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 //DB request to retrieve amy user data
                 db.collection("users").document(task.result.user?.uid.toString()).get().addOnSuccessListener { e ->
                     //Adding the userData to a mutable map
-                    userData[task.result.user?.uid.toString()] = e
-
-                    println("uhm ${userData}")
-
+                    userData[e.id] = e
 
                     val intent: Intent
                     //Checking if the user is apart of a collective or not
