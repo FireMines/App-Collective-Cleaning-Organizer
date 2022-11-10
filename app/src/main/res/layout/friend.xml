@@ -5,7 +5,7 @@
     android:layout_width="320dp"
     android:layout_height="65dp"
     android:background="#FFF"
-    tools:context=".FriendsActivity">
+    tools:context=".friends.FriendsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

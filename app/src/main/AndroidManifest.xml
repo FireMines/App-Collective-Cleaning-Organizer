@@ -42,7 +42,7 @@
             android:name=".login.CreateUserActivity"
             android:exported="false" />
         <activity
-            android:name=".FriendsActivity"
+            android:name=".friends.FriendsActivity"
             android:exported="false" />
         <activity
             android:name=".task.TaskActivity"

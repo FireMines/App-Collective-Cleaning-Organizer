@@ -1,8 +1,9 @@
-package com.example.collectivecleaningorganizer
+package com.example.collectivecleaningorganizer.friends
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.iterator
+import com.example.collectivecleaningorganizer.R
 import kotlinx.android.synthetic.main.activity_friends.*
 import kotlinx.android.synthetic.main.friend.view.*
 
