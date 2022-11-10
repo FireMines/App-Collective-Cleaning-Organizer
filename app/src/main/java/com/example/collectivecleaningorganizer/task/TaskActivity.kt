@@ -1,9 +1,10 @@
-package com.example.collectivecleaningorganizer
+package com.example.collectivecleaningorganizer.task
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.collectivecleaningorganizer.R
 
 class TaskActivity : AppCompatActivity() {
     private lateinit var taskName       : TextView

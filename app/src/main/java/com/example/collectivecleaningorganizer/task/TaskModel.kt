@@ -1,4 +1,4 @@
-package com.example.collectivecleaningorganizer
+package com.example.collectivecleaningorganizer.task
 
 import android.os.Parcel
 import android.os.Parcelable

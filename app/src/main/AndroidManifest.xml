@@ -26,14 +26,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".TaskOverviewActivity"
+            android:name=".task.TaskOverviewActivity"
             android:exported="false" />
         <activity
-            android:name=".AddTaskActivity"
+            android:name=".task.AddTaskActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".EditTaskActivity"
+            android:name=".task.EditTaskActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
@@ -45,7 +45,7 @@
             android:name=".FriendsActivity"
             android:exported="false" />
         <activity
-            android:name=".TaskActivity"
+            android:name=".task.TaskActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

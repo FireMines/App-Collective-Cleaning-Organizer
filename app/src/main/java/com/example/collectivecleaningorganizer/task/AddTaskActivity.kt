@@ -1,4 +1,4 @@
-package com.example.collectivecleaningorganizer
+package com.example.collectivecleaningorganizer.task
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -14,6 +14,7 @@ import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
+import com.example.collectivecleaningorganizer.R
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
@@ -47,7 +48,7 @@ class AddTaskActivity : AppCompatActivity() {
 
 
         back_btn.setOnClickListener{
-            val intentTaskPage: Intent = Intent(this,TaskOverviewActivity::class.java)
+            val intentTaskPage: Intent = Intent(this, TaskOverviewActivity::class.java)
             intentTaskPage.putExtra("uid",userID)
             startActivity(intentTaskPage)
         }
