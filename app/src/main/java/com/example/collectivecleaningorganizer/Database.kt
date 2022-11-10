@@ -10,15 +10,20 @@ import com.google.firebase.ktx.Firebase
 var userData = mutableMapOf<String, DocumentSnapshot>()
 var collectiveDocuments = mutableMapOf<String, QueryDocumentSnapshot>()
 
-class database {
-   private val db = Firebase.firestore
+class Database {
+    private val db = Firebase.firestore
+    private val tag = "Database"
     fun getAllCollectivesFromDB() {
-        db.collection("collective").get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                //println(document)
-                collectiveDocuments[document.id] = document
+        db.collection("collective").get()
+            .addOnSuccessListener { documents ->
+                Log.d(tag,"Success in retrieving all collective data from DB")
+                for (document in documents) {
+                    collectiveDocuments[document.id] = document
+                }
             }
-        }
+            .addOnFailureListener { e ->
+                Log.e(tag, "Error retrieving all collective data from DB", e)
+            }
     }
 
     @SuppressLint("LongLogTag")
@@ -26,11 +31,11 @@ class database {
         db.collection("usersExample").document(userID)
             .get()
             .addOnSuccessListener { document ->
-                //Log.d(tag, "Success in getting user's document data")
+                Log.d(tag, "Success in retrieving user data from DB")
                 userData[document.id] = document
             }
             .addOnFailureListener { e ->
-                //Log.e(tag, "Error retrieving user's document data", e)
+                Log.e(tag, "Error retrieving user data from DB", e)
             }
     }
 

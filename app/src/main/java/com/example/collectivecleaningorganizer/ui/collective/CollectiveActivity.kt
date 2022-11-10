@@ -145,7 +145,9 @@ class CollectiveActivity : AppCompatActivity() {
                 //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
                 addCollectiveIDToUser(collectiveID,userID)
             }
-            .addOnFailureListener { e -> Log.e(tag, "Error adding collective to DB", e) }
+            .addOnFailureListener { e ->
+                Log.e(tag, "Error adding collective to DB", e)
+            }
 
     }
     private fun addCollectiveIDToUser(collectiveID: String,userID: String) {
