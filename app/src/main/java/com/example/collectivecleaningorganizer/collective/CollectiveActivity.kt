@@ -1,32 +1,45 @@
 package com.example.collectivecleaningorganizer.collective
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.example.collectivecleaningorganizer.CreateUserActivity
+import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_collective.*
+import kotlinx.coroutines.tasks.await
 
 
 class CollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private var collectiveDocuments = mutableMapOf<String,QueryDocumentSnapshot>()
     private var userDocumentData = mutableMapOf<String, DocumentSnapshot>()
-
+    private var tettst = mutableListOf<DocumentSnapshot>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collective)
-        
+
+        val userID = intent.getStringExtra("uid")
         getAllCollectivesFromDB()
         getUserDocumentDataFromDB()
 
+
+        if (userData.get(userID)?.contains("collectiveID") == true && userData[userID]?.get("collectiveID") != null) {
+            val intentSpecificCollectiveActivity :Intent = Intent(this, SpecificCollectiveActivity::class.java)
+            intentSpecificCollectiveActivity.putExtra("collectiveID", userData[userID]?.get("collectiveID").toString())
+            startActivity(intentSpecificCollectiveActivity)
+            return
+        }
+
+
+        //println(MainActivity().usersExampleCollection["NTNU32"]?.data?.values.)
 
         //Constant listener to listen if the collection has been updated
         //val adapter : BaseAdapter = CollectiveMembersAdapter()
@@ -34,24 +47,23 @@ class CollectiveActivity : AppCompatActivity() {
         sendCollectiveJoinRequestButton.setOnClickListener {
             //println(collectiveDocuments.get("NTNU322"))
             //println(collectiveDocuments.get("NTNU#32")?.get("members"))
+            //println(tettst)
 
-            val collectiveMembers = collectiveDocuments.get("NTNU#32")?.get("members") as MutableMap<String, String>
-            startActivity(Intent(this, CreateUserActivity::class.java))
+            //val collectiveMembers = collectiveDocuments.get("NTNU#32")?.get("members") as MutableMap<String, String>
+            /*
+            db.collection("usersExample").get().addOnSuccessListener { tasks ->
+
+                println(tasks.documents)
+            }
+
+             */
+
 
 
 
         }
     }
-    fun checkIfUserIsInACollective() {
-        val userID = "nBSu5tDXO9LuXEnKjsNR"
-        val documents = db.collection("usersExample").document("bolt32").get().addOnSuccessListener { document ->
-            val collectiveName = document.data?.get("collectiveID").toString()
-            println(collectiveName)
-        }
 
-
-
-    }
     //WHEN IT COMES TO CHECK IF CATAGORY EXISTS ALREADY
     //Get all the documents with their IDs and add them to a list/map.
     //Compare the documentID in the list with the collectiveID.
