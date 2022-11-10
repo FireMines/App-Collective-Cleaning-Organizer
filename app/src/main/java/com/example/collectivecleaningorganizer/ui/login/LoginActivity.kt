@@ -1,4 +1,4 @@
-package com.example.collectivecleaningorganizer.login
+package com.example.collectivecleaningorganizer.ui.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.collective.CollectiveActivity
-import com.example.collectivecleaningorganizer.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore

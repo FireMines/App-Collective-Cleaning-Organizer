@@ -1,4 +1,4 @@
-package com.example.collectivecleaningorganizer.friends
+package com.example.collectivecleaningorganizer.ui.friends
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

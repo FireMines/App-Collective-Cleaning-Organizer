@@ -1,4 +1,4 @@
-package com.example.collectivecleaningorganizer.login
+package com.example.collectivecleaningorganizer.ui.login
 
 import android.app.AlertDialog
 import android.content.DialogInterface

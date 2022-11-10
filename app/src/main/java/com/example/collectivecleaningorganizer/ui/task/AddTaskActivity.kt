@@ -1,4 +1,4 @@
-package com.example.collectivecleaningorganizer.task
+package com.example.collectivecleaningorganizer.ui.task
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog

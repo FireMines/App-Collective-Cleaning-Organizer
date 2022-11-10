@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7D4BE"
-    tools:context=".task.TaskOverviewActivity">
+    tools:context=".ui.task.TaskOverviewActivity">
 
     <TextView
         android:id="@+id/taskpage_tv"

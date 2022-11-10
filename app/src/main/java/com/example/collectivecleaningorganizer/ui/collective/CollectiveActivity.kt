@@ -1,27 +1,17 @@
-package com.example.collectivecleaningorganizer.collective
+package com.example.collectivecleaningorganizer.ui.collective
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentValues
-import android.content.DialogInterface
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_collective.*
-import kotlinx.android.synthetic.main.popup_with_edittext.*
-import kotlinx.android.synthetic.main.popup_with_edittext.view.*
-import kotlinx.coroutines.tasks.await
 
 
 class CollectiveActivity : AppCompatActivity() {

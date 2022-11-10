@@ -13,39 +13,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
-            android:name=".collective.SpecificCollectiveActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity"
             android:exported="false" />
         <activity
-            android:name=".collective.CollectiveActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity"
             android:exported="false" />
         <activity
-            android:name=".login.ForgotPasswordActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.login.ForgotPasswordActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".task.TaskOverviewActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity"
             android:exported="false" />
         <activity
-            android:name=".task.AddTaskActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.task.AddTaskActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".task.EditTaskActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.task.EditTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".login.CreateUserActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.login.CreateUserActivity"
             android:exported="false" />
         <activity
-            android:name=".friends.FriendsActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.friends.FriendsActivity"
             android:exported="false" />
         <activity
-            android:name=".task.TaskActivity"
+            android:name="com.example.collectivecleaningorganizer.ui.task.TaskActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

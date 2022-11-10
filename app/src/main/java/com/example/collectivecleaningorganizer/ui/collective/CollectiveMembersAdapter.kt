@@ -1,4 +1,4 @@
-package com.example.collectivecleaningorganizer.collective
+package com.example.collectivecleaningorganizer.ui.collective
 
 import android.view.View
 import android.view.ViewGroup
