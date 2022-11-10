@@ -163,7 +163,10 @@ class CollectiveActivity : AppCompatActivity() {
 
     }
     private fun addCollectiveIDToUser(collectiveID: String,userID: String) {
-        db.collection("users").document(userID).set("collectiveID" to collectiveID)
+        val collectiveInfo = hashMapOf(
+            "collectiveID" to collectiveID
+        )
+        db.collection("users").document(userID).set(collectiveInfo)
             .addOnSuccessListener {
             Log.d(tag, "Successfully added the collectiveID to user $userID")
                 startActivity(Intent(this, TaskOverviewActivity::class.java))
