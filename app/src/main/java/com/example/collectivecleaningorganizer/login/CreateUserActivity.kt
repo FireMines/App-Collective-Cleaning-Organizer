@@ -1,13 +1,12 @@
-package com.example.collectivecleaningorganizer
+package com.example.collectivecleaningorganizer.login
 
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.collectivecleaningorganizer.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_create_user.*
 
 

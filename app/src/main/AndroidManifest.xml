@@ -19,7 +19,7 @@
             android:name=".collective.CollectiveActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".login.ForgotPasswordActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -36,10 +36,10 @@
             android:name=".task.EditTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateUserActivity"
+            android:name=".login.CreateUserActivity"
             android:exported="false" />
         <activity
             android:name=".FriendsActivity"

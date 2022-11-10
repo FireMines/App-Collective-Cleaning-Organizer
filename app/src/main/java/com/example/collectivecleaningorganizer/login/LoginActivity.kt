@@ -1,13 +1,15 @@
-package com.example.collectivecleaningorganizer
+package com.example.collectivecleaningorganizer.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.collective.CollectiveActivity
+import com.example.collectivecleaningorganizer.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
@@ -61,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     else {
                         //Start the TaskOverview activity
-                        intent = Intent(this,TaskOverviewActivity::class.java)
+                        intent = Intent(this, TaskOverviewActivity::class.java)
                     }
                     //Adding the userID to the intent
                     intent.putExtra("uid",task.result.user?.uid)
