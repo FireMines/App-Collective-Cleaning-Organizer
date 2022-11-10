@@ -8,9 +8,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.collectiveDocuments
-import com.example.collectivecleaningorganizer.database
 import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.firebase.firestore.*
@@ -31,7 +31,7 @@ class CollectiveActivity : AppCompatActivity() {
 
         val userID = intent.getStringExtra("uid")
 
-        database().getAllCollectivesFromDB()
+        Database().getAllCollectivesFromDB()
 
 
 
@@ -140,7 +140,7 @@ class CollectiveActivity : AppCompatActivity() {
                 Log.d(tag, "Collective successfully added to DB!")
 
                 //calling getAllCollectivesFromDB() function to retrieve the newest collective data from dB
-                database().getAllCollectivesFromDB()
+                Database().getAllCollectivesFromDB()
 
                 //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
                 addCollectiveIDToUser(collectiveID,userID)
@@ -156,7 +156,7 @@ class CollectiveActivity : AppCompatActivity() {
             .addOnSuccessListener {
             Log.d(tag, "Successfully added the collectiveID to user $userID")
                 //Calling updateUserData() function to update the mutablelist with the updated userdata
-                database().updateUserData()
+                Database().updateUserData(userID)
                 startActivity(Intent(this, TaskOverviewActivity::class.java))
             }
             .addOnFailureListener { e ->
