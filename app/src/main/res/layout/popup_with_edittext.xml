@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/categoryName"
+        android:id="@+id/popupEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter the name of the category"/>
