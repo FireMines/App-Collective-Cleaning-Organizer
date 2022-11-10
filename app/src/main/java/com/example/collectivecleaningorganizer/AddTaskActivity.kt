@@ -17,7 +17,7 @@ import android.widget.Toast
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
-import kotlinx.android.synthetic.main.popup_create_category.view.*
+import kotlinx.android.synthetic.main.popup_with_edittext.view.*
 import java.util.*
 
 class AddTaskActivity : AppCompatActivity() {
@@ -72,8 +72,8 @@ class AddTaskActivity : AppCompatActivity() {
         val alertDialogBuilder : AlertDialog.Builder = AlertDialog.Builder(this)
         val layoutInflater : LayoutInflater = layoutInflater
         alertDialogBuilder.setTitle("With EditText")
-        val dialogLayout = layoutInflater.inflate(R.layout.popup_create_category, null)
-        val editText  = dialogLayout.categoryName
+        val dialogLayout = layoutInflater.inflate(R.layout.popup_with_edittext, null)
+        val editText  = dialogLayout.popupEditText
         alertDialogBuilder.setView(dialogLayout)
         alertDialogBuilder.setPositiveButton("OK",DialogInterface.OnClickListener { dialogInterface, i ->  })
         alertDialogBuilder.setNegativeButton("Cancel", null)
