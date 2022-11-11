@@ -10,7 +10,6 @@ import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
-    private val db = Firebase.firestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,16 +47,5 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-     fun checkIfUserIsInACollective(userID : String) {
-
-        db.collection("usersExample").document(userID).get().addOnSuccessListener { document ->
-            val collectiveName = document.data?.get("collectiveID").toString()
-
-            println(collectiveName)
-        }
-
-
-
-    }
 
 }
