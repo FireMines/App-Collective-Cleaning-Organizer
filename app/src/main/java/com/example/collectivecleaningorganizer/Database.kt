@@ -26,17 +26,31 @@ class Database {
             }
     }
 
-    @SuppressLint("LongLogTag")
-    fun updateUserData(userID:String) {
-        db.collection("usersExample").document(userID)
-            .get()
-            .addOnSuccessListener { document ->
-                Log.d(tag, "Success in retrieving user data from DB")
-                userData[document.id] = document
+
+
+    fun databaseDataChangeListener(collection:String, documentID:String, map:MutableMap<String,DocumentSnapshot>) {
+        db.collection(collection).document(documentID)
+            .addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.e("listener", "Listen failed.", e)
+                return@addSnapshotListener
             }
-            .addOnFailureListener { e ->
-                Log.e(tag, "Error retrieving user data from DB", e)
+
+            val source = if (snapshot != null && snapshot.metadata.hasPendingWrites())
+                "Local"
+            else
+                "Server"
+
+            if (snapshot != null && snapshot.exists()) {
+                Log.d("listener", "$source data: ${snapshot.data}")
+                //userData[userID] = snapshot
+                map[documentID] = snapshot
+                println(userData[documentID]?.data)
+            } else {
+                Log.d("listener", "$source data: null")
             }
+        }
     }
+
 
 }
