@@ -13,6 +13,7 @@ import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.collectiveDocuments
 import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -30,8 +31,15 @@ class CollectiveActivity : AppCompatActivity() {
         setContentView(R.layout.activity_collective)
 
         val userID = intent.getStringExtra("uid")
+        val userCollection : String = "users"
 
         Database().getAllCollectivesFromDB()
+
+        //Calling the databaseDataChangeListener() which creates a listener and listens for any changes on the userData in DB
+        Database().databaseDataChangeListener(userCollection, userID.toString(), userData)
+        userData[userID]?.data?.get("collectiveID")
+
+
 
 
 
@@ -52,18 +60,7 @@ class CollectiveActivity : AppCompatActivity() {
         //val adapter : BaseAdapter = CollectiveMembersAdapter()
         //membersListView.adapter
         sendCollectiveJoinRequestButton.setOnClickListener {
-            //println(collectiveDocuments.get("NTNU322"))
-            //println(collectiveDocuments.get("NTNU#32")?.get("members"))
-            //println(tettst)
 
-            //val collectiveMembers = collectiveDocuments.get("NTNU#32")?.get("members") as MutableMap<String, String>
-            /*
-            db.collection("usersExample").get().addOnSuccessListener { tasks ->
-
-                println(tasks.documents)
-            }
-
-             */
 
 
 
@@ -89,7 +86,7 @@ class CollectiveActivity : AppCompatActivity() {
 
 
 
-    fun generateUniqueCollectiveID(collectiveName : String) {
+    private fun generateUniqueCollectiveID(collectiveName : String) {
         val userID = intent.getStringExtra("uid")
 
         //Creating a random 4 digit number
@@ -123,17 +120,27 @@ class CollectiveActivity : AppCompatActivity() {
             //Print alert dialog explaning that the entered collectiveID is wrong and to try again
             return
         }
+        db.collection("collective").document(enteredCollectiveID).get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+
+                }
+
+            }
 
     }
 
 
+
     private fun addCollectiveToDB(collectiveID : String, userID:String) {
         val members = mutableMapOf<String,String>()
+        val requests = mutableMapOf<String,String>()
 
         members[userID] = "Owner"
 
         val collectiveInfo = hashMapOf(
-            "members" to members
+            "members" to members,
+            "requests" to requests
         )
         db.collection("collective").document(collectiveID).set(collectiveInfo)
             .addOnSuccessListener {
@@ -157,8 +164,7 @@ class CollectiveActivity : AppCompatActivity() {
         db.collection("users").document(userID).set(collectiveInfo)
             .addOnSuccessListener {
             Log.d(tag, "Successfully added the collectiveID to user $userID")
-                //Calling updateUserData() function to update the mutablelist with the updated userdata
-                Database().updateUserData(userID)
+
                 startActivity(Intent(this, TaskOverviewActivity::class.java))
             }
             .addOnFailureListener { e ->
