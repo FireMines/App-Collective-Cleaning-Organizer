@@ -84,7 +84,7 @@ class AddTaskActivity : AppCompatActivity() {
     private fun createTask() {
         val userID = intent.getStringExtra("uid")
         if (taskName.text.toString() == "") {
-            Toast.makeText(this, "Please write a task name in order to create the task", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please write a task name in order to create the task", Toast.LENGTH_LONG).show()
         }
 
         val task = hashMapOf(
