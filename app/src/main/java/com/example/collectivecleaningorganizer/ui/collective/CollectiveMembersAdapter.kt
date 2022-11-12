@@ -1,14 +1,12 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
 import android.app.Activity
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
-import androidx.core.view.get
 import com.example.collectivecleaningorganizer.R
-import kotlinx.android.synthetic.main.activity_specific_collective.view.*
+import kotlinx.android.synthetic.main.collective_member_row.*
 import kotlinx.android.synthetic.main.collective_member_row.view.*
 /**
  * A class used to create a custom adapter for the collectiveMembersListView used in the SpecificCollectiveActivity and its corresponding layout file.
@@ -16,7 +14,8 @@ import kotlinx.android.synthetic.main.collective_member_row.view.*
  * @param membersMap is a MutableMap of the members class, holding all the member username and their role in the collective
  * @return BaseAdapter
  */
-class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>, val roleList: MutableList<String>) : BaseAdapter() {
+class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>,
+                               val roleList: MutableList<String>, val changeMemberRolePermission : Boolean) : BaseAdapter() {
 
     private val memberNameList = ArrayList<String>(membersMap.keys)
     private val memberRoleList = ArrayList<String>(membersMap.values)
@@ -65,7 +64,7 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
         var collectiveMemberName = view1.collectiveMemberTextView
 
         //Initializing the spinner from the collective_member_row layout
-        val roleSpinner = view1.role_spinner
+        val roleSpinner = view1.collectiveRolesSpinner
 
         //Creating an array adapter for the spinner
         val spinnerAdapter = ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,roleList)
@@ -82,6 +81,10 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
         //If the member's role is not in the role list, set the role shown in spinner as the lowest role
         if (rolePositionInSpinner == -1) {
             rolePositionInSpinner = roleList.size-1
+        }
+        //Disabling spinner if the user dosnt have permission to change member roles
+        if (!changeMemberRolePermission) {
+            roleSpinner.isEnabled = false
         }
 
         //Setting the spinner selection value to the member's role which was found in memberRoleList
