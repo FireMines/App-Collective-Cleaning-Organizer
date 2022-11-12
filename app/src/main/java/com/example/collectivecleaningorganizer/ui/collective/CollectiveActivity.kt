@@ -109,7 +109,7 @@ class CollectiveActivity : AppCompatActivity() {
         else {
             Log.d("createCollective()", "There is no existing collective with the same collectiveID. Adding the collective to DB")
             //Adding the newly created collective to the DB
-            addCollectiveToDB(collectiveId, userID)
+            addCollectiveToDB(collectiveName,collectiveId, userID)
         }
 
     }
@@ -132,13 +132,14 @@ class CollectiveActivity : AppCompatActivity() {
 
 
 
-    private fun addCollectiveToDB(collectiveID : String, userID:String) {
+    private fun addCollectiveToDB(collectiveName: String,collectiveID : String, userID:String) {
         val members = mutableMapOf<String,String>()
         val requests = mutableMapOf<String,String>()
 
         members[userID] = "Owner"
 
         val collectiveInfo = hashMapOf(
+            "name" to collectiveName,
             "members" to members,
             "requests" to requests
         )
