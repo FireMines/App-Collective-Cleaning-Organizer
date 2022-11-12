@@ -159,7 +159,7 @@
             android:background="@color/black" />
 
         <ListView
-            android:id="@+id/membersListView"
+            android:id="@+id/assignCollectiveMembersListView"
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:choiceMode="multipleChoice" />

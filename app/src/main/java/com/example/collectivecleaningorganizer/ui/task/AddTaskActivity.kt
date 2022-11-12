@@ -43,7 +43,7 @@ class AddTaskActivity : AppCompatActivity() {
         itemList.add("tomas")
         itemList.add("tomas")
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,itemList)
-        membersListView.adapter = adapter
+        assignCollectiveMembersListView.adapter = adapter
 
 
 
