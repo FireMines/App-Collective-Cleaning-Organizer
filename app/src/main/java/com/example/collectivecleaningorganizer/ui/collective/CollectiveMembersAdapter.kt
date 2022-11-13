@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.core.view.allViews
+import androidx.core.view.get
+import androidx.core.view.iterator
+import androidx.core.view.size
 import com.example.collectivecleaningorganizer.R
 import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.collective_member_row.*
@@ -22,7 +25,7 @@ import kotlinx.android.synthetic.main.collective_member_row.view.*
  */
 class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>, val userID :String,
                                val roleList: MutableList<String>, var changeMemberRolePermission : Boolean,
-                               val onDataChange: onDataChange?) : BaseAdapter() {
+                               val onDataChange: onDataChange) : BaseAdapter() {
 
     private val memberNameList : ArrayList<String> = ArrayList(membersMap.keys)
     private var memberRoleList : ArrayList<String> = ArrayList(membersMap.values)
@@ -135,19 +138,30 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
                 //Getting the selected role from the spinner
                 val selectedRole = parent.getItemAtPosition(position).toString()
 
-                //Updating the member's new role in the memberRoleList
+                //Updating the member's new role in the memberRoleList with the selectedRole
                 memberRoleList[p0] = selectedRole
 
-                //Updating the member's role in the membersMap
+                //Updating the member's role in the membersMap with the selectedRole
                 membersMap[memberNameList[p0]] = memberRoleList[p0]
+                //context.collectiveMembersListView.get(2).collectiveRolesSpinner.isEnabled = false
+                Log.e("Count", "${context.collectiveMembersListView.count}")
 
-                //If the user's own rank is changed from owner, the user will lose the ability to change member roles.
+                //If the user's own rank is changed from owner to Member, the user will lose the ability to change member roles.
                 if (membersMap[userID] != "Owner") {
-                    context.collectiveMembersListView.adapter = CollectiveMembersAdapter(context,membersMap, userID,roleList,false,null)
+                    //Iterating through the collectiveMembersListView and disabling the spinner used for changing roles
+                    for (context in context.collectiveMembersListView.iterator()) {
+                        //Changing the changeMemberRolePermission to false to avoid
+                        //the spinners being enabled again due to scrolling in the listView triggers the getview() function
+                        changeMemberRolePermission = false
+
+                        //Disabling the spinner
+                        context.collectiveRolesSpinner.isEnabled = false
+                    }
+
                 }
 
                 //Attaching the onDataChange interface with the spinner listener and add the updated membersMap
-                onDataChange?.collectiveMemberRolesChanged(membersMap)
+                onDataChange.collectiveMemberRolesChanged(membersMap)
 
             }
 
