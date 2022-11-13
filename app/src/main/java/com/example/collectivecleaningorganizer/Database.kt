@@ -7,8 +7,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-var userData = mutableMapOf<String, DocumentSnapshot>()
+
 var collectiveDocuments = mutableMapOf<String, QueryDocumentSnapshot>()
+val userData = mutableListOf<DocumentSnapshot?>(null)
+var userCollectiveData = mutableListOf<DocumentSnapshot?>(null)
 
 class Database {
     private val db = Firebase.firestore
@@ -28,7 +30,7 @@ class Database {
 
 
 
-    fun databaseDataChangeListener(collection:String, documentID:String, map:MutableMap<String,DocumentSnapshot>) {
+    fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>) {
         db.collection(collection).document(documentID)
             .addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -43,9 +45,10 @@ class Database {
 
             if (snapshot != null && snapshot.exists()) {
                 Log.d("listener", "$source data: ${snapshot.data}")
-                //userData[userID] = snapshot
-                map[documentID] = snapshot
-                println(userData[documentID]?.data)
+                //Adding the DocumentSnapshot to the dataList
+                dataList[0] = snapshot
+
+
             } else {
                 Log.d("listener", "$source data: null")
             }
