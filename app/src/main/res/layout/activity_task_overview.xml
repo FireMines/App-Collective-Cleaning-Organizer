@@ -152,7 +152,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logoutImageView"
         android:layout_width="46dp"
         android:layout_height="29dp"
         android:layout_marginTop="16dp"
