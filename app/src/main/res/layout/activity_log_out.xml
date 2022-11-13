@@ -8,15 +8,15 @@
 
     <Button
         android:id="@+id/logOutButton"
-        android:layout_width="167dp"
-        android:layout_height="77dp"
-        android:layout_marginTop="196dp"
+        android:layout_width="189dp"
+        android:layout_height="84dp"
         android:text="LOGOUT"
-        android:textSize="25sp"
+        android:textSize="33sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.386" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
