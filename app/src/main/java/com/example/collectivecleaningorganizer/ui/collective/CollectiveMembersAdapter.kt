@@ -1,11 +1,17 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
+import android.widget.Toast
+import androidx.core.view.allViews
 import com.example.collectivecleaningorganizer.R
+import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.collective_member_row.*
 import kotlinx.android.synthetic.main.collective_member_row.view.*
 /**
@@ -14,11 +20,13 @@ import kotlinx.android.synthetic.main.collective_member_row.view.*
  * @param membersMap is a MutableMap of the members class, holding all the member username and their role in the collective
  * @return BaseAdapter
  */
-class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>,
-                               val roleList: MutableList<String>, val changeMemberRolePermission : Boolean) : BaseAdapter() {
+class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>, val userID :String,
+                               val roleList: MutableList<String>, var changeMemberRolePermission : Boolean,
+                               val onDataChange: onDataChange?) : BaseAdapter() {
 
-    private val memberNameList = ArrayList<String>(membersMap.keys)
-    private val memberRoleList = ArrayList<String>(membersMap.values)
+    private val memberNameList : ArrayList<String> = ArrayList(membersMap.keys)
+    private var memberRoleList : ArrayList<String> = ArrayList(membersMap.values)
+    private val tag : String = "CollectiveMembersAdapter"
 
     /**
      * A function used to get the amount of rows/items.
@@ -64,6 +72,7 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
         var collectiveMemberName = view1.collectiveMemberTextView
 
         //Initializing the spinner from the collective_member_row layout
+
         val roleSpinner = view1.collectiveRolesSpinner
 
         //Creating an array adapter for the spinner
@@ -73,8 +82,8 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
         collectiveMemberName.text = memberNameList[p0]
 
         //Attaching the adapter we created for the spinner to the spinner itself
-        roleSpinner.adapter = spinnerAdapter
 
+        roleSpinner.adapter = spinnerAdapter
         //Getting the member's role position in the spinner
         var rolePositionInSpinner = spinnerAdapter.getPosition(memberRoleList[p0])
 
@@ -91,6 +100,61 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
         roleSpinner.setSelection(rolePositionInSpinner)
 
 
+        //Initializing an Adapterview onitemselectedlistener for the spinner
+        roleSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                return
+            }
+
+            @SuppressLint("LongLogTag")
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                //If the selected item is the same as it was before, dont do anything
+                if (memberRoleList[p0] == parent.getItemAtPosition(position)) {
+                    return
+                }
+
+                //If user changes his own role to member, make sure to remove all permissions etc from the user
+                //Make sure that there is atleast 1 owner left. A collective cannot have 0 owners
+
+                val amountOfOwnersInCollective : Int? = memberRoleList.groupingBy { it }.eachCount()["Owner"]
+
+                //If there for some reason are 0 owners, make the first member a owner
+                if (amountOfOwnersInCollective == null) {
+                    Log.e(tag, "Getting the value null when retrieving the amount of owners in the collective")
+                    return
+                }
+                //Handling if there is only one owner left and the user tries to change the owner to a member role.
+                if (amountOfOwnersInCollective <= 1 && memberRoleList[p0] == "Owner" && parent.getItemAtPosition(position) == "Member") {
+                    parent.setSelection(rolePositionInSpinner)
+                    Toast.makeText(context, "There has to be at least 1 Owner in the collective", Toast.LENGTH_LONG).show()
+                    Log.d(tag, "Failed to change user's role form owner to member. Reason: There has to be at least 1 owner in the collective")
+                    return
+                }
+
+
+                //Getting the selected role from the spinner
+                val selectedRole = parent.getItemAtPosition(position).toString()
+
+                //Updating the member's new role in the memberRoleList
+                memberRoleList[p0] = selectedRole
+
+                //Updating the member's role in the membersMap
+                membersMap[memberNameList[p0]] = memberRoleList[p0]
+
+                //If the user's own rank is changed from owner, the user will lose the ability to change member roles.
+                if (membersMap[userID] != "Owner") {
+                    context.collectiveMembersListView.adapter = CollectiveMembersAdapter(context,membersMap, userID,roleList,false,null)
+                }
+
+                //Attaching the onDataChange interface with the spinner listener and add the updated membersMap
+                onDataChange?.collectiveMemberRolesChanged(membersMap)
+
+            }
+
+        }
+
         return view1
     }
+
+
 }
