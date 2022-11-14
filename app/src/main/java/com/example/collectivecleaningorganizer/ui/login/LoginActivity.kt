@@ -67,24 +67,20 @@ class LoginActivity : AppCompatActivity() {
                     val collectiveID = e.data?.get("collectiveID")
                     //Checking if the user is apart of a collective or not
                     if (collectiveID == null) {
+                        Log.e("test", "t")
                         //Start the CollectiveActivity
                         intent = Intent(this,CollectiveActivity::class.java)
                     }
                     else {
+                        intent = Intent(this, TaskOverviewActivity::class.java)
+                        //Adding the userID to the intent
+                        intent.putExtra("uid",task.result.user?.uid)
+
+                        //Starting the activity
+
                         //Starting a data change listener for the collective the user is apart of
-                        Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData, object:ResultListener {
-                            override fun onResult(isAdded: Boolean) {
-                                //Start the TaskOverview activity
-                                intent = Intent(this@LoginActivity, TaskOverviewActivity::class.java)
-                                //Adding the userID to the intent
-                                intent.putExtra("uid",task.result.user?.uid)
-
-                                //Starting the activity
-                                startActivity(intent)
-                            }
-                        })
-
                     }
+                    startActivity(intent)
 
                 }
 
