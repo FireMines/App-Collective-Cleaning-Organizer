@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.userCollectiveData
+import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
@@ -73,6 +74,10 @@ class TaskOverviewActivity : AppCompatActivity() {
     private fun dbSync(userID : String) {
         removeAllRecipes()
         //Retrieving user's tasks
+        if (userCollectiveData[0]?.data?.get("tasks") == null) {
+            Log.d("TaskOverviewActivity","No tasks in the collective")
+            return
+        }
         val collectiveTasks : ArrayList<MutableMap<String,String>> = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>
         for (task in collectiveTasks) {
             val view = layoutInflater.inflate(R.layout.task_layout, null)

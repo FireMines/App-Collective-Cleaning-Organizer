@@ -16,6 +16,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.userCollectiveData
+import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
@@ -89,7 +90,15 @@ class AddTaskActivity : AppCompatActivity() {
             Toast.makeText(this, "Please write a task name in order to create the task", Toast.LENGTH_LONG).show()
         }
         //Retrieving the task array stored in the collective DB cache
-        val tasksArray : ArrayList<MutableMap<String,String>> = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>
+        var tasksArray : ArrayList<MutableMap<String,String>>
+        if (userCollectiveData[0]?.data?.get("tasks") == null) {
+            tasksArray = ArrayList<MutableMap<String,String>>()
+            Log.d("AddTaskActivity()","No tasks in the collective")
+
+        }
+        else {
+            tasksArray = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>
+        }
         //Creating a map for tasks
         val task = mutableMapOf<String,String>()
         //Adding the task information into the map
@@ -108,7 +117,7 @@ class AddTaskActivity : AppCompatActivity() {
             Log.d("Create task: Error", "the userID is null")
             return
         }
-        val collectiveID = userCollectiveData[0]?.id.toString()
+        val collectiveID = userData[0]?.data?.get("collectiveID").toString()
 
         //Adding the new task array to the DB
         db.collection("collective").document(collectiveID)

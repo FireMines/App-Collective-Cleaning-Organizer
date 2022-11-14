@@ -55,7 +55,7 @@ class CollectiveActivity : AppCompatActivity() {
 
 
     private fun generateUniqueCollectiveID(collectiveName : String) {
-        val userID = intent.getStringExtra("uid")
+        val userID = userData[0]?.id.toString()
 
         //Creating a random 4 digit number
         val randomNumber: String = String.format("%04d", (0..9999).random())
@@ -120,10 +120,15 @@ class CollectiveActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d(tag, "Collective successfully added to DB!")
 
-                Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData,null)
+                Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData,object : ResultListener {
+                    override fun onResult(isAdded: Boolean) {
+                        //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
+                        addCollectiveIDToUser(collectiveID,userID)
+                    }
 
-                //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
-                addCollectiveIDToUser(collectiveID,userID)
+                })
+
+
             }
             .addOnFailureListener { e ->
                 Log.e(tag, "Error adding collective to DB", e)
