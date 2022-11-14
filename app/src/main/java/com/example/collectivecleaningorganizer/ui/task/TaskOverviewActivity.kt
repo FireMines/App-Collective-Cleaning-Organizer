@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -67,5 +68,14 @@ class TaskOverviewActivity : AppCompatActivity() {
             startActivity(intentAddTaskPage)
         }
 
+        // passes user id to intent
+        val intentLogoutPage: Intent = Intent(this, LogOutActivity::class.java)
+        intentLogoutPage.putExtra("uid",userID)
+
+        // Sends user to logout activity when clicking on settings wheel
+        logoutImageView.setOnClickListener {
+            startActivity(intentLogoutPage)
+        }
     }
 }
+
