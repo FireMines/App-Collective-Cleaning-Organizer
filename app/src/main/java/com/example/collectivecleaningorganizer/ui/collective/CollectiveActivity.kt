@@ -8,12 +8,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import com.example.collectivecleaningorganizer.Database
+import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.collectiveDocuments
 import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
-import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -22,47 +20,20 @@ import kotlinx.android.synthetic.main.activity_collective.*
 
 class CollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
-
-    private var userDocumentData = mutableMapOf<String, DocumentSnapshot>()
-    private var tettst = mutableListOf<DocumentSnapshot>()
     private var tag = "CollectiveActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collective)
 
-        val userID = intent.getStringExtra("uid")
-        val userCollection : String = "users"
 
-        Database().getAllCollectivesFromDB()
-
-        //Calling the databaseDataChangeListener() which creates a listener and listens for any changes on the userData in DB
-        Database().databaseDataChangeListener(userCollection, userID.toString(), userData)
-        userData[userID]?.data?.get("collectiveID")
-
-
-
-
-
-        /*
-        if (userData.get(userID)?.contains("collectiveID") == true && userData[userID]?.get("collectiveID") != null) {
-            val intentSpecificCollectiveActivity :Intent = Intent(this, SpecificCollectiveActivity::class.java)
-            intentSpecificCollectiveActivity.putExtra("collectiveID", userData[userID]?.get("collectiveID").toString())
-            startActivity(intentSpecificCollectiveActivity)
+        val collectiveID = userData[0]?.data?.get("collectiveID")
+        if (collectiveID != null) {
+            //Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData)
+            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
             return
         }
 
-         */
-
-
-        //println(MainActivity().usersExampleCollection["NTNU32"]?.data?.values.)
-
-        //Constant listener to listen if the collection has been updated
-        //val adapter : BaseAdapter = CollectiveMembersAdapter()
-        //membersListView.adapter
         sendCollectiveJoinRequestButton.setOnClickListener {
-
-
-
 
 
         }
@@ -122,6 +93,11 @@ class CollectiveActivity : AppCompatActivity() {
         }
         db.collection("collective").document(enteredCollectiveID).get()
             .addOnSuccessListener { document ->
+                if (document.data == null) {
+                    //Alert dialog with error message telling the user that the collective dosnt exist
+                    return@addOnSuccessListener
+                }
+                //val requestsMap : document.data.get("requests")
                 if (document.data != null) {
 
                 }
@@ -147,8 +123,7 @@ class CollectiveActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d(tag, "Collective successfully added to DB!")
 
-                //calling getAllCollectivesFromDB() function to retrieve the newest collective data from dB
-                Database().getAllCollectivesFromDB()
+                Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData)
 
                 //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
                 addCollectiveIDToUser(collectiveID,userID)
@@ -166,7 +141,7 @@ class CollectiveActivity : AppCompatActivity() {
             .addOnSuccessListener {
             Log.d(tag, "Successfully added the collectiveID to user $userID")
 
-                startActivity(Intent(this, TaskOverviewActivity::class.java))
+                startActivity(Intent(this, SpecificCollectiveActivity::class.java))
             }
             .addOnFailureListener { e ->
                 Log.e(tag, "Error adding collectiveID to user: $userID", e) }
