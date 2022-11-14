@@ -1,6 +1,5 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +9,6 @@ import android.view.View
 import android.widget.EditText
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -123,7 +120,7 @@ class CollectiveActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d(tag, "Collective successfully added to DB!")
 
-                Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData)
+                Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData,null)
 
                 //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
                 addCollectiveIDToUser(collectiveID,userID)
