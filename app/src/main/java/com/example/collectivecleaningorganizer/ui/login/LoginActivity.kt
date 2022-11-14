@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
+import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.userCollectiveData
 import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -51,17 +54,24 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Successful login", Toast.LENGTH_SHORT).show()   // displays message to user
 
                 //DB request to retrieve amy user data
-                db.collection("users").document(task.result.user?.uid.toString()).get().addOnSuccessListener { e ->
+                val userID = task.result.user?.uid.toString()
+                db.collection("users").document(userID).get().addOnSuccessListener { e ->
                     //Adding the userData to a mutable map
-                    userData[e.id] = e
+                    userData[0] = e
+
+                    //Starting a data change listener for the userData
+                    Database().databaseDataChangeListener("users", userID, userData)
 
                     val intent: Intent
+                    val collectiveID = e.data?.get("collectiveID")
                     //Checking if the user is apart of a collective or not
-                    if (e.data?.get("collectiveID") == null) {
+                    if (collectiveID == null) {
                         //Start the CollectiveActivity
                         intent = Intent(this,CollectiveActivity::class.java)
                     }
                     else {
+                        //Starting a data change listener for the collective the user is apart of
+                        Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData)
                         //Start the TaskOverview activity
                         intent = Intent(this, TaskOverviewActivity::class.java)
                     }
