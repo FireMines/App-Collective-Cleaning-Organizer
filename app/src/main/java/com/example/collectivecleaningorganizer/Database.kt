@@ -2,6 +2,7 @@ package com.example.collectivecleaningorganizer
 
 import android.annotation.SuppressLint
 import android.util.Log
+import com.example.collectivecleaningorganizer.ui.collective.ResultListener
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -27,7 +28,18 @@ class Database {
                 Log.e(tag, "Error retrieving all collective data from DB", e)
             }
     }
-
+    @SuppressLint("LongLogTag")
+    fun updateValueInDB(collection : String, documentID : String, field : String, updateValue : Any?, resultListener: ResultListener?) {
+        db.collection(collection).document(documentID)
+            .update(field,updateValue)
+            .addOnSuccessListener {
+                resultListener?.onResult(true)
+                Log.d(tag,"Success in updating the field: $field in the path: $collection/$documentID")
+            }
+            .addOnFailureListener { e ->
+                Log.e(tag, "Failure in updating the field: $field in the path: $collection/$documentID")
+            }
+    }
 
 
     fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>) {

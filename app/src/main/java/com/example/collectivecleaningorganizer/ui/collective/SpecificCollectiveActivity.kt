@@ -12,6 +12,7 @@ import android.widget.BaseAdapter
 import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import androidx.core.view.forEach
+import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
 import com.example.collectivecleaningorganizer.userCollectiveData
@@ -66,8 +67,8 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             .setPositiveButton("Yes") { _, _ ->
                 //Calling a function to generate a unique collectiveID
                 collectiveMembersMap.remove(userData[0]?.id.toString())
-                updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)
-                updateValueInDB("users", userID,"collectiveID",null, object:ResultListener {
+                Database().updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)
+                Database().updateValueInDB("users", userID,"collectiveID",null, object:ResultListener {
                     override fun onResult(isAdded: Boolean) {
                         startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
                     }
@@ -77,18 +78,6 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .create()
         dialog.show()
-    }
-    @SuppressLint("LongLogTag")
-    fun updateValueInDB(collection : String, documentID : String, field : String, updateValue : Any?, resultListener: ResultListener?) {
-        db.collection(collection).document(documentID)
-            .update(field,updateValue)
-            .addOnSuccessListener {
-                resultListener?.onResult(true)
-            Log.d(tag,"Success in updating the field: $field in the path: $collection/$documentID")
-            }
-            .addOnFailureListener { e ->
-                Log.e(tag, "Failure in updating the field: $field in the path: $collection/$documentID")
-            }
     }
 
     fun checkIfUserIsAnOwner(userRole : String, ownerRole : String ) : Boolean {
