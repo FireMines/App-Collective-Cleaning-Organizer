@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
+import com.example.collectivecleaningorganizer.ui.collective.ResultListener
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.userCollectiveData
@@ -60,9 +61,9 @@ class LoginActivity : AppCompatActivity() {
                     userData[0] = e
 
                     //Starting a data change listener for the userData
-                    Database().databaseDataChangeListener("users", userID, userData)
+                    Database().databaseDataChangeListener("users", userID, userData, null)
 
-                    val intent: Intent
+                    var intent: Intent
                     val collectiveID = e.data?.get("collectiveID")
                     //Checking if the user is apart of a collective or not
                     if (collectiveID == null) {
@@ -71,15 +72,20 @@ class LoginActivity : AppCompatActivity() {
                     }
                     else {
                         //Starting a data change listener for the collective the user is apart of
-                        Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData)
-                        //Start the TaskOverview activity
-                        intent = Intent(this, TaskOverviewActivity::class.java)
-                    }
-                    //Adding the userID to the intent
-                    intent.putExtra("uid",task.result.user?.uid)
+                        Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData, object:ResultListener {
+                            override fun onResult(isAdded: Boolean) {
+                                //Start the TaskOverview activity
+                                intent = Intent(this@LoginActivity, TaskOverviewActivity::class.java)
+                                //Adding the userID to the intent
+                                intent.putExtra("uid",task.result.user?.uid)
 
-                    //Starting the activity
-                    startActivity(intent)
+                                //Starting the activity
+                                startActivity(intent)
+                            }
+                        })
+
+                    }
+
                 }
 
 
