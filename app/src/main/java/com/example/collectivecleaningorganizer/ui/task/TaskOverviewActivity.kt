@@ -5,18 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.iterator
 import androidx.recyclerview.widget.RecyclerView
 import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
+import kotlinx.android.synthetic.main.activity_view_task.view.*
+import kotlinx.android.synthetic.main.task_layout.view.*
 
 
 class TaskOverviewActivity : AppCompatActivity() {
 
     private val tasklist = mutableListOf<TaskModel>()
-    private lateinit var recyclerView: RecyclerView
+    //private lateinit var recyclerView: RecyclerView
 
 
     private val db = Firebase.firestore
@@ -30,22 +33,11 @@ class TaskOverviewActivity : AppCompatActivity() {
         }
 
         //recyclerView = findViewById(R.id.rv_todo)
-        //val adapter = TaskPageAdapter(tasklist)
+        val adapter = TaskPageAdapter(tasklist)
         //recyclerView.adapter = adapter
 
+        dbSync(userID)
 
-
-
-        //Retrieving user's tasks
-        db.collection("users").document(userID).collection("tasks").get().addOnSuccessListener { tasks ->
-            for (task in tasks) {
-                Log.d(TAG, "${task.id} => ${task.data}")
-                //Log.d("entries here: ", task.data)
-                tasklist.add(TaskModel(task.data["name"] as String, task.data["dueDate"] as String, task.data["description"] as String))
-                Log.d("Hallaballa", tasklist.toString())
-                //adapter.notifyDataSetChanged()
-            }
-        }
 
         Log.d(TAG, tasklist.toString())
 /*
@@ -56,8 +48,8 @@ class TaskOverviewActivity : AppCompatActivity() {
                 intent.putExtra("task",taskModel)
                 startActivity(intent)
             }
-        })
-*/
+        })*/
+
 
         val intentAddTaskPage: Intent = Intent(this, AddTaskActivity::class.java)
         intentAddTaskPage.putExtra("uid",userID)
@@ -75,6 +67,42 @@ class TaskOverviewActivity : AppCompatActivity() {
         // Sends user to logout activity when clicking on settings wheel
         logoutImageView.setOnClickListener {
             startActivity(intentLogoutPage)
+        }
+    }
+
+    private fun dbSync(userID : String) {
+        removeAllRecipes()
+        //Retrieving user's tasks
+        db.collection("users").document(userID).collection("tasks").get().addOnSuccessListener { tasks ->
+            for (task in tasks) {
+                val view = layoutInflater.inflate(R.layout.task_layout, null)
+
+                Log.d(TAG, "${task.id} => ${task.data["name"]}")
+
+                view.task_tv.text = task.data["name"].toString()
+                view.duedate_tv.text = task.data["dueDate"].toString()
+                //view.taskDescription.text = task.data["description"].toString()
+                //view.taskDescription.text = task.data["dueDate"].toString()
+                view.task_tv.setOnClickListener{
+                    tasklist.add(TaskModel(view.task_tv.text as String,view.duedate_tv.text as String, view.taskDescription.text as String))
+                }
+                rv_todo.addView(view)
+
+                Log.d(TAG, "${task.id} => ${task.data}")
+                //Log.d("entries here: ", task.data)
+                //tasklist.add(TaskModel(task.data["name"] as String, task.data["dueDate"] as String, task.data["description"] as String))
+                Log.d("Hallaballa", tasklist.toString())
+                //adapter.notifyDataSetChanged()
+            }
+        }
+
+    }
+
+    private fun removeAllRecipes(){
+        val i = rv_todo.iterator()
+        while (i.hasNext()){
+            i.next()
+            i.remove()
         }
     }
 }
