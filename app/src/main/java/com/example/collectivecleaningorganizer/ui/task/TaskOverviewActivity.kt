@@ -32,7 +32,6 @@ class TaskOverviewActivity : AppCompatActivity() {
             Log.d("TaskOverview: Error", "the userID is null")
             return
         }
-        Log.e("running again", "running?")
 
         //recyclerView = findViewById(R.id.rv_todo)
         val adapter = TaskPageAdapter(tasklist)
@@ -79,14 +78,28 @@ class TaskOverviewActivity : AppCompatActivity() {
             val view = layoutInflater.inflate(R.layout.task_layout, null)
             view.task_tv.text = task["name"]
             view.duedate_tv.text = task["dueDate"]
+            val desc = task["description"].toString()
             view.task_tv.setOnClickListener{
-                tasklist.add(TaskModel(view.task_tv.text as String,view.duedate_tv.text as String, view.taskDescription.text as String))
+                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, userID)
+                //tasklist.add(TaskModel(view.task_tv.text as String,view.duedate_tv.text as String, view.taskDescription.text as String))
             }
             rv_todo.addView(view)
 
         }
 
     }
+
+    private fun openTaskPage(name : String, dueDate : String, description : String, userID: String) {
+        val newIntent = Intent(this, TaskActivity::class.java)
+
+        newIntent.putExtra("uid",userID)
+        newIntent.putExtra("name",name)
+        newIntent.putExtra("dueDate", dueDate)
+        newIntent.putExtra("description", description)
+
+        startActivity(newIntent)
+    }
+
 
     private fun removeAllRecipes(){
         val i = rv_todo.iterator()
