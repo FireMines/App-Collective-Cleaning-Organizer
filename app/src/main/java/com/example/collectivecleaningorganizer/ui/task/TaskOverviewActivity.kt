@@ -73,12 +73,16 @@ class TaskOverviewActivity : AppCompatActivity() {
 
     private fun dbSync(userID : String) {
         removeAllRecipes()
-        //Retrieving user's tasks
-        if (userCollectiveData[0]?.data?.get("tasks") == null) {
+        //Retrieving user's tasks stored in the cached user collective data
+        val collectiveTasks : ArrayList<MutableMap<String,String>>? = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+
+        //Checking and handling if the cached data doesn't have any tasks
+        if (collectiveTasks == null) {
             Log.d("TaskOverviewActivity","No tasks in the collective")
             return
         }
-        val collectiveTasks : ArrayList<MutableMap<String,String>> = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>
+
+        //Iterating through the collectiveTasks array
         for (task in collectiveTasks) {
             val view = layoutInflater.inflate(R.layout.task_layout, null)
             view.task_tv.text = task["name"]
