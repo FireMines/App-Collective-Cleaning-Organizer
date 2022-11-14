@@ -9,6 +9,7 @@ import androidx.core.view.iterator
 import androidx.recyclerview.widget.RecyclerView
 import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.userCollectiveData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
@@ -31,13 +32,13 @@ class TaskOverviewActivity : AppCompatActivity() {
             Log.d("TaskOverview: Error", "the userID is null")
             return
         }
+        Log.e("running again", "running?")
 
         //recyclerView = findViewById(R.id.rv_todo)
         val adapter = TaskPageAdapter(tasklist)
         //recyclerView.adapter = adapter
 
         dbSync(userID)
-
 
         Log.d(TAG, tasklist.toString())
 /*
@@ -73,26 +74,16 @@ class TaskOverviewActivity : AppCompatActivity() {
     private fun dbSync(userID : String) {
         removeAllRecipes()
         //Retrieving user's tasks
-        db.collection("users").document(userID).collection("tasks").get().addOnSuccessListener { tasks ->
-            for (task in tasks) {
-                val view = layoutInflater.inflate(R.layout.task_layout, null)
-
-                Log.d(TAG, "${task.id} => ${task.data["name"]}")
-
-                view.task_tv.text = task.data["name"].toString()
-                view.duedate_tv.text = task.data["dueDate"].toString()
-                val desc = task.data["description"].toString()
-                view.task_tv.setOnClickListener{
-                    openTaskPage(view.task_tv.text.toString() ,view.duedate_tv.text.toString(), desc, userID)
-                    //tasklist.add(TaskModel(view.task_tv.text as String,view.duedate_tv.text as String, view.taskDescription.text as String))
-                }
-                rv_todo.addView(view)
-
-                Log.d(TAG, "${task.id} => ${task.data}")
-                //Log.d("entries here: ", task.data)
-                //tasklist.add(TaskModel(task.data["name"] as String, task.data["dueDate"] as String, task.data["description"] as String))
-                Log.d("Hallaballa", tasklist.toString())
+        val collectiveTasks : ArrayList<MutableMap<String,String>> = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>
+        for (task in collectiveTasks) {
+            val view = layoutInflater.inflate(R.layout.task_layout, null)
+            view.task_tv.text = task["name"]
+            view.duedate_tv.text = task["dueDate"]
+            view.task_tv.setOnClickListener{
+                tasklist.add(TaskModel(view.task_tv.text as String,view.duedate_tv.text as String, view.taskDescription.text as String))
             }
+            rv_todo.addView(view)
+
         }
 
     }
@@ -103,17 +94,6 @@ class TaskOverviewActivity : AppCompatActivity() {
             i.next()
             i.remove()
         }
-    }
-
-    private fun openTaskPage(name : String, dueDate : String, description : String, userID: String) {
-        val newIntent = Intent(this, TaskActivity::class.java)
-
-        newIntent.putExtra("uid",userID)
-        newIntent.putExtra("name",name)
-        newIntent.putExtra("dueDate", dueDate)
-        newIntent.putExtra("description", description)
-
-        startActivity(newIntent)
     }
 }
 
