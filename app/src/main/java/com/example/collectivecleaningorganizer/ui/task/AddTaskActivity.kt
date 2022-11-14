@@ -15,11 +15,13 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.userCollectiveData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.popup_with_edittext.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AddTaskActivity : AppCompatActivity() {
     private val db = Firebase.firestore
@@ -86,18 +88,31 @@ class AddTaskActivity : AppCompatActivity() {
         if (taskName.text.toString() == "") {
             Toast.makeText(this, "Please write a task name in order to create the task", Toast.LENGTH_LONG).show()
         }
+        //Retrieving the task array stored in the collective DB cache
+        val tasksArray : ArrayList<MutableMap<String,String>> = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>
+        //Creating a map for tasks
+        val task = mutableMapOf<String,String>()
+        //Adding the task information into the map
 
-        val task = hashMapOf(
-            "name" to taskName.text.toString(),
-            "description" to taskDescription.text.toString(),
-            "dueDate" to taskDueDate.text.toString()
+        task["name"] = taskName.text.toString()
+        task["description"] = taskDescription.text.toString()
+        task["dueDate"] = taskDescription.text.toString()
+
+        //Adding the task to the task array
+        tasksArray.add(task)
+        //Creating a hashmap with the field tasks and the value is the tasksArray
+        val addDataToDB = hashMapOf(
+            "tasks" to tasksArray
         )
         if (userID == null) {
             Log.d("Create task: Error", "the userID is null")
             return
         }
-        db.collection("users").document(userID).collection("tasks")
-            .add(task)
+        val collectiveID = userCollectiveData[0]?.id.toString()
+
+        //Adding the new task array to the DB
+        db.collection("collective").document(collectiveID)
+            .set(addDataToDB)
             .addOnSuccessListener { documentReference ->
                 Log.d("Create task: DB success", "Add task to the DB with the id: $documentReference")
             }
