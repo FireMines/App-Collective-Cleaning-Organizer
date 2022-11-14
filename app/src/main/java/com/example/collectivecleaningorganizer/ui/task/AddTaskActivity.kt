@@ -96,7 +96,7 @@ class AddTaskActivity : AppCompatActivity() {
 
         task["name"] = taskName.text.toString()
         task["description"] = taskDescription.text.toString()
-        task["dueDate"] = taskDescription.text.toString()
+        task["dueDate"] = taskDueDate.text.toString()
 
         //Adding the task to the task array
         tasksArray.add(task)
