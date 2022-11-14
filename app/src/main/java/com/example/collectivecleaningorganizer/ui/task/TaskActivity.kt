@@ -1,10 +1,14 @@
 package com.example.collectivecleaningorganizer.ui.task
 
+import android.content.ContentValues.TAG
+import android.content.Intent
+import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.R
+import kotlinx.android.synthetic.main.activity_add_task.*
 
 class TaskActivity : AppCompatActivity() {
     private lateinit var taskName       : TextView
@@ -26,9 +30,28 @@ class TaskActivity : AppCompatActivity() {
 
 
         taskName = findViewById(R.id.taskName)
-        dueDate = findViewById(R.id.duedate_tv)
+        dueDate = findViewById(R.id.taskDueDate)
         description = findViewById(R.id.taskDescription)
 
+
+
+        val name = intent.getStringExtra("name").toString()
+        //val dueDate = intent.getStringExtra("dueDate").toString()
+        val desc = intent.getStringExtra("description").toString()
+        Log.d(TAG, name)
+
+        taskName.text = name
+        //dueDate = "hei"
+        description.text = desc
+
+        back_btn.setOnClickListener{
+            val intentTaskPage: Intent = Intent(this, TaskOverviewActivity::class.java)
+            intentTaskPage.putExtra("uid",userID)
+            startActivity(intentTaskPage)
+        }
+
+
+        /*
         intent?.let {
             val task = intent.extras?.getParcelable("task") as TaskModel?
             if (task != null) {
@@ -37,6 +60,8 @@ class TaskActivity : AppCompatActivity() {
                 description.text = task.description
             }
         }
+
+         */
         //button = findViewById(R.id.button)
         //button.setOnClickListener {
         //    val intent = Intent(this, FoodMenuActivity::class.java)
