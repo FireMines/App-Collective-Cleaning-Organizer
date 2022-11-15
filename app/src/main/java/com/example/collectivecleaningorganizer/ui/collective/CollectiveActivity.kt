@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.EditText
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -142,7 +143,7 @@ class CollectiveActivity : AppCompatActivity() {
                 Log.d(tag, "Successfully added the collectiveID to user $userID")
 
                 //Starting the SpecificCollectiveActivity
-                startActivity(Intent(this@CollectiveActivity, SpecificCollectiveActivity::class.java))
+                startActivity(Intent(this@CollectiveActivity, TaskOverviewActivity::class.java))
             }
 
             override fun onFailure(error: Exception) {
