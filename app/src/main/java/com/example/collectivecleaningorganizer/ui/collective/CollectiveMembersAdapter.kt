@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.collective_member_row.view.*
  */
 class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>, val userID :String,
                                val roleList: MutableList<String>, var changeMemberRolePermission : Boolean,
-                               val onDataChange: onDataChange) : BaseAdapter() {
+                               val onDataChange: OnDataChange) : BaseAdapter() {
 
     private val memberNameList : ArrayList<String> = ArrayList(membersMap.keys)
     private var memberRoleList : ArrayList<String> = ArrayList(membersMap.values)

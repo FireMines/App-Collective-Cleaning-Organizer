@@ -13,6 +13,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_collective.*
+import java.lang.Exception
 
 
 class CollectiveActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class CollectiveActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collective)
 
+        Database().getAllCollectivesFromDB()
 
         val collectiveID = userData[0]?.data?.get("collectiveID")
         if (collectiveID != null) {
@@ -31,7 +33,6 @@ class CollectiveActivity : AppCompatActivity() {
         }
 
         sendCollectiveJoinRequestButton.setOnClickListener {
-
 
         }
     }
@@ -116,37 +117,42 @@ class CollectiveActivity : AppCompatActivity() {
             "members" to members,
             "requests" to requests
         )
-        db.collection("collective").document(collectiveID).set(collectiveInfo)
-            .addOnSuccessListener {
+        Database().addToDB("collective", collectiveID, collectiveInfo, object : ResultListener {
+            override fun onSuccess() {
                 Log.d(tag, "Collective successfully added to DB!")
 
-                Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData,object : ResultListener {
-                    override fun onResult(isAdded: Boolean) {
-                        //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
-                        addCollectiveIDToUser(collectiveID,userID)
-                    }
+                //Starting a listener for the collective and listens for any changes done to the collective
+                Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData)
 
-                })
-
-
+                //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
+                addCollectiveIDToUser(collectiveID,userID)
             }
-            .addOnFailureListener { e ->
-                Log.e(tag, "Error adding collective to DB", e)
+
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Error adding collective to DB", error)
             }
+
+        })
 
     }
     private fun addCollectiveIDToUser(collectiveID: String,userID: String) {
         val collectiveInfo = hashMapOf(
             "collectiveID" to collectiveID
         )
-        db.collection("users").document(userID).set(collectiveInfo)
-            .addOnSuccessListener {
-            Log.d(tag, "Successfully added the collectiveID to user $userID")
+        Database().addToDB("users", userID,collectiveInfo, object : ResultListener {
+            override fun onSuccess() {
+                Log.d(tag, "Successfully added the collectiveID to user $userID")
 
-                startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+                //Starting the SpecificCollectiveActivity
+                startActivity(Intent(this@CollectiveActivity, SpecificCollectiveActivity::class.java))
             }
-            .addOnFailureListener { e ->
-                Log.e(tag, "Error adding collectiveID to user: $userID", e) }
+
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Error adding collectiveID to user: $userID", error)
+            }
+
+        })
+
     }
 
 }

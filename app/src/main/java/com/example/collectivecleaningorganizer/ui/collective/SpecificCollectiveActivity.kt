@@ -23,6 +23,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.model.SnapshotVersion
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_specific_collective.*
+import java.lang.Exception
 
 class SpecificCollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
@@ -42,7 +43,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         var isUserAnOwner : Boolean = checkIfUserIsAnOwner(collectiveMembersMap[userID].toString(), roleList[0])
 
         val adapter : BaseAdapter = CollectiveMembersAdapter(this, collectiveMembersMap,userID,roleList, isUserAnOwner,
-            object : onDataChange {
+            object : OnDataChange {
                 @SuppressLint("LongLogTag")
                 override fun collectiveMemberRolesChanged(updatedMembersMap: MutableMap<String, String>) {
 
@@ -65,12 +66,19 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             .setTitle("Leaving confirmation")
             .setMessage("Are you sure you want to leave the collective?")
             .setPositiveButton("Yes") { _, _ ->
-                //Calling a function to generate a unique collectiveID
-                collectiveMembersMap.remove(userData[0]?.id.toString())
+
                 Database().updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)
                 Database().updateValueInDB("users", userID,"collectiveID",null, object:ResultListener {
-                    override fun onResult(isAdded: Boolean) {
+                    @SuppressLint("LongLogTag")
+                    override fun onSuccess() {
+                        Log.d(tag, "the collectiveID has successfully been removed from the user")
+                        //Starting the specificCollectiveActivity
                         startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
+
+                    }
+                    @SuppressLint("LongLogTag")
+                    override fun onFailure(error: Exception) {
+                        Log.e(tag, "Failed to remove the collectiveID from the user", error)
                     }
                 })
 

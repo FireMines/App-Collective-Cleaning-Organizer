@@ -1,9 +1,12 @@
 package com.example.collectivecleaningorganizer
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.util.Log
 import com.example.collectivecleaningorganizer.ui.collective.ResultListener
+
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -33,16 +36,35 @@ class Database {
         db.collection(collection).document(documentID)
             .update(field,updateValue)
             .addOnSuccessListener {
-                resultListener?.onResult(true)
+                resultListener?.onSuccess()
                 Log.d(tag,"Success in updating the field: $field in the path: $collection/$documentID")
             }
             .addOnFailureListener { e ->
                 Log.e(tag, "Failure in updating the field: $field in the path: $collection/$documentID")
             }
     }
+    fun retrieveDataAndAddToCache(collection: String, documentID: String, dataList:MutableList<DocumentSnapshot?>, resultListener: ResultListener) {
+        db.collection(collection).document(documentID).get()
+            .addOnSuccessListener { data->
+                dataList[0] = data
+                resultListener.onSuccess()
+            }
+            .addOnFailureListener { e->
+                resultListener.onFailure(e)
+            }
 
+    }
+    fun addToDB(collection: String, documentID: String, data: Any, resultListener: ResultListener) {
+        db.collection(collection).document(documentID).set(data)
+            .addOnSuccessListener {
+                resultListener.onSuccess()
+            }
+            .addOnFailureListener { e ->
+                resultListener.onFailure(e)
+            }
+    }
 
-    fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>, resultListener: ResultListener?) {
+    fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>) {
         db.collection(collection).document(documentID)
             .addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -55,11 +77,11 @@ class Database {
             else
                 "Server"
 
+
             if (snapshot != null && snapshot.exists()) {
                 Log.d("listener", "$source data: ${snapshot.data}")
                 //Adding the DocumentSnapshot to the dataList
                 dataList[0] = snapshot
-                resultListener?.onResult(true)
 
 
             } else {
