@@ -7,15 +7,14 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.iterator
 import androidx.recyclerview.widget.RecyclerView
-import com.example.collectivecleaningorganizer.LogOutActivity
-import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.userCollectiveData
-import com.example.collectivecleaningorganizer.userData
+import com.example.collectivecleaningorganizer.*
+import com.example.collectivecleaningorganizer.ui.collective.ResultListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
 import kotlinx.android.synthetic.main.activity_view_task.view.*
 import kotlinx.android.synthetic.main.task_layout.view.*
+import java.lang.Exception
 
 
 class TaskOverviewActivity : AppCompatActivity() {
@@ -37,8 +36,22 @@ class TaskOverviewActivity : AppCompatActivity() {
         //recyclerView = findViewById(R.id.rv_todo)
         val adapter = TaskPageAdapter(tasklist)
         //recyclerView.adapter = adapter
+        val collectiveID = userData[0]?.data?.get("collectiveID")
+        if (collectiveID == null) {
+            //Start collective activity
+        }
+        //Starting a listener for the collective and listens for any changes done to the collective data
+        Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData, object : ResultListener {
+            override fun onSuccess() {
+                dbSync(userID)
+            }
 
-        dbSync(userID)
+            override fun onFailure(error: Exception) {
+                Log.e("TaskOverviewActivity", "Failure with listener")
+            }
+
+        })
+
 
         Log.d(TAG, tasklist.toString())
 /*

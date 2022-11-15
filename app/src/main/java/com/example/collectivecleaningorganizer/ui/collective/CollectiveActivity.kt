@@ -121,8 +121,6 @@ class CollectiveActivity : AppCompatActivity() {
             override fun onSuccess() {
                 Log.d(tag, "Collective successfully added to DB!")
 
-                //Starting a listener for the collective and listens for any changes done to the collective
-                Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData)
 
                 //Calling addCollectiveIDToUser() function to add the collectiveID to the userData
                 addCollectiveIDToUser(collectiveID,userID)

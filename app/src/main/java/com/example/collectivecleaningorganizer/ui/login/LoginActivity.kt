@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onSuccess() {
                 Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
                 //Starting a data change listener for the userData
-                Database().databaseDataChangeListener("users", userID, userData)
+                Database().databaseDataChangeListener("users", userID, userData, null)
                 val collectiveID = userData[0]?.data?.get("collectiveID")
 
 
@@ -119,8 +119,6 @@ class LoginActivity : AppCompatActivity() {
                 override fun onSuccess() {
                     Log.d(tag, "Successfully retrieved the collective data and stored it in a cache")
 
-                    //Starting a data change listener for the collective data
-                    Database().databaseDataChangeListener("collective", collectiveID, userCollectiveData)
                     //Initializing am intent for the TaskOverviewActivity
                     val intent = Intent(this@LoginActivity, TaskOverviewActivity::class.java)
                     //Adding the userID to the intent

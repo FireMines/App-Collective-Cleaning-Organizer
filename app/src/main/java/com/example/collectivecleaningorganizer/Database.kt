@@ -64,11 +64,12 @@ class Database {
             }
     }
 
-    fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>) {
+    fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>, resultListener: ResultListener?) {
         db.collection(collection).document(documentID)
             .addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.e("listener", "Listen failed.", e)
+                resultListener?.onFailure(e)
                 return@addSnapshotListener
             }
 
@@ -82,6 +83,7 @@ class Database {
                 Log.d("listener", "$source data: ${snapshot.data}")
                 //Adding the DocumentSnapshot to the dataList
                 dataList[0] = snapshot
+                resultListener?.onSuccess()
 
 
             } else {
