@@ -19,27 +19,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_task"
-        android:layout_width="379dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Enter a task"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_btn"
-        app:layout_constraintVertical_bias="0.0" />
-
     <LinearLayout
         android:id="@+id/rv_todo"
-        android:orientation="vertical"
         android:layout_width="360dp"
         android:layout_height="286dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,19 +71,20 @@
 
     <Button
         android:id="@+id/add_btn"
-        android:layout_width="130dp"
-        android:layout_height="108dp"
-        android:layout_marginTop="396dp"
+        android:layout_width="95dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="336dp"
         android:background="@drawable/round_button"
         android:text="+\nAdd Task"
         android:textAppearance="?android:textAppearanceLarge"
         android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintEnd_toStartOf="@+id/delete_btn"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskpage_tv" />
+        app:layout_constraintTop_toTopOf="@+id/divider" />
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="409dp"
         android:layout_height="90dp"
         android:background="#FFFFFF"
@@ -105,8 +92,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_task">
+        app:layout_constraintStart_toStartOf="parent">
 
         <View
             android:id="@+id/divider2"
@@ -160,5 +146,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/settings_wheel" />
+
+    <Button
+        android:id="@+id/delete_btn"
+        android:layout_width="130dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="352dp"
+        android:background="#B90E0A"
+        android:text="Delete Selected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/add_btn"
+        app:layout_constraintTop_toTopOf="@+id/divider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

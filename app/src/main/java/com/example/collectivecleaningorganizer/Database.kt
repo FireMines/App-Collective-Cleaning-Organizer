@@ -2,10 +2,12 @@ package com.example.collectivecleaningorganizer
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.collectivecleaningorganizer.ui.collective.ResultListener
 
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -91,6 +93,4 @@ class Database {
             }
         }
     }
-
-
 }

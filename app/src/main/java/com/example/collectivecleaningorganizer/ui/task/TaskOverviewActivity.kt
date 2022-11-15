@@ -4,8 +4,12 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.allViews
+import androidx.core.view.get
 import androidx.core.view.iterator
+import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.ui.collective.ResultListener
@@ -18,11 +22,6 @@ import java.lang.Exception
 
 
 class TaskOverviewActivity : AppCompatActivity() {
-
-    private val tasklist = mutableListOf<TaskModel>()
-    //private lateinit var recyclerView: RecyclerView
-
-
     private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +32,6 @@ class TaskOverviewActivity : AppCompatActivity() {
             return
         }
 
-        //recyclerView = findViewById(R.id.rv_todo)
-        val adapter = TaskPageAdapter(tasklist)
-        //recyclerView.adapter = adapter
         val collectiveID = userData[0]?.data?.get("collectiveID")
         if (collectiveID == null) {
             //Start collective activity
@@ -49,21 +45,7 @@ class TaskOverviewActivity : AppCompatActivity() {
             override fun onFailure(error: Exception) {
                 Log.e("TaskOverviewActivity", "Failure with listener")
             }
-
         })
-
-
-        Log.d(TAG, tasklist.toString())
-/*
-        adapter.setOnItemClickListener(object: TaskPageAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@TaskOverviewActivity, TaskActivity::class.java)
-                val taskModel = tasklist[position]
-                intent.putExtra("task",taskModel)
-                startActivity(intent)
-            }
-        })*/
-
 
         val intentAddTaskPage: Intent = Intent(this, AddTaskActivity::class.java)
         intentAddTaskPage.putExtra("uid",userID)
@@ -72,6 +54,21 @@ class TaskOverviewActivity : AppCompatActivity() {
         // Starts addTaskActivity when clicking on Add Task button
         add_btn.setOnClickListener {
             startActivity(intentAddTaskPage)
+        }
+
+        // Deletes tasks marked in checkbox when clicked
+        delete_btn.setOnClickListener {
+            val collectiveTasks : ArrayList<MutableMap<String,String>>? = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+            val collectiveID = userData[0]?.data?.get("collectiveID").toString()
+
+            // Goes through all checked tasks and deletes them
+            for (i in rv_todo.size -1 downTo  0) {
+                Log.e("test", rv_todo.size.toString())
+                if (rv_todo.get(i).checkBox.isChecked) {
+                    collectiveTasks?.removeAt(i)
+                    Database().updateValueInDB("collective", collectiveID,"tasks", collectiveTasks,null)
+                }
+            }
         }
 
         // passes user id to intent
@@ -103,12 +100,10 @@ class TaskOverviewActivity : AppCompatActivity() {
             val desc = task["description"].toString()
             view.task_tv.setOnClickListener{
                 openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, userID)
-                //tasklist.add(TaskModel(view.task_tv.text as String,view.duedate_tv.text as String, view.taskDescription.text as String))
             }
             rv_todo.addView(view)
-
+            Log.e("Tasks:", task.entries.toString())
         }
-
     }
 
     private fun openTaskPage(name : String, dueDate : String, description : String, userID: String) {
