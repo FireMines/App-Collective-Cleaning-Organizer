@@ -143,7 +143,7 @@ class CollectiveActivity : AppCompatActivity() {
                 Log.d(tag, "Successfully added the collectiveID to user $userID")
 
                 //Starting the SpecificCollectiveActivity
-                startActivity(Intent(this@CollectiveActivity, TaskOverviewActivity::class.java))
+                startTaskOverviewActivity(userID)
             }
 
             override fun onFailure(error: Exception) {
@@ -152,6 +152,12 @@ class CollectiveActivity : AppCompatActivity() {
 
         })
 
+    }
+    private fun startTaskOverviewActivity(userID:String) {
+        val intent = Intent(this, TaskOverviewActivity::class.java)
+        //Adding the userID to the intent
+        intent.putExtra("uid", userID)
+        startActivity(intent)
     }
 
 }
