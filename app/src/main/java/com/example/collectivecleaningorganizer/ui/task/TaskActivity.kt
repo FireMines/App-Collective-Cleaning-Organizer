@@ -5,17 +5,21 @@ import android.content.Intent
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.R
-import kotlinx.android.synthetic.main.activity_add_task.*
+import kotlinx.android.synthetic.main.activity_view_task.*
+import kotlinx.android.synthetic.main.activity_view_task.assignCollectiveMembersListView
+import kotlinx.android.synthetic.main.activity_view_task.back_btn
+import kotlinx.android.synthetic.main.activity_view_task.taskDescription
+import kotlinx.android.synthetic.main.activity_view_task.taskDueDate
+import kotlinx.android.synthetic.main.activity_view_task.taskName
+import kotlinx.android.synthetic.main.activity_view_task.view.*
+
+
 
 class TaskActivity : AppCompatActivity() {
-    private lateinit var taskName       : TextView
-    private lateinit var description    : TextView
-    private lateinit var dueDate        : TextView
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val userID = intent.getStringExtra("uid")
@@ -29,44 +33,31 @@ class TaskActivity : AppCompatActivity() {
         setTitle("Task description page")
 
 
-        taskName = findViewById(R.id.taskName)
-        dueDate = findViewById(R.id.taskDueDate)
-        description = findViewById(R.id.taskDescription)
+        taskName.text           = intent.getStringExtra("name").toString()
+        taskDueDate.text        = intent.getStringExtra("dueDate").toString()
+        taskDescription.text    = intent.getStringExtra("description").toString()
+
+        val listOfAssigned = mutableListOf<String>()
+        listOfAssigned.add(intent.getStringExtra("assigned").toString())
+
+        val membersAdapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,listOfAssigned)
+        //Assigning the adapter to the ListView with the id "assignCollectiveMembersListView"
+        assignCollectiveMembersListView.adapter = membersAdapter
 
 
 
-        val name = intent.getStringExtra("name").toString()
-        //val dueDate = intent.getStringExtra("dueDate").toString()
-        val desc = intent.getStringExtra("description").toString()
-        Log.d(TAG, name)
+        val categories = mutableListOf<String>()
+        categories.add(intent.getStringExtra("category").toString())
 
-        taskName.text = name
-        //dueDate = "hei"
-        description.text = desc
+        val categoryForTask = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,categories)
+        taskCategories.adapter = categoryForTask
+
 
         back_btn.setOnClickListener{
             val intentTaskPage: Intent = Intent(this, TaskOverviewActivity::class.java)
             intentTaskPage.putExtra("uid",userID)
             startActivity(intentTaskPage)
         }
-
-
-        /*
-        intent?.let {
-            val task = intent.extras?.getParcelable("task") as TaskModel?
-            if (task != null) {
-                taskName.text = task.name
-                dueDate.text = task.dueDate
-                description.text = task.description
-            }
-        }
-
-         */
-        //button = findViewById(R.id.button)
-        //button.setOnClickListener {
-        //    val intent = Intent(this, FoodMenuActivity::class.java)
-        //    startActivity(intent)
-        //}
     }
 
 }

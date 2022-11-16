@@ -131,7 +131,6 @@
             android:gravity="center_vertical"
             android:hint="Click to choose the due date"
             android:minHeight="48dp"
-            android:onClick="showDatePickerDialog"
             android:textSize="18sp" />
 
         <Space
@@ -152,11 +151,11 @@
             android:layout_height="1dp"
             android:background="@color/black" />
 
-        <HorizontalScrollView
-            android:id="@+id/taskAssign"
+        <ListView
+            android:id="@+id/assignCollectiveMembersListView"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:contentDescription="Assign Friends"/>
+            android:layout_height="90dp"
+            android:choiceMode="multipleChoice" />
 
         <Space
             android:layout_width="match_parent"

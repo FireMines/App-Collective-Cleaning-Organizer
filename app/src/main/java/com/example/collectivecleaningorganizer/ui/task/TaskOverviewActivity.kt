@@ -63,7 +63,6 @@ class TaskOverviewActivity : AppCompatActivity() {
 
             // Goes through all checked tasks and deletes them
             for (i in rv_todo.size -1 downTo  0) {
-                Log.e("test", rv_todo.size.toString())
                 if (rv_todo.get(i).checkBox.isChecked) {
                     collectiveTasks?.removeAt(i)
                     Database().updateValueInDB("collective", collectiveID,"tasks", collectiveTasks,null)
@@ -99,20 +98,22 @@ class TaskOverviewActivity : AppCompatActivity() {
             view.duedate_tv.text = task["dueDate"]
             val desc = task["description"].toString()
             view.task_tv.setOnClickListener{
-                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, userID)
+                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), task["assigned"].toString(), userID)
             }
             rv_todo.addView(view)
             Log.e("Tasks:", task.entries.toString())
         }
     }
 
-    private fun openTaskPage(name : String, dueDate : String, description : String, userID: String) {
+    private fun openTaskPage(name : String, dueDate : String, description : String, category : String, assigned : String, userID: String) {
         val newIntent = Intent(this, TaskActivity::class.java)
 
         newIntent.putExtra("uid",userID)
         newIntent.putExtra("name",name)
         newIntent.putExtra("dueDate", dueDate)
         newIntent.putExtra("description", description)
+        newIntent.putExtra("assigned", assigned)
+        newIntent.putExtra("category", category)
 
         startActivity(newIntent)
     }
