@@ -37,7 +37,7 @@ class TaskOverviewActivity : AppCompatActivity() {
             //Start collective activity
         }
         //Starting a listener for the collective and listens for any changes done to the collective data
-        Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData, object : ResultListener {
+        Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData,"collectiveData", object : ResultListener {
             override fun onSuccess() {
                 dbSync(userID)
             }

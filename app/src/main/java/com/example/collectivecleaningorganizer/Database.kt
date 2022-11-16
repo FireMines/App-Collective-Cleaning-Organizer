@@ -13,12 +13,14 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.ktx.Firebase
 
 
 var collectiveDocuments = mutableMapOf<String, QueryDocumentSnapshot>()
 val userData = mutableListOf<DocumentSnapshot?>(null)
 var userCollectiveData = mutableListOf<DocumentSnapshot?>(null)
+var listenerMap = mutableMapOf<String,ListenerRegistration>()
 
 class Database {
     private val db = Firebase.firestore
@@ -94,8 +96,8 @@ class Database {
             }
     }
 
-    fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>, resultListener: ResultListener?) {
-        db.collection(collection).document(documentID)
+    fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>, listenerKey : String, resultListener: ResultListener?): MutableMap<String,ListenerRegistration>{
+        listenerMap[listenerKey] = db.collection(collection).document(documentID)
             .addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.e("listener", "Listen failed.", e)
@@ -120,5 +122,8 @@ class Database {
                 Log.d("listener", "$source data: null")
             }
         }
+
+        return listenerMap
     }
+
 }

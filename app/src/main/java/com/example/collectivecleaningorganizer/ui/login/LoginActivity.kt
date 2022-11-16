@@ -78,7 +78,8 @@ class LoginActivity : AppCompatActivity() {
             override fun onSuccess() {
                 Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
                 //Starting a data change listener for the userData
-                Database().databaseDataChangeListener("users", userID, userData, null)
+                Database().databaseDataChangeListener("users", userID, userData, "userData",null)
+
                 val collectiveID = userData[0]?.data?.get("collectiveID")
 
 
