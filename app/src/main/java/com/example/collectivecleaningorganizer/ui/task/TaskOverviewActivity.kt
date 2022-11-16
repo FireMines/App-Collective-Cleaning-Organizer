@@ -3,12 +3,16 @@ package com.example.collectivecleaningorganizer.ui.task
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.core.view.size
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.ui.collective.ResultListener
+import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
+import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
@@ -17,6 +21,7 @@ import java.lang.Exception
 
 
 class TaskOverviewActivity : AppCompatActivity() {
+
     private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +78,23 @@ class TaskOverviewActivity : AppCompatActivity() {
         logoutImageView.setOnClickListener {
             startActivity(intentLogoutPage)
         }
+
+        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+
+        //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        //    when(item.itemId) {
+        //        R.id.friends -> {
+        //            startActivity(Intent(this, FriendsActivity::class.java))
+        //            true
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        //            true
+        //        }
+        //    }
+        //    false
+        //}
+
     }
 
     private fun dbSync(userID : String) {
