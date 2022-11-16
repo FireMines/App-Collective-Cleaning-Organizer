@@ -8,7 +8,7 @@ import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
-import com.example.collectivecleaningorganizer.ui.collective.ResultListener
+import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.userCollectiveData

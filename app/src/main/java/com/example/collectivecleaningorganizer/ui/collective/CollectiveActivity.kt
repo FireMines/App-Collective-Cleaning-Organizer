@@ -10,6 +10,7 @@ import android.widget.EditText
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

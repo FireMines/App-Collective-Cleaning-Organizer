@@ -9,7 +9,7 @@ import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.core.view.size
 import com.example.collectivecleaningorganizer.*
-import com.example.collectivecleaningorganizer.ui.collective.ResultListener
+import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView

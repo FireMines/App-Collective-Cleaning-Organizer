@@ -1,6 +1,6 @@
-package com.example.collectivecleaningorganizer.ui.collective
+package com.example.collectivecleaningorganizer.ui.utilities
 
-import android.widget.Spinner
+
 import java.lang.Exception
 
 interface OnDataChange {

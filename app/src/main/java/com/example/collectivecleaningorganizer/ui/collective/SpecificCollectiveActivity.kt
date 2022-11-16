@@ -17,6 +17,8 @@ import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
+import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.userCollectiveData
 import com.example.collectivecleaningorganizer.userData
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -88,7 +90,8 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             .setPositiveButton("Yes") { _, _ ->
 
                 Database().updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)
-                Database().updateValueInDB("users", userID,"collectiveID",null, object:ResultListener {
+                Database().updateValueInDB("users", userID,"collectiveID",null, object:
+                    ResultListener {
                     @SuppressLint("LongLogTag")
                     override fun onSuccess() {
                         Log.d(tag, "the collectiveID has successfully been removed from the user")

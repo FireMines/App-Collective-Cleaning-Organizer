@@ -14,6 +14,7 @@ import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.core.view.size
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.collective_member_row.*
 import kotlinx.android.synthetic.main.collective_member_row.view.*
@@ -25,7 +26,8 @@ import kotlinx.android.synthetic.main.collective_member_row.view.*
  */
 class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>, val userID :String,
                                val roleList: MutableList<String>, var changeMemberRolePermission : Boolean,
-                               val onDataChange: OnDataChange) : BaseAdapter() {
+                               val onDataChange: OnDataChange
+) : BaseAdapter() {
 
     private val memberNameList : ArrayList<String> = ArrayList(membersMap.keys)
     private var memberRoleList : ArrayList<String> = ArrayList(membersMap.values)

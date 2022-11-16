@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.util.Log
-import com.example.collectivecleaningorganizer.ui.collective.FriendListListener
-import com.example.collectivecleaningorganizer.ui.collective.ResultListener
-import com.example.collectivecleaningorganizer.ui.collective.UniqueUsernameListener
+import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
+import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
+import com.example.collectivecleaningorganizer.ui.utilities.UniqueUsernameListener
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
