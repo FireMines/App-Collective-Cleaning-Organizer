@@ -2,6 +2,7 @@ package com.example.collectivecleaningorganizer.ui.task
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,9 +13,11 @@ import android.widget.*
 
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.utilities.utilities
 import com.example.collectivecleaningorganizer.userCollectiveData
 import com.example.collectivecleaningorganizer.userData
 import kotlinx.android.synthetic.main.activity_create_task.*
+import kotlinx.android.synthetic.main.activity_create_task.view.*
 
 
 import java.util.*
@@ -29,7 +32,8 @@ class CreateTaskActivity : AppCompatActivity() {
 
     //Initializing an array list for categories with a default value of "No category"
     private var categoriesArrayList : ArrayList<String> = arrayListOf("No Category")
-
+    //Initializing the ID of the collective the user is apart of retrieved from the user data
+    private val collectiveID = userData[0]?.data?.get("collectiveID")
     override fun onCreate(savedInstanceState: Bundle?) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
@@ -63,7 +67,7 @@ class CreateTaskActivity : AppCompatActivity() {
      */
     private fun showCategoriesToChooseFrom() {
         //Checking if the categories data exist in the snapshot
-        if (categoriesArrayListFromSnapshot != null) {
+        if (categoriesArrayListFromSnapshot != null && categoriesArrayListFromSnapshot.isNotEmpty()) {
             //Replacing the contents of the categoriesArrayListFromSnapshot into categoriesArrayList
             categoriesArrayList = categoriesArrayListFromSnapshot
             Log.d(tag, "There exists category data in the snapshot. Using the arraylist found in the snapshot")
@@ -98,17 +102,14 @@ class CreateTaskActivity : AppCompatActivity() {
 
     /**
      * A function that shows an alert dialog where the user can write a category name and create a category if all the conditions are met
-     * @param view is the "New category" button with onclick to this function
+     * @param view is the "Create a new category" button with onclick to this function
      */
     fun createNewCategory(view: View) {
         //Initializing an EditText widget
         val inputEditTextField = EditText(this)
 
-        //Initializing an AlertDialog and building a dialog that allows the user to write a category name
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("New category")
-            .setMessage("Enter the name of the category you want to create")
-            .setView(inputEditTextField)
+        //Building an alert dialog that shows a view with an EditText where the user can write a category name to add
+        utilities().alertDialogBuilder(this,"Create a new category", "Enter the name of the category you want to create", inputEditTextField)
             .setPositiveButton("Create") { _, _ ->
                 //Initializing a variable to get the text value from the input Edit text field
                 val userInput = inputEditTextField.text.toString()
@@ -126,9 +127,6 @@ class CreateTaskActivity : AppCompatActivity() {
                     return@setPositiveButton
                 }
 
-                //Getting the ID of the collective the user is apart of
-                val collectiveID = userData[0]?.data?.get("collectiveID")
-
                 //Adding the new category name into the arraylist holding all the categories
                 categoriesArrayList.add(inputEditTextField.text.toString())
 
@@ -136,17 +134,58 @@ class CreateTaskActivity : AppCompatActivity() {
                 Database().updateValueInDB("collective",collectiveID.toString(),"categories",categoriesArrayList,null)
 
                 //Creating a message which shows the user that the category was created successfully
-                Toast.makeText(this, "You successfully created a category with the name $userInput" , Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "You successfully created a category with the name $userInput" , Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Cancel", null)
             .create()
-        dialog.show()
+            .show()
+
 
     }
-    fun deleteCategory() {
-        //Delete when choosing a category from spinner
-        //Confirmation msg
-        //Go through all tasks and remove the deleted category from the tasks. Set it to no category
+
+    /**
+     * A function that displays an alert dialog with a spinner containing all the categories, and the user can choose a category to delete from
+     * @param view is the "Delete a category" button with onclick to this function
+     */
+    fun deleteCategory(view : View) {
+        //Checking if there is only one category and that category is the default category named "No Category". If so deny the option to delete
+        if (categoriesArrayList.size == 1 && categoriesArrayList.contains("No Category")) {
+            Toast.makeText(this, "There are no categories to delete" , Toast.LENGTH_SHORT).show()
+            return
+        }
+        //Initializing an Spinner widget
+        val categorySpinner = Spinner(this)
+
+        //Initializing an temporary arraylist which is empty
+        val temporaryCategoriesToDeleteList : ArrayList<String> = arrayListOf()
+
+        //Adding all the values from the categoriesArrayList to the temporaryCategoriesToDeleteList
+        temporaryCategoriesToDeleteList.addAll(categoriesArrayList)
+
+        //Removing the value "No Category" from the list as its a default value and a category the user should not be able to delete
+        temporaryCategoriesToDeleteList.remove("No Category")
+
+        //Creating an ArrayAdapter for the spinner
+        val spinnerAdapter = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,temporaryCategoriesToDeleteList)
+
+        //Attaching the ArrayAdapter to the spinner with the id "categorySpinner"
+        categorySpinner.adapter = spinnerAdapter
+
+        //Building an alert dialog that shows a view with a spinner where the user can choose a category to delete
+        utilities().alertDialogBuilder(this,"Delete a category", "Choose a category you want to delete", categorySpinner)
+            .setPositiveButton("Delete") { _, _ ->
+                //Initializing a variable to retrieve the name of the category the user selected
+                val selectedCategory : String = categorySpinner.selectedItem.toString()
+
+                //Removing the category name the user selected from the categories arraylist
+                categoriesArrayList.remove(selectedCategory)
+
+                //Updating the categories data with the updated contents of categoriesArrayList
+                Database().updateValueInDB("collective",collectiveID.toString(),"categories",categoriesArrayList,null)
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
     }
 
     /**
@@ -219,11 +258,8 @@ class CreateTaskActivity : AppCompatActivity() {
         //Adding the task information to the task array which holds all the collective's tasks
         tasksArray.add(taskInformation)
 
-        //Initializing a variable with the collectiveID found in the userData
-        val collectiveID = userData[0]?.data?.get("collectiveID").toString()
-
         //Adding the new task array to the DB
-        Database().updateValueInDB("collective",collectiveID,"tasks",tasksArray,null)
+        Database().updateValueInDB("collective",collectiveID.toString(),"tasks",tasksArray,null)
 
         //Finishing the CreateTaskActivity and returning back to the TaskOverviewActivity
         this.finish()
