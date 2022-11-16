@@ -63,7 +63,6 @@ class TaskOverviewActivity : AppCompatActivity() {
 
             // Goes through all checked tasks and deletes them
             for (i in rv_todo.size -1 downTo  0) {
-                Log.e("test", rv_todo.size.toString())
                 if (rv_todo.get(i).checkBox.isChecked) {
                     collectiveTasks?.removeAt(i)
                     Database().updateValueInDB("collective", collectiveID,"tasks", collectiveTasks,null)
