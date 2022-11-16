@@ -12,3 +12,8 @@ interface ResultListener {
     fun onFailure(error :Exception)
 }
 
+interface FriendListListener {
+    fun onSuccess(friendList : ArrayList<String>)
+    fun onFailure(error :Exception)
+}
+
