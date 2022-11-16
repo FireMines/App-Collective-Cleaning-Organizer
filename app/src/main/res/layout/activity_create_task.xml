@@ -11,7 +11,7 @@
         android:id="@+id/taskPageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Task Page"
+        android:text="CREATE A NEW TASK"
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -24,8 +24,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="408dp"
-        android:layout_height="48dp"
+        android:layout_width="393dp"
+        android:layout_height="47dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,8 +51,9 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/saveOrCreateButton"
             android:layout_width="18dp"
-            android:layout_height="match_parent"
+            android:layout_height="48dp"
             android:layout_weight="1"
+            android:background="#4ABC4E"
             android:text="Create" />
     </LinearLayout>
 
@@ -81,11 +82,12 @@
             android:hint="Task name"
             android:inputType="textPersonName"
             android:minHeight="48dp"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="20dp" />
 
         <TextView
             android:id="@+id/textView6"
@@ -104,17 +106,19 @@
         <EditText
             android:id="@+id/taskDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="0"
             android:ems="10"
             android:gravity="start|top"
             android:hint="This is where you write the description"
             android:inputType="textMultiLine"
             android:minHeight="48dp"
-            android:textColorHint="#717171" />
+            android:textColorHint="#717171"
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="20dp" />
 
         <TextView
             android:id="@+id/textView7"
@@ -138,11 +142,11 @@
             android:hint="Click to choose the due date"
             android:minHeight="48dp"
             android:onClick="showDatePickerDialog"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="20dp" />
 
         <TextView
             android:id="@+id/textView8"
@@ -161,12 +165,16 @@
         <ListView
             android:id="@+id/assignCollectiveMembersListView"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:choiceMode="multipleChoice" />
+            android:layout_height="87dp"
+            android:choiceMode="multipleChoice"
+            android:fadeScrollbars="false"
+            android:isScrollContainer="true"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbarAlwaysDrawVerticalTrack="true" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="32dp" />
+            android:layout_height="20dp" />
 
         <TextView
             android:id="@+id/textView9"
@@ -184,22 +192,47 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:orientation="horizontal">
+            android:layout_height="106dp"
+            android:orientation="vertical">
 
             <Spinner
                 android:id="@+id/taskCategories"
-                android:layout_width="207dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                tools:ignore="TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/createNewCategoryButton"
-                android:layout_width="wrap_content"
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="createNewCategory"
-                android:text="New category" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/deleteCategoryButton"
+                    android:layout_width="156dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="#DC4141"
+                    android:text="DELETE A CATEGORY"
+                    android:textColor="#FFFFFF"
+                    tools:ignore="TextContrastCheck" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="13dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/createNewCategoryButton"
+                    android:layout_width="156dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:background="#BDBCBC"
+                    android:text="CREATE A NEW CATEGORY" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
