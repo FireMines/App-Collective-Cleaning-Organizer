@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.collectivecleaningorganizer.ui.collective.FriendListListener
 import com.example.collectivecleaningorganizer.ui.collective.ResultListener
+import com.example.collectivecleaningorganizer.ui.collective.UniqueUsernameListener
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
@@ -57,6 +58,21 @@ class Database {
             }
 
     }
+    fun checkUniqueUsername(username: String, uniqueUsernameListener: UniqueUsernameListener?) {
+        db.collection("usernames").document(username).get()
+            .addOnSuccessListener {e->
+                if (e.data == null) {
+                    uniqueUsernameListener?.onSuccess(true)
+                }
+                else {
+                    uniqueUsernameListener?.onSuccess(false)
+                }
+            }
+            .addOnFailureListener {e->
+                uniqueUsernameListener?.onFailure(e)
+            }
+    }
+
     fun getFriendRequestListFromDB(collection: String, documentID: String, friendListListener: FriendListListener?){
         db.collection(collection).document(documentID).get()
             .addOnSuccessListener {e->
