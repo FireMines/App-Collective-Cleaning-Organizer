@@ -1,9 +1,13 @@
 package com.example.collectivecleaningorganizer.ui.friends
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.iterator
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_friends.*
 import kotlinx.android.synthetic.main.friend.view.*
 
@@ -13,6 +17,23 @@ class FriendsActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friends)
         init()
+
+        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+
+        //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        //    when(item.itemId) {
+        //        R.id.tasks -> {
+        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
+        //            true
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        //            true
+        //        }
+        //    }
+        //    false
+        //}
+
     }
 
     private fun init(){
