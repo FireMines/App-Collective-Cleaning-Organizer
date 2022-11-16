@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
 
         /*
-        val intentAddTask: Intent = Intent(this,AddTaskActivity::class.java)
+        val intentAddTask: Intent = Intent(this,CreateTaskActivity::class.java)
         startActivity(intentAddTask)
 
          */

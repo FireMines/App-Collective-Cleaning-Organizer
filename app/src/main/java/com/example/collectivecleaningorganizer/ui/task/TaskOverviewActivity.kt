@@ -1,22 +1,17 @@
 package com.example.collectivecleaningorganizer.ui.task
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.allViews
 import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.core.view.size
-import androidx.recyclerview.widget.RecyclerView
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.ui.collective.ResultListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
-import kotlinx.android.synthetic.main.activity_view_task.view.*
 import kotlinx.android.synthetic.main.task_layout.view.*
 import java.lang.Exception
 
@@ -47,7 +42,7 @@ class TaskOverviewActivity : AppCompatActivity() {
             }
         })
 
-        val intentAddTaskPage: Intent = Intent(this, AddTaskActivity::class.java)
+        val intentAddTaskPage: Intent = Intent(this, CreateTaskActivity::class.java)
         intentAddTaskPage.putExtra("uid",userID)
 
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".ui.task.AddTaskActivity">
+    tools:context=".ui.task.CreateTaskActivity">
 
     <TextView
         android:id="@+id/taskPageTitle"

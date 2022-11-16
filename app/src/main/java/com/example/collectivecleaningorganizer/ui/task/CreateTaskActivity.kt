@@ -14,15 +14,15 @@ import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.userCollectiveData
 import com.example.collectivecleaningorganizer.userData
+import kotlinx.android.synthetic.main.activity_create_task.*
 
-import kotlinx.android.synthetic.main.activity_add_task.*
 
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AddTaskActivity : AppCompatActivity() {
+class CreateTaskActivity : AppCompatActivity() {
     //Initializing a tag used to indicate which file Log is writing about
-    private val tag = "AddTaskActivity"
+    private val tag = "CreateTaskActivity"
 
     //Initializing an array list to retrieve the categories data from the snapshot as an arraylist
     private val categoriesArrayListFromSnapshot : ArrayList<String>? = userCollectiveData[0]?.data?.get("categories") as ArrayList<String>?
@@ -33,7 +33,7 @@ class AddTaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_task)
+        setContentView(R.layout.activity_create_task)
         val userID = userData[0]?.id.toString()
         if (userID == null) {
             Log.e(tag, "the userID is null")
@@ -47,7 +47,7 @@ class AddTaskActivity : AppCompatActivity() {
 
         //A click listener for the back button.
         back_btn.setOnClickListener{
-            //Finishes this (AddTaskActivity) and goes back to the TaskOverViewActivity
+            //Finishes this (CreateTaskActivity) and goes back to the TaskOverViewActivity
             this.finish()
         }
 
@@ -143,6 +143,11 @@ class AddTaskActivity : AppCompatActivity() {
         dialog.show()
 
     }
+    fun deleteCategory() {
+        //Delete when choosing a category from spinner
+        //Confirmation msg
+        //Go through all tasks and remove the deleted category from the tasks. Set it to no category
+    }
 
     /**
      * A function that checks if there is a category existing with the same name. The check is case insensitive
@@ -181,7 +186,7 @@ class AddTaskActivity : AppCompatActivity() {
         if (userCollectiveData[0]?.data?.get("tasks") == null) {
             //Initializing the tasksArray variable with an empty arraylist
             tasksArray = ArrayList<MutableMap<String,Any>>()
-            Log.d("AddTaskActivity()","No tasks in the collective")
+            Log.d("CreateTaskActivity()","No tasks in the collective")
         }
 
         else {
@@ -220,7 +225,7 @@ class AddTaskActivity : AppCompatActivity() {
         //Adding the new task array to the DB
         Database().updateValueInDB("collective",collectiveID,"tasks",tasksArray,null)
 
-        //Finishing the AddTaskActivity and returning back to the TaskOverviewActivity
+        //Finishing the CreateTaskActivity and returning back to the TaskOverviewActivity
         this.finish()
     }
 
