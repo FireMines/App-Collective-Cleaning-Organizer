@@ -16,4 +16,8 @@ interface FriendListListener {
     fun onSuccess(friendList : ArrayList<String>)
     fun onFailure(error :Exception)
 }
+interface UniqueUsernameListener {
+    fun onSuccess(unique : Boolean)
+    fun onFailure(error :Exception)
+}
 
