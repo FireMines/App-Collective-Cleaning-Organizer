@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.*
+import androidx.core.view.get
 import androidx.core.view.size
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
@@ -20,6 +21,7 @@ import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_task.*
+import kotlinx.android.synthetic.main.task_layout.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -89,6 +91,7 @@ class AddTaskActivity : AppCompatActivity() {
         //Assigning the adapter to the ListView with the id "assignCollectiveMembersListView"
         assignCollectiveMembersListView.adapter = membersAdapter
 
+
     }
     fun createNewCategory(view: View) {
         //Initializing an EditText widget
@@ -155,7 +158,7 @@ class AddTaskActivity : AppCompatActivity() {
             return
         }
         //Initializing a mutable map used to store the members assigned or non assigned members
-        val assignedMembers : MutableMap<String, Boolean> = mutableMapOf()
+        val assignedMembers : ArrayList<String> = arrayListOf()
 
         //Creating a variable of ArrayList<MutableMap<String,Any>>
         var tasksArray : ArrayList<MutableMap<String,Any>>
@@ -175,15 +178,17 @@ class AddTaskActivity : AppCompatActivity() {
         val taskInformation = mutableMapOf<String,Any>()
 
         //Iterating through the assignCollectiveMembersListView and checking which members got assigned
-        for (i in 0 until assignCollectiveMembersListView.size) {
-            //Initializing the name of the member retrieved from the assignCollectiveMembersListView
-            val memberName :String = assignCollectiveMembersListView.getItemAtPosition(i).toString()
-            //Initializing the boolean value of the member retrieved from the assignCollectiveMembersListView
-            val memberIsAssigned : Boolean = assignCollectiveMembersListView.isItemChecked(i)
-            //Adding the member to a map with the value true or false depending on if the user got clicked on in the list
-            assignedMembers[memberName] = memberIsAssigned
+        for (i:Int in 0 until assignCollectiveMembersListView.count) {
+            //Statement checking if the item's check box is checked
+            if (assignCollectiveMembersListView.isItemChecked(i)) {
+                //Initializing the member name retrieved from the assignCollectiveMembersListView row
+                val memberName :String = assignCollectiveMembersListView.getItemAtPosition(i).toString()
+                //Adding the assigned member's name to the arraylist
+                assignedMembers.add(memberName)
+            }
 
         }
+
         //Adding all the task information to the task map
         taskInformation["name"] = taskName.text.toString()
         taskInformation["description"] = taskDescription.text.toString()
