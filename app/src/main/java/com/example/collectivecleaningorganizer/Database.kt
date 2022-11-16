@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.collectivecleaningorganizer.ui.collective.FriendListListener
 import com.example.collectivecleaningorganizer.ui.collective.ResultListener
 
 import com.google.firebase.firestore.DocumentSnapshot
@@ -53,6 +54,17 @@ class Database {
             }
             .addOnFailureListener { e->
                 resultListener.onFailure(e)
+            }
+
+    }
+    fun getFriendRequestListFromDB(collection: String, documentID: String, friendListListener: FriendListListener?){
+        db.collection(collection).document(documentID).get()
+            .addOnSuccessListener {e->
+                val friendList : ArrayList<String> = e.get("FriendRequests") as ArrayList<String>
+                friendListListener?.onSuccess(friendList)
+            }
+            .addOnFailureListener { e->
+                friendListListener?.onFailure(e)
             }
 
     }
