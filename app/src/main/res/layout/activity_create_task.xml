@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".ui.task.CreateTaskActivity">
+    tools:context=".ui.task.AddTaskActivity">
 
     <TextView
         android:id="@+id/taskPageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CREATE A NEW TASK"
+        android:text="Add Task Page"
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -58,8 +58,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="395dp"
-        android:layout_height="537dp"
+        android:layout_width="392dp"
+        android:layout_height="524dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +85,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="32dp" />
 
         <TextView
             android:id="@+id/textView6"
@@ -114,7 +114,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="32dp" />
 
         <TextView
             android:id="@+id/textView7"
@@ -142,7 +142,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="32dp" />
 
         <TextView
             android:id="@+id/textView8"
@@ -161,12 +161,12 @@
         <ListView
             android:id="@+id/assignCollectiveMembersListView"
             android:layout_width="match_parent"
-            android:layout_height="98dp"
+            android:layout_height="90dp"
             android:choiceMode="multipleChoice" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="32dp" />
 
         <TextView
             android:id="@+id/textView9"
@@ -184,102 +184,35 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="102dp"
-            android:orientation="vertical">
+            android:layout_height="48dp"
+            android:orientation="horizontal">
 
             <Spinner
                 android:id="@+id/taskCategories"
-                android:layout_width="match_parent"
-                android:layout_height="39dp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="207dp"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/createNewCategoryButton"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="159dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#C62828"
-                    android:text="Delete a category"
-                    android:textColor="#FFFFFF" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="26dp"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/deleteCategoryButton"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="159dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#D6D6D6"
-                    android:text="CREATE A NEW CATEGORY"
-                    android:textColor="#000000" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="90dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider6"
-            app:layout_constraintVertical_bias="0.833">
-
-            <ImageButton
-                android:id="@+id/imageButton6"
-                android:layout_width="128dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#FFFFFF"
-                android:contentDescription="Friends"
-                app:srcCompat="@drawable/ic_baseline_groups_24" />
-
-            <Space
-                android:layout_width="145dp"
-                android:layout_height="59dp"
                 android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/imageButton7"
-                android:layout_width="128dp"
-                android:layout_height="match_parent"
+            <Button
+                android:id="@+id/createNewCategoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="#FFFFFF"
-                android:contentDescription="Tasks"
-                app:srcCompat="@drawable/ic_baseline_check_24" />
+                android:onClick="createNewCategory"
+                android:text="New category" />
         </LinearLayout>
 
     </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/purple_500"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
