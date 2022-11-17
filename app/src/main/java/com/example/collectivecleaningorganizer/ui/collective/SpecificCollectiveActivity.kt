@@ -12,16 +12,13 @@ import android.widget.BaseAdapter
 import android.widget.Spinner
 import androidx.annotation.RequiresApi
 import androidx.core.view.forEach
-import com.example.collectivecleaningorganizer.Database
-import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.example.collectivecleaningorganizer.userCollectiveData
-import com.example.collectivecleaningorganizer.userData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
@@ -188,6 +185,8 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                     @SuppressLint("LongLogTag")
                     override fun onSuccess() {
                         Log.d(tag, "the collectiveID has successfully been removed from the user")
+                        //Removing the snapshot listener for the collective that the user left
+                        listenerMap["collectiveData"]?.remove()
                         //Starting the CollectiveActivity
                         startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
 
