@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#7a9e9f">
 
     <TextView
         android:id="@+id/taskPageTitle"
@@ -150,13 +151,19 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:minHeight="48dp"
+                android:background="#b8d8db"
                 android:text="Add members" />
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="wrap_content"/>
 
             <Button
                 android:id="@+id/deleteMemberButton"
                 android:layout_width="50dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:background="#b8d8db"
                 android:text="Delete members" />
         </LinearLayout>
 
@@ -175,14 +182,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="leaveCollective"
-                android:text="Leave collective" />
+                android:text="Leave collective"
+                android:background="#b8d8db"/>
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="wrap_content"/>
 
             <Button
                 android:id="@+id/deleteCollectiveButton"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Delete collective" />
+                android:text="Delete collective"
+                android:background="#b8d8db"/>
         </LinearLayout>
 
     </LinearLayout>

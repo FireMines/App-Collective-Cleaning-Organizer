@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7a9e9f"
     tools:context=".ui.login.CreateUserActivity">
 
     <TextView
@@ -91,6 +92,7 @@
         android:layout_marginTop="500dp"
         android:text="Create User"
         android:textSize="18sp"
+        android:background="#b8d8db"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"

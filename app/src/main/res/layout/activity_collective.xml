@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7a9e9f"
     tools:context=".ui.collective.CollectiveActivity">
 
     <TextView
@@ -37,17 +38,23 @@
 
             <Button
                 android:id="@+id/createCollectiveButton"
-                android:layout_width="96dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#b8d8db"
                 android:onClick="createCollective"
                 android:text="Create collective" />
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="wrap_content"/>
 
             <Button
                 android:id="@+id/button7"
                 android:layout_width="111dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#b8d8db"
                 android:text="See collective requests" />
         </LinearLayout>
 
@@ -74,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#b8d8db"
                 android:text="Send request" />
 
         </LinearLayout>

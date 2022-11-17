@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7a9e9f"
     tools:context=".ui.login.LoginActivity">
 
 
@@ -76,6 +77,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="#b8d8db"
         app:layout_constraintTop_toBottomOf="@+id/passwordLogin" />
 
     <TextView
