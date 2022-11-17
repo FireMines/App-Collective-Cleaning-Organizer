@@ -1,8 +1,6 @@
 package com.example.collectivecleaningorganizer.ui.task
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,11 +11,10 @@ import android.widget.*
 
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.utilities.utilities
+import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.example.collectivecleaningorganizer.userCollectiveData
 import com.example.collectivecleaningorganizer.userData
 import kotlinx.android.synthetic.main.activity_create_task.*
-import kotlinx.android.synthetic.main.activity_create_task.view.*
 
 
 import java.util.*
@@ -109,7 +106,7 @@ class CreateTaskActivity : AppCompatActivity() {
         val inputEditTextField = EditText(this)
 
         //Building an alert dialog that shows a view with an EditText where the user can write a category name to add
-        utilities().alertDialogBuilder(this,"Create a new category", "Enter the name of the category you want to create", inputEditTextField)
+        Utilities().alertDialogBuilder(this,"Create a new category", "Enter the name of the category you want to create", inputEditTextField)
             .setPositiveButton("Create") { _, _ ->
                 //Initializing a variable to get the text value from the input Edit text field
                 val userInput = inputEditTextField.text.toString()
@@ -172,7 +169,7 @@ class CreateTaskActivity : AppCompatActivity() {
         categorySpinner.adapter = spinnerAdapter
 
         //Building an alert dialog that shows a view with a spinner where the user can choose a category to delete
-        utilities().alertDialogBuilder(this,"Delete a category", "Choose a category you want to delete", categorySpinner)
+        Utilities().alertDialogBuilder(this,"Delete a category", "Choose a category you want to delete", categorySpinner)
             .setPositiveButton("Delete") { _, _ ->
                 //Initializing a variable to retrieve the name of the category the user selected
                 val selectedCategory : String = categorySpinner.selectedItem.toString()

@@ -84,6 +84,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
 
     }
     fun leaveCollective(view:View) {
+
         val dialog = AlertDialog.Builder(this)
             .setTitle("Leaving confirmation")
             .setMessage("Are you sure you want to leave the collective?")

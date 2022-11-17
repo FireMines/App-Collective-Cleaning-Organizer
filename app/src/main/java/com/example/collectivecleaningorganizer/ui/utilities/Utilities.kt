@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.view.View
 
-class utilities {
+class Utilities {
     /**
      * A function that builds an alert dialog
      * @param context is the context we want to show the dialog
