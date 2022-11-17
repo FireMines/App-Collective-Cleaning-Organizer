@@ -145,12 +145,12 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/addMemberButton"
+                android:id="@+id/inviteMemberButton"
                 android:layout_width="50dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:minHeight="48dp"
-                android:text="Add members" />
+                android:text="Invite members" />
 
             <Button
                 android:id="@+id/deleteMemberButton"
