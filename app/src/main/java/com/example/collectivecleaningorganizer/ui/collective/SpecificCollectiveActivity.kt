@@ -80,7 +80,9 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         //    }
         //    false
         //}
-
+        inviteMemberButton.setOnClickListener {
+            startActivity(Intent(this, CollectiveInviteUsers::class.java))
+        }
 
     }
 
