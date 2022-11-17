@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7D4BE"
+    android:background="#7a9e9f"
     tools:context=".ui.task.TaskOverviewActivity">
 
     <TextView
@@ -46,9 +46,10 @@
     <Button
         android:id="@+id/allTasksButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginTop="16dp"
         android:text="All Tasks"
+        android:background="#b8d8db"
         app:layout_constraintEnd_toStartOf="@+id/myTaskButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,9 +58,10 @@
     <Button
         android:id="@+id/myTaskButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_marginTop="16dp"
         android:text="My tasks"
+        android:background="#b8d8db"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/allTasksButton"

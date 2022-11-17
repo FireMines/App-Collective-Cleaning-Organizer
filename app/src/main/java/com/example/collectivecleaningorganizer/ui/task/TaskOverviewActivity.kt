@@ -9,10 +9,12 @@ import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.core.view.size
 import com.example.collectivecleaningorganizer.*
+import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
@@ -79,7 +81,10 @@ class TaskOverviewActivity : AppCompatActivity() {
             startActivity(intentLogoutPage)
         }
 
+
         //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+
+        //bottomNavigationView.selectedItemId
 
         //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
         //    when(item.itemId) {
@@ -91,10 +96,12 @@ class TaskOverviewActivity : AppCompatActivity() {
         //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
         //            true
         //        }
+        //        R.id.tasks -> {
+        //            true
+        //        }
         //    }
         //    false
         //}
-
     }
 
     private fun dbSync(userID : String) {

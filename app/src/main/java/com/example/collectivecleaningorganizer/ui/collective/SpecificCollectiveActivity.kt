@@ -1,19 +1,34 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.BaseAdapter
+import android.widget.Spinner
+import androidx.annotation.RequiresApi
+import androidx.core.view.forEach
 import com.example.collectivecleaningorganizer.*
+import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
+import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.model.SnapshotVersion
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_specific_collective.*
+import kotlinx.android.synthetic.main.activity_task_overview.*
+import kotlinx.android.synthetic.main.task_layout.view.*
 import java.lang.Exception
 
 class SpecificCollectiveActivity : AppCompatActivity() {
@@ -66,11 +81,6 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         //    false
         //}
 
-        //An onclick listener on the "Invite Members" button
-        inviteMemberButton.setOnClickListener {
-            //Starting the Activity called "CollectiveInviteUsers"
-            startActivity(Intent(this, CollectiveInviteUsers::class.java))
-        }
 
     }
 

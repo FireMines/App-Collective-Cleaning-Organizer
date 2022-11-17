@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#7a9e9f"
     tools:context=".ui.task.CreateTaskActivity">
 
     <TextView
@@ -39,7 +39,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FFFFFF"
+            android:background="#7a9e9f"
             app:srcCompat="@drawable/backarrow"
             tools:ignore="SpeakableTextPresentCheck" />
 
