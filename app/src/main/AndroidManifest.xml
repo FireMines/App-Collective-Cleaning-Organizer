@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
+            android:name=".ui.collective.CollectiveInviteUsers"
+            android:exported="false" />
+        <activity
             android:name=".LogOutActivity"
             android:exported="false">
             <meta-data
