@@ -95,6 +95,17 @@ class Database {
                 resultListener.onFailure(e)
             }
     }
+    fun removeDocumentFromDB(collection: String, documentID: String, resultListener: ResultListener?) {
+        db.collection(collection).document(documentID).delete()
+            .addOnSuccessListener {
+                resultListener?.onSuccess()
+                Log.d(tag, "Successfully deleted the collection called $collection, with the document id: $documentID")
+            }
+            .addOnFailureListener { e->
+                resultListener?.onFailure(e)
+                Log.e(tag, "Failure to delete the collection called $collection, with the document id: $documentID", e)
+            }
+    }
 
     fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>, listenerKey : String, resultListener: ResultListener?): MutableMap<String,ListenerRegistration>{
         listenerMap[listenerKey] = db.collection(collection).document(documentID)
