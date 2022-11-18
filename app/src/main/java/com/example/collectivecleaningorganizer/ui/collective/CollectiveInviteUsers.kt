@@ -49,6 +49,8 @@ class CollectiveInviteUsers : AppCompatActivity() {
             override fun onSuccess(data: MutableMap<String, Any?>?) {
                 //Checking if the given username doesn't exist
                 if (data == null) {
+                    Toast.makeText(this@CollectiveInviteUsers, "There is no user with that username"
+                        , Toast.LENGTH_SHORT).show()
                     Log.d(tag, "The entered username doesn't exist")
                     return
                 }

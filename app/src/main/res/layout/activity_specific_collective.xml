@@ -164,7 +164,8 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:background="#b8d8db"
-                android:text="Delete members" />
+                android:onClick="removeMembersFromCollective"
+                android:text="Remove members" />
         </LinearLayout>
 
         <Space
