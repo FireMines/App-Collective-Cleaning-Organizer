@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.collectivecleaningorganizer.*
+import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
@@ -19,7 +20,7 @@ import java.lang.Exception
 class SpecificCollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private val tag = "SpecificCollectiveActivity"
-    private val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
+    private var collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
     private val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
     private val userID = Database.userData[0]?.id.toString()
     private val username = Database.userData[0]?.get("username").toString()
@@ -28,29 +29,25 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_specific_collective)
 
-        val roleList : MutableList<String> = mutableListOf<String>("Owner","Member")
-        val collectiveName : String = Database.userCollectiveData[0]?.data?.get("name").toString()
-
-
-        var isUserAnOwner : Boolean = checkIfUserIsAnOwner(collectiveMembersMap[username].toString())
-
-        val adapter : BaseAdapter = CollectiveMembersAdapter(this, collectiveMembersMap,username,roleList, isUserAnOwner,
-            object : OnDataChange {
-                @SuppressLint("LongLogTag")
-                override fun collectiveMemberRolesChanged(updatedMembersMap: MutableMap<String, String>) {
-                    if (!checkIfUserIsAnOwner(updatedMembersMap[username].toString())) {
-                        isUserAnOwner = false
-                        Log.d(tag,"User is no longer an owner. Removing all owner abilities")
-                    }
-                    Database().updateValueInDB("collective", collectiveID, "members", updatedMembersMap, null)
-
+        //Doing a database request to retrieve the latest collective information
+        Database().getDataFromDB("collective", collectiveID, object : DatabaseRequestListener {
+            @SuppressLint("LongLogTag")
+            override fun onSuccess(data: MutableMap<String, Any?>?) {
+                if (data == null) {
+                    Log.e(tag, "Could not find any collective data for the collective id: $collectiveID")
+                    return
                 }
-            })
+                Log.d(tag, "Successfully retrieved collective data")
+                collectiveMembersMap = data?.get("members") as MutableMap<String, String>
+                showDataToScreen()
+            }
 
-        //Setting the contents of the layout
-        collectiveNameTextView.text = collectiveName
-        collectiveIDTextView.text = collectiveID
-        collectiveMembersListView.adapter = adapter
+            @SuppressLint("LongLogTag")
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Failure to retrieve collective data from db", error)
+            }
+
+        })
 
         //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
 
@@ -79,6 +76,31 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             startActivity(Intent(this, CollectiveRemoveMembers::class.java))
         }
 
+    }
+    fun showDataToScreen() {
+        val roleList : MutableList<String> = mutableListOf<String>("Owner","Member")
+        val collectiveName : String = Database.userCollectiveData[0]?.data?.get("name").toString()
+
+
+        var isUserAnOwner : Boolean = checkIfUserIsAnOwner(collectiveMembersMap[username].toString())
+
+        val adapter : BaseAdapter = CollectiveMembersAdapter(this, collectiveMembersMap,username,roleList, isUserAnOwner,
+            object : OnDataChange {
+                @SuppressLint("LongLogTag")
+                override fun collectiveMemberRolesChanged(updatedMembersMap: MutableMap<String, String>) {
+                    if (!checkIfUserIsAnOwner(updatedMembersMap[username].toString())) {
+                        isUserAnOwner = false
+                        Log.d(tag,"User is no longer an owner. Removing all owner abilities")
+                    }
+                    Database().updateValueInDB("collective", collectiveID, "members", updatedMembersMap, null)
+
+                }
+            })
+
+        //Setting the contents of the layout
+        collectiveNameTextView.text = collectiveName
+        collectiveIDTextView.text = collectiveID
+        collectiveMembersListView.adapter = adapter
     }
 
     /**
