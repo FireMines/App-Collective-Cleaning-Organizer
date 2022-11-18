@@ -46,8 +46,20 @@ class CollectiveActivity : AppCompatActivity() {
             .setMessage("Enter the name of the collective you want to create")
             .setView(inputEditTextField)
             .setPositiveButton("OK") { _, _ ->
-                //Calling a function to generate a unique collectiveID
-                generateUniqueCollectiveID(inputEditTextField.text.toString())
+                val collectiveName = inputEditTextField.text.toString().lowercase()
+                if (collectiveName.isBlank()) {
+                    Toast.makeText(this, "The collective name cannot be empty. Try again", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+                else if (collectiveName.length !in 4..15) {
+                    Toast.makeText(this, "The collective name must be between 4 and 15 characters long", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+                else {
+                    //Calling a function to generate a unique collectiveID
+                    generateUniqueCollectiveID(collectiveName)
+                }
+
             }
             .setNegativeButton("Cancel", null)
             .create()
@@ -180,7 +192,7 @@ class CollectiveActivity : AppCompatActivity() {
         Database().updateValueInDB("users", userID, "collectiveID", collectiveID, object : ResultListener {
             override fun onSuccess() {
                 Log.d(tag, "Successfully added the collectiveID to user $userID")
-
+                Toast.makeText(this@CollectiveActivity, "You have successfully created a collective!", Toast.LENGTH_LONG).show()
                 //Starting the SpecificCollectiveActivity
                 startTaskOverviewActivity(userID)
             }
