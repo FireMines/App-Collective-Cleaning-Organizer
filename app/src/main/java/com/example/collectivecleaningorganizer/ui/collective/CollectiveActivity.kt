@@ -136,10 +136,10 @@ class CollectiveActivity : AppCompatActivity() {
 
     }
     private fun addCollectiveIDToUser(collectiveID: String,userID: String) {
-        val collectiveInfo = hashMapOf(
-            "collectiveID" to collectiveID
-        )
-        Database().addToDB("users", userID,collectiveInfo, object : ResultListener {
+        //val collectiveInfo = hashMapOf(
+        //    "collectiveID" to collectiveID
+        // )
+        Database().updateValueInDB("users", userID, "collectiveID", collectiveID, object : ResultListener {
             override fun onSuccess() {
                 Log.d(tag, "Successfully added the collectiveID to user $userID")
 

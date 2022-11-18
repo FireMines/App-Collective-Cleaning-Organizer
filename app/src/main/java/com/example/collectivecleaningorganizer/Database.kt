@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
+import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.example.collectivecleaningorganizer.ui.utilities.UniqueUsernameListener
 
 import com.google.firebase.firestore.DocumentSnapshot
@@ -78,14 +79,55 @@ class Database {
     fun getFriendRequestListFromDB(collection: String, documentID: String, friendListListener: FriendListListener?){
         db.collection(collection).document(documentID).get()
             .addOnSuccessListener {e->
-                val friendList : ArrayList<String> = e.get("FriendRequests") as ArrayList<String>
-                friendListListener?.onSuccess(friendList)
+                if(e.get("FriendRequests") != null) {
+                    val friendList: ArrayList<String> = e.get("FriendRequests") as ArrayList<String>
+                    friendListListener?.onSuccess(friendList)
+                }
+                else {
+                    val list = arrayListOf<String>()
+                    friendListListener?.onSuccess(list)
+                }
             }
             .addOnFailureListener { e->
                 friendListListener?.onFailure(e)
             }
 
     }
+
+    fun getFriendsFromDB(collection: String, documentID: String, friendListListener: FriendListListener?){
+        db.collection(collection).document(documentID).get()
+            .addOnSuccessListener {e->
+                if(e.get("Friends") != null) {
+                    val friendList: ArrayList<String> = e.get("Friends") as ArrayList<String>
+                    friendListListener?.onSuccess(friendList)
+                }
+                else {
+                    val list = arrayListOf<String>()
+                    friendListListener?.onSuccess(list)
+                }
+            }
+            .addOnFailureListener { e->
+                friendListListener?.onFailure(e)
+            }
+    }
+
+    fun getUid(username: String, stringListener: StringListener){
+        db.collection("usernames").document(username).get()
+            .addOnSuccessListener {e->
+                if(e.get("uid") != null) {
+                    val uid = e.get("uid").toString()
+                    stringListener?.onSuccess(uid)
+                }
+                else {
+                    val empty = ""
+                    stringListener?.onSuccess(empty)
+                }
+            }
+            .addOnFailureListener { e->
+                stringListener?.onFailure(e)
+            }
+    }
+
     fun addToDB(collection: String, documentID: String, data: Any, resultListener: ResultListener) {
         db.collection(collection).document(documentID).set(data)
             .addOnSuccessListener {
