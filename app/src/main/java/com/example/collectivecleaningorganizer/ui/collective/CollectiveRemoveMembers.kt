@@ -70,7 +70,7 @@ class CollectiveRemoveMembers : AppCompatActivity() {
                         collectiveTasks = Utilities().removeMemberFromTasks(collectiveTasks!!,temporaryRemovedMemberNameList[i])
 
                         //Removing the collectiveID from the userData of the user that is being removed
-                        removeCollectiveIDFromUser(temporaryRemovedMemberNameList[i])
+                        removeCollectiveIDFromRemovedMembers(temporaryRemovedMemberNameList[i])
                     }
 
                     /*
@@ -99,7 +99,7 @@ class CollectiveRemoveMembers : AppCompatActivity() {
             .show()
     }
 
-    private fun removeCollectiveIDFromUser(username : String) {
+    private fun removeCollectiveIDFromRemovedMembers(username : String) {
         Log.e("username", username)
         Database().getDataFromDB("usernames",username, object :DatabaseRequestListener {
             override fun onSuccess(data: MutableMap<String, Any?>?) {

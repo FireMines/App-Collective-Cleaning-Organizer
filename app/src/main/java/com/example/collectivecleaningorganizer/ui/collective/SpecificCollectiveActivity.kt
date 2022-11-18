@@ -1,6 +1,7 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -198,34 +199,61 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                     Database().removeDocumentFromDB("collective", collectiveID,null)
                 }
                 //Removing the collectiveID from the userData
-                Database().updateValueInDB("users", userID,"collectiveID",null, object:
-                    ResultListener {
-                    @SuppressLint("LongLogTag")
-                    override fun onSuccess() {
-                        Log.d(tag, "the collectiveID has successfully been removed from the user")
-                        //Removing the snapshot listener for the collective that the user left
-                        Database.listenerMap["collectiveData"]?.remove()
-                        //Starting the CollectiveActivity
-                        startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
-
-                    }
-                    @SuppressLint("LongLogTag")
-                    override fun onFailure(error: Exception) {
-                        Log.e(tag, "Failed to remove the collectiveID from the user", error)
-
-                        val collectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
-                        collectiveMembersMap[username] = "Member"
-                        //Adding the user back into the collective so they can try again. User will be set to lowest rank
-                        Database().updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)
-                    }
-                })
+                removeCollectiveIDfromUserData(userID)
 
             }
             .setNegativeButton("Cancel", null)
             .create()
             .show()
     }
+    fun deleteCollective(view: View) {
+        val title : String = "Delete confirmation"
+        val message : String = "Are you sure you want to delete the collective? There is no turning back"
 
+        Utilities().alertDialogBuilder(this, title, message, null)
+            .setPositiveButton("Confirm deleting") { _, _ ->
+
+                //Deleting the collective from the DB
+                Database().removeDocumentFromDB("collective", collectiveID,null)
+
+                //Removing the collectiveID from the user's data
+                removeCollectiveIDfromUserData(userID)
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
+    }
+    private fun removeCollectiveIDfromUserData(userID : String) {
+        //Removing the collectiveID from the userData
+        Database().updateValueInDB("users", userID,"collectiveID",null, object:
+            ResultListener {
+            @SuppressLint("LongLogTag")
+            override fun onSuccess() {
+                Log.d(tag, "the collectiveID has successfully been removed from the user")
+                //Removing the snapshot listener for the collective that the user left
+                Database.listenerMap["collectiveData"]?.remove()
+                //Starting the CollectiveActivity
+                startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
+
+            }
+
+            @SuppressLint("LongLogTag")
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Failed to remove the collectiveID from the user", error)
+
+                val collectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
+                collectiveMembersMap[username] = "Member"
+                //Adding the user back into the collective so they can try again. User will be set to lowest rank
+                Database().updateValueInDB(
+                    "collective",
+                    collectiveID,
+                    "members",
+                    collectiveMembersMap,
+                    null
+                )
+            }
+        })
+    }
     fun checkIfUserIsAnOwner(userRole : String) : Boolean {
         //If the user isn't an owner, then they cant remove members, change roles or delete collection
         if (userRole.lowercase() != "Owner".lowercase()) {
