@@ -21,6 +21,7 @@
         app:layout_constraintVertical_bias="0.022" />
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="413dp"
         android:layout_height="533dp"
         android:orientation="vertical"
@@ -47,7 +48,7 @@
 
             <View
                 android:layout_width="6dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/button7"
@@ -105,6 +106,6 @@
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/menu" />
+        app:menu="@menu/bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

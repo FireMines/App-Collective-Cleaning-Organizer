@@ -5,7 +5,6 @@
         android:id="@+id/friends"
         android:title="Friends"
         android:icon="@drawable/ic_baseline_groups_24"
-        android:enabled="true"
         />
 
     <item
@@ -16,7 +15,6 @@
 
     <item
         android:id="@+id/collective"
-        android:enabled="true"
         android:title="Collective"
         android:icon="@drawable/ic_baseline_house_24"/>
 </menu>
