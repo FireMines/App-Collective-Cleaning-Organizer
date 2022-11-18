@@ -139,21 +139,12 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                      */
 
                     //Retrieving user's tasks stored in the cached user collective data
-                    val collectiveTasks : ArrayList<MutableMap<String,String>>? = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+                    var collectiveTasks : ArrayList<MutableMap<String,String>>? = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
 
                     //Checking if the collective task data exists and if its not empty
                     if (collectiveTasks != null && collectiveTasks.isNotEmpty()) {
-                        //Iterating through the collectiveTasks arraylist
-                        for (task in collectiveTasks) {
-                            //Initializing an arraylist with the assigned members list for the task
-                            val assignedMembers : ArrayList<String> = task["assigned"] as ArrayList<String>
-
-                            //If the assignedMembers arraylist for each task contains the userID, remove it from the assignedMembers list
-                            if (assignedMembers.contains(userID)) {
-                                //Removing the user from the assignedMembers arraylist
-                                assignedMembers.remove(userID)
-                            }
-                        }
+                        //Removing the user from all tasks that are assigned to him/her
+                        collectiveTasks = Utilities().removeMemberFromTasks(collectiveTasks,userID)
                         /*
                         Updating the collective task data in DB,
                         with a data that that has removed the user's name from all tasks the user was assigned to
