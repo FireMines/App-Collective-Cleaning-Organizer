@@ -41,6 +41,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                         isUserAnOwner = false
                         Log.d(tag,"User is no longer an owner. Removing all owner abilities")
                     }
+                    Database().updateValueInDB("collective", collectiveID, "members", updatedMembersMap, null)
 
                 }
             })
