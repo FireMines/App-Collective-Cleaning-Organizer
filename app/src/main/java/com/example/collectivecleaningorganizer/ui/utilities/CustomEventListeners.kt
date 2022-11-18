@@ -25,3 +25,7 @@ interface StringListener{
     fun onSuccess(uId : String)
     fun onFailure(error :Exception)
 }
+interface DatabaseRequestListener {
+    fun onSuccess(data : MutableMap<String,Any?>?)
+    fun onFailure(error :Exception)
+}

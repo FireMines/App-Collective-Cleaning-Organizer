@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.userCollectiveData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -38,7 +39,7 @@ class CollectiveInviteUsers : AppCompatActivity() {
         //Initializing a variable with the collective ID
         val collectiveID : String = userCollectiveData[0]?.id.toString()
         //Calling a DB request on the "usernames" collection and on the document id of the entered username
-        getDataFromDB("usernames", username, object : DatabaseRequestListener {
+        Database().getDataFromDB("usernames", username, object : DatabaseRequestListener {
             /**
              * A function that is triggered when the database request is successful in retrieving the username data
              * from the collection "usernames"
@@ -69,7 +70,7 @@ class CollectiveInviteUsers : AppCompatActivity() {
                     Calling a DB request on the "usernames" collection and on the document id of the entered username
                     to retrieve the userdata of the given username
                      */
-                    getDataFromDB("users", userToInviteUID, object :DatabaseRequestListener {
+                    Database().getDataFromDB("users", userToInviteUID, object :DatabaseRequestListener {
                         /**
                          * This is a function that is triggered when the database request is successful in retrieving the userData
                          * of the given username
@@ -138,20 +139,5 @@ class CollectiveInviteUsers : AppCompatActivity() {
         })
 
     }
-    interface DatabaseRequestListener {
-        fun onSuccess(data : MutableMap<String,Any?>?)
-        fun onFailure(error :Exception)
-    }
-    fun getDataFromDB(collection: String, documentID: String,databaseRequestListener: DatabaseRequestListener?){
-        db.collection(collection).document(documentID).get()
-            .addOnSuccessListener {e->
 
-
-                databaseRequestListener?.onSuccess(e.data)
-            }
-            .addOnFailureListener { e->
-                databaseRequestListener?.onFailure(e)
-            }
-
-    }
 }

@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.util.Log
-import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
-import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
-import com.example.collectivecleaningorganizer.ui.utilities.StringListener
-import com.example.collectivecleaningorganizer.ui.utilities.UniqueUsernameListener
+import com.example.collectivecleaningorganizer.ui.utilities.*
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
@@ -177,6 +174,18 @@ class Database {
         }
 
         return listenerMap
+    }
+    fun getDataFromDB(collection: String, documentID: String,databaseRequestListener: DatabaseRequestListener?){
+        db.collection(collection).document(documentID).get()
+            .addOnSuccessListener {e->
+
+
+                databaseRequestListener?.onSuccess(e.data)
+            }
+            .addOnFailureListener { e->
+                databaseRequestListener?.onFailure(e)
+            }
+
     }
 
 }
