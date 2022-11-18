@@ -19,4 +19,19 @@ class Utilities {
             .setMessage(message)
             .setView(view)
     }
+
+    fun removeMemberFromTasks(collectiveTasks : ArrayList<MutableMap<String,String>>, username : String) : ArrayList<MutableMap<String,String>> {
+        //Iterating through the collectiveTasks arraylist
+        for (task in collectiveTasks) {
+            //Initializing an arraylist with the assigned members list for the task
+            val assignedMembers : ArrayList<String> = task["assigned"] as ArrayList<String>
+
+            //If the assignedMembers arraylist for each task contains the userID, remove it from the assignedMembers list
+            if (assignedMembers.contains(username)) {
+                //Removing the user from the assignedMembers arraylist
+                assignedMembers.remove(username)
+            }
+        }
+        return collectiveTasks
+    }
 }
