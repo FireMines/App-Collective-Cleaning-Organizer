@@ -20,6 +20,7 @@ class CollectiveRemoveMembers : AppCompatActivity() {
     private val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
     private val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
     private val userID = Database.userData[0]?.id.toString()
+    private val username = Database.userData[0]?.get("username").toString()
     private val tag : String = "CollectiveRemoveMembers"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +33,7 @@ class CollectiveRemoveMembers : AppCompatActivity() {
         temporaryMembersToDeleteList.addAll(collectiveMembersMap.keys)
 
         //Removing the the own user from the list as they shouldn't be able to remove themselves
-        temporaryMembersToDeleteList.remove(userID)
+        temporaryMembersToDeleteList.remove(username)
 
         //Creating an ArrayAdapter for the listview
         val listViewAdapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,temporaryMembersToDeleteList)
@@ -99,11 +100,12 @@ class CollectiveRemoveMembers : AppCompatActivity() {
     }
 
     private fun removeCollectiveIDFromUser(username : String) {
-        Database().getDataFromDB("username",username, object :DatabaseRequestListener {
+        Log.e("username", username)
+        Database().getDataFromDB("usernames",username, object :DatabaseRequestListener {
             override fun onSuccess(data: MutableMap<String, Any?>?) {
                 //Checking if the given username doesn't exist in the usernames collection in DB
                 if (data == null) {
-                    Log.e(tag, "ERROR: Cannot find the username in the usernames collection")
+                    Log.e(tag, "ERROR: Cannot find the username in the usernames collection.")
                     return
                 }
                 //Else Checking if the username has an invalid uid field value
@@ -114,8 +116,8 @@ class CollectiveRemoveMembers : AppCompatActivity() {
                 //Else retrieve the userdata of the given username
                 else {
                     //Initializing a variable with the uid of the user that is getting invited
-                    val userToInviteUID : String= data["uid"].toString()
-                    Database().updateValueInDB("users", userToInviteUID,collectiveID,null, null)
+                    val userIDToRemove : String= data["uid"].toString()
+                    Database().updateValueInDB("users", userIDToRemove,"collectiveID",null, null)
                 }
             }
 

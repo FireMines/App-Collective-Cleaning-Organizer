@@ -57,6 +57,7 @@ class TaskActivity : AppCompatActivity() {
             val intentTaskPage: Intent = Intent(this, TaskOverviewActivity::class.java)
             intentTaskPage.putExtra("uid",userID)
             startActivity(intentTaskPage)
+
         }
     }
 

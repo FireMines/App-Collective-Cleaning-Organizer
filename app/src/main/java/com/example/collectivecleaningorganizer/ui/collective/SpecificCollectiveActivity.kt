@@ -22,6 +22,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
     private val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
     private val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
     private val userID = Database.userData[0]?.id.toString()
+    private val username = Database.userData[0]?.get("username").toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +32,13 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         val collectiveName : String = Database.userCollectiveData[0]?.data?.get("name").toString()
 
 
-        var isUserAnOwner : Boolean = checkIfUserIsAnOwner(collectiveMembersMap[userID].toString())
+        var isUserAnOwner : Boolean = checkIfUserIsAnOwner(collectiveMembersMap[username].toString())
 
-        val adapter : BaseAdapter = CollectiveMembersAdapter(this, collectiveMembersMap,userID,roleList, isUserAnOwner,
+        val adapter : BaseAdapter = CollectiveMembersAdapter(this, collectiveMembersMap,username,roleList, isUserAnOwner,
             object : OnDataChange {
                 @SuppressLint("LongLogTag")
                 override fun collectiveMemberRolesChanged(updatedMembersMap: MutableMap<String, String>) {
-                    if (!checkIfUserIsAnOwner(updatedMembersMap[userID].toString())) {
+                    if (!checkIfUserIsAnOwner(updatedMembersMap[username].toString())) {
                         isUserAnOwner = false
                         Log.d(tag,"User is no longer an owner. Removing all owner abilities")
                     }
@@ -111,7 +112,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         Utilities().alertDialogBuilder(this,title,message, null)
             .setPositiveButton(positiveButtonText) { _, _ ->
                 //Initializing a boolean variable to return true or false if the user is an owner or not
-                val isUserAnOwner : Boolean = checkIfUserIsAnOwner(collectiveMembersMap[userID].toString())
+                val isUserAnOwner : Boolean = checkIfUserIsAnOwner(collectiveMembersMap[username].toString())
 
                 //Initializing an int variable that returns the amount of owners in the collective
                 val amountOfOwnersInCollective : Int? = collectiveMembersMap.values.groupingBy { it }.eachCount()["Owner"]
@@ -145,7 +146,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                     //Checking if the collective task data exists and if its not empty
                     if (collectiveTasks != null && collectiveTasks.isNotEmpty()) {
                         //Removing the user from all tasks that are assigned to him/her
-                        collectiveTasks = Utilities().removeMemberFromTasks(collectiveTasks,userID)
+                        collectiveTasks = Utilities().removeMemberFromTasks(collectiveTasks,username)
                         /*
                         Updating the collective task data in DB,
                         with a data that that has removed the user's name from all tasks the user was assigned to
@@ -153,8 +154,8 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                         Database().updateValueInDB("collective", collectiveID,"tasks",collectiveTasks,null)
 
                     }
-                    //Removing the userID from the collective members list
-                    collectiveMembersMap.remove(userID)
+                    //Removing the username from the collective members list
+                    collectiveMembersMap.remove(username)
                     //Updating the collective members data in DB, with a data that that has removed the user's name
                     Database().updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)
                 }
@@ -184,7 +185,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                         Log.e(tag, "Failed to remove the collectiveID from the user", error)
 
                         val collectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
-                        collectiveMembersMap[userID] = "Member"
+                        collectiveMembersMap[username] = "Member"
                         //Adding the user back into the collective so they can try again. User will be set to lowest rank
                         Database().updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)
                     }

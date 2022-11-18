@@ -24,6 +24,7 @@ class CollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private var tag = "CollectiveActivity"
     private var userID = Database.userData[0]?.id.toString()
+    private var username = Database.userData[0]?.get("username").toString()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collective)
@@ -51,8 +52,8 @@ class CollectiveActivity : AppCompatActivity() {
                     Toast.makeText(this, "The collective name cannot be empty. Try again", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
-                else if (collectiveName.length !in 4..15) {
-                    Toast.makeText(this, "The collective name must be between 4 and 15 characters long", Toast.LENGTH_SHORT).show()
+                else if (collectiveName.length !in 4..16) {
+                    Toast.makeText(this, "The collective name must be between 4 and 16 characters long", Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
                 else {
@@ -116,7 +117,7 @@ class CollectiveActivity : AppCompatActivity() {
                     ?: return
 
                 //Adding the user to the membersMapData, with the role of member
-                membersMapData[userID] = "Member"
+                membersMapData[username] = "Member"
                 Database().updateValueInDB("collective", enteredCollectiveID, "members", membersMapData, object : ResultListener {
                     override fun onSuccess() {
 
@@ -161,14 +162,16 @@ class CollectiveActivity : AppCompatActivity() {
     private fun addCollectiveToDB(collectiveName: String,collectiveID : String, userID:String) {
         val members = mutableMapOf<String,String>()
         val requests = mutableMapOf<String,String>()
-
-        members[userID] = "Owner"
+        val username  : String = Database.userData[0]?.data?.get("username").toString()
+        Log.e("username", username)
+        members[username] = "Owner"
 
         val collectiveInfo = hashMapOf(
             "name" to collectiveName,
             "members" to members,
             "requests" to requests
         )
+        Log.e("members", members.toString())
         Database().addToDB("collective", collectiveID, collectiveInfo, object : ResultListener {
             override fun onSuccess() {
                 Log.d(tag, "Collective successfully added to DB!")

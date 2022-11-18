@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.collective_member_row.view.*
  * @param membersMap is a MutableMap of the members class, holding all the member username and their role in the collective
  * @return BaseAdapter
  */
-class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>, val userID :String,
+class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap<String,String>, val username :String,
                                val roleList: MutableList<String>, var changeMemberRolePermission : Boolean,
                                val onDataChange: OnDataChange
 ) : BaseAdapter() {
@@ -140,7 +140,7 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
 
                 val title : String = "Changing role confirmation"
                 var message : String = ""
-                if (memberRoleList[p0] == "Owner" && parent.getItemAtPosition(position) == "Member" && memberNameList[p0] == userID) {
+                if (memberRoleList[p0] == "Owner" && parent.getItemAtPosition(position) == "Member" && memberNameList[p0] == username) {
                     message = "Are you sure you want to change your own role from Owner to Member? You will lose the ability " +
                     "to delete the collective and remove members"
                 }else if (memberRoleList[p0] == "Owner" && parent.getItemAtPosition(position) == "Member" ) {
@@ -167,7 +167,7 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
                         Log.e("Count", "${context.collectiveMembersListView.count}")
 
                         //If the user's own rank is changed from owner to Member, the user will lose the ability to change member roles.
-                        if (membersMap[userID] != "Owner") {
+                        if (membersMap[username] != "Owner") {
                             //Iterating through the collectiveMembersListView and disabling the spinner used for changing roles
                             for (context in context.collectiveMembersListView.iterator()) {
                                 //Changing the changeMemberRolePermission to false to avoid
