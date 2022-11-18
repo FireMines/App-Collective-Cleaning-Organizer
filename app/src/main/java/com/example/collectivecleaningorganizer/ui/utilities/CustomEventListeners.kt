@@ -21,3 +21,7 @@ interface UniqueUsernameListener {
     fun onFailure(error :Exception)
 }
 
+interface StringListener{
+    fun onSuccess(uId : String)
+    fun onFailure(error :Exception)
+}

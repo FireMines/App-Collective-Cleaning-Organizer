@@ -55,6 +55,9 @@
             android:name=".ui.friends.FriendsActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.friends.FriendRequestsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.task.TaskActivity"
             android:exported="false" />
         <activity
