@@ -37,20 +37,23 @@ class FriendsActivity : AppCompatActivity(){
         init()
 
 
-        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+       // val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
 
-        //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-        //    when(item.itemId) {
-        //        R.id.tasks -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-        //            true
-        //        }
-        //    }
-        //    false
+       // bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+          //  when(item.itemId) {
+              //  R.id.tasks -> {
+                //    startActivity(Intent(this, TaskOverviewActivity::class.java))
+               //     true
+               // }
+               // R.id.collective -> {
+                //    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+                //    true
+               // }
+               // R.id.friends -> {
+                //    true
+              //  }
+            //}
+            //false
         //}
 
     }
