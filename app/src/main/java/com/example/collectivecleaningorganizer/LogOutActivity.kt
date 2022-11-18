@@ -39,6 +39,8 @@ class LogOutActivity : AppCompatActivity() {
     // logs out the user
     private fun logout() {
         Firebase.auth.signOut()
+        Database.listenerMap["userData"]?.remove()
+        Database.listenerMap["collectiveData"]?.remove()
         startActivity(Intent(this, LoginActivity::class.java))
 
         Toast.makeText(this, "Logout Successful",Toast.LENGTH_LONG).show()
