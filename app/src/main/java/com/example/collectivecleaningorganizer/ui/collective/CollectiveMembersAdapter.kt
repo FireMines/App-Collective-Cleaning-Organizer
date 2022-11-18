@@ -13,8 +13,10 @@ import androidx.core.view.allViews
 import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.core.view.size
+import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
+import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.collective_member_row.*
 import kotlinx.android.synthetic.main.collective_member_row.view.*
@@ -136,34 +138,59 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
                     return
                 }
 
-
-                //Getting the selected role from the spinner
-                val selectedRole = parent.getItemAtPosition(position).toString()
-
-                //Updating the member's new role in the memberRoleList with the selectedRole
-                memberRoleList[p0] = selectedRole
-
-                //Updating the member's role in the membersMap with the selectedRole
-                membersMap[memberNameList[p0]] = memberRoleList[p0]
-                //context.collectiveMembersListView.get(2).collectiveRolesSpinner.isEnabled = false
-                Log.e("Count", "${context.collectiveMembersListView.count}")
-
-                //If the user's own rank is changed from owner to Member, the user will lose the ability to change member roles.
-                if (membersMap[userID] != "Owner") {
-                    //Iterating through the collectiveMembersListView and disabling the spinner used for changing roles
-                    for (context in context.collectiveMembersListView.iterator()) {
-                        //Changing the changeMemberRolePermission to false to avoid
-                        //the spinners being enabled again due to scrolling in the listView triggers the getview() function
-                        changeMemberRolePermission = false
-
-                        //Disabling the spinner
-                        context.collectiveRolesSpinner.isEnabled = false
-                    }
-
+                val title : String = "Changing role confirmation"
+                var message : String = ""
+                if (memberRoleList[p0] == "Owner" && parent.getItemAtPosition(position) == "Member" && memberNameList[p0] == userID) {
+                    message = "Are you sure you want to change your own role from Owner to Member? You will lose the ability " +
+                    "to delete the collective and remove members"
+                }else if (memberRoleList[p0] == "Owner" && parent.getItemAtPosition(position) == "Member" ) {
+                    message = "Are you sure you want to change ${memberNameList[p0]}'s from Owner to Member? The person will lose the ability " +
+                            "to delete the collective and remove members"
+                }
+                else if (memberRoleList[p0] == "Member" && parent.getItemAtPosition(position) == "Owner" ) {
+                    message = "Are you sure you want to change ${memberNameList[p0]}'s from Member to Owner? The person will gain the ability " +
+                            "to delete the collective and remove members"
                 }
 
-                //Attaching the onDataChange interface with the spinner listener and add the updated membersMap
-                onDataChange.collectiveMemberRolesChanged(membersMap)
+                //Creating an confirmation alert dialog confirming if the user wants to change someone's role or not
+                Utilities().alertDialogBuilder(context, title, message,null)
+                    .setPositiveButton("Confirm ") { _, _ ->
+                        //Getting the selected role from the spinner
+                        val selectedRole = parent.getItemAtPosition(position).toString()
+
+                        //Updating the member's new role in the memberRoleList with the selectedRole
+                        memberRoleList[p0] = selectedRole
+
+                        //Updating the member's role in the membersMap with the selectedRole
+                        membersMap[memberNameList[p0]] = memberRoleList[p0]
+                        //context.collectiveMembersListView.get(2).collectiveRolesSpinner.isEnabled = false
+                        Log.e("Count", "${context.collectiveMembersListView.count}")
+
+                        //If the user's own rank is changed from owner to Member, the user will lose the ability to change member roles.
+                        if (membersMap[userID] != "Owner") {
+                            //Iterating through the collectiveMembersListView and disabling the spinner used for changing roles
+                            for (context in context.collectiveMembersListView.iterator()) {
+                                //Changing the changeMemberRolePermission to false to avoid
+                                //the spinners being enabled again due to scrolling in the listView triggers the getview() function
+                                changeMemberRolePermission = false
+
+                                //Disabling the spinner
+                                context.collectiveRolesSpinner.isEnabled = false
+                            }
+
+                        }
+                        Toast.makeText(context, "Successful in changing the member's role", Toast.LENGTH_SHORT).show()
+                        //Attaching the onDataChange interface with the spinner listener and add the updated membersMap
+                        onDataChange.collectiveMemberRolesChanged(membersMap)
+                    }
+                    .setNegativeButton("Cancel") { _, _ ->
+                        parent.setSelection(rolePositionInSpinner)
+                    }
+                    .create()
+                    .show()
+
+
+
 
             }
 
