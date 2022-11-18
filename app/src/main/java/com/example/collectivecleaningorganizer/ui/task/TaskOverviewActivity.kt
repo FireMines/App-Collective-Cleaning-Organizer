@@ -84,24 +84,22 @@ class TaskOverviewActivity : AppCompatActivity() {
 
         //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
 
-        //bottomNavigationView.selectedItemId
-
         //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-        //    when(item.itemId) {
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-        //            true
-        //        }
-        //        R.id.tasks -> {
-        //            true
-        //        }
-        //    }
-        //    false
-        //}
+         //   when(item.itemId) {
+          //      R.id.friends -> {
+          //          startActivity(Intent(this, FriendsActivity::class.java))
+          //          true
+           //     }
+           //     R.id.collective -> {
+           //         startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+           //         true
+           //     }
+           //     R.id.tasks -> {
+           //         true
+           //     }
+           // }
+           // false
+       // }
         allTasksButton.setOnClickListener {
             startActivity(Intent(this, SpecificCollectiveActivity::class.java))
         }
