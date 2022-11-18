@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
+import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -67,7 +70,43 @@ class CollectiveActivity : AppCompatActivity() {
         dialog.show()
 
     }
+    fun seeCollectiveInviteRequests(view: View) {
+        val collectiveInviteRequests : ArrayList<String>? = Database.userData[0]?.data?.get("collectiveRequests") as ArrayList<String>?
 
+        if (collectiveInviteRequests == null || collectiveInviteRequests.isEmpty()) {
+            Toast.makeText(this, "You don't have any pending invites to join a collective", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        //Initializing an Spinner widget
+        val collectiveInvitesSpinner = Spinner(this)
+
+
+        //Creating an ArrayAdapter for the spinner
+        val spinnerAdapter = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,collectiveInviteRequests)
+
+        //Attaching the ArrayAdapter to the spinner with the id "categorySpinner"
+        collectiveInvitesSpinner.adapter = spinnerAdapter
+
+        //Building an alert dialog that shows a view with a spinner where the user can choose a category to delete
+        Utilities().alertDialogBuilder(this,"Collective invites", "Choose the collective you want to join", collectiveInvitesSpinner)
+            .setPositiveButton("Join") { _, _ ->
+                //Initializing a variable to retrieve the name of the category the user selected
+                val selectedCollective : String = collectiveInvitesSpinner.selectedItem.toString()
+
+                //Removing the category name the user selected from the categories arraylist
+                collectiveInviteRequests.remove(selectedCollective)
+
+                //Updating the categories data with the updated contents of categoriesArrayList
+                Database().updateValueInDB("users",userID,"collectiveRequests",collectiveInviteRequests,null)
+
+                //Attempting to add the user to the collective if it exists
+                addUserToCollective(selectedCollective)
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
+    }
 
 
     private fun generateUniqueCollectiveID(collectiveName : String) {
@@ -97,19 +136,22 @@ class CollectiveActivity : AppCompatActivity() {
         }
 
     }
-
-    fun joinCollectiveByCollectiveID(view:View) {
-        Log.e(tag, "IS IT WORKING?")
+    fun joinCollectiveByID(view:View) {
         val enteredCollectiveID : String = collectiveIdEditText.text.toString()
         if (enteredCollectiveID.isBlank()) {
             Toast.makeText(this, "Please enter a valid collective id", Toast.LENGTH_SHORT).show()
             return
         }
-        Database().getDataFromDB("collective", enteredCollectiveID, object :DatabaseRequestListener {
+        //Attempting to add the user to the collective if it exists
+        addUserToCollective(enteredCollectiveID)
+    }
+
+    private fun addUserToCollective(collectiveID: String) {
+        Database().getDataFromDB("collective", collectiveID, object :DatabaseRequestListener {
             override fun onSuccess(data: MutableMap<String, Any?>?) {
                 //Checking if the given collective ID doesn't exist
                 if (data == null) {
-                    Toast.makeText(this@CollectiveActivity, "Please enter a valid collective id", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CollectiveActivity, "There exists no collective with the given ID", Toast.LENGTH_SHORT).show()
                     Log.d(tag, "Cannot find the a collective with the given id")
                     return
                 }
@@ -118,10 +160,10 @@ class CollectiveActivity : AppCompatActivity() {
 
                 //Adding the user to the membersMapData, with the role of member
                 membersMapData[username] = "Member"
-                Database().updateValueInDB("collective", enteredCollectiveID, "members", membersMapData, object : ResultListener {
+                Database().updateValueInDB("collective", collectiveID, "members", membersMapData, object : ResultListener {
                     override fun onSuccess() {
 
-                        Database().updateValueInDB("users", userID, "collectiveID", enteredCollectiveID, object : ResultListener {
+                        Database().updateValueInDB("users", userID, "collectiveID", collectiveID, object : ResultListener {
                             override fun onSuccess() {
                                 Toast.makeText(this@CollectiveActivity, "You have successfully joined the collective!", Toast.LENGTH_LONG).show()
                                 startTaskOverviewActivity(userID)
@@ -142,19 +184,13 @@ class CollectiveActivity : AppCompatActivity() {
                     }
 
                 })
-
-
-
             }
 
             override fun onFailure(error: Exception) {
                 Toast.makeText(this@CollectiveActivity, "Failure to send request to database. Error: $error", Toast.LENGTH_LONG).show()
                 Log.e(tag, "Database request failure", error)
             }
-
         })
-
-
     }
 
 
