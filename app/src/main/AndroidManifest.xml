@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
-            android:name=".CollectiveRemoveMembers"
+            android:name=".ui.collective.CollectiveRemoveMembers"
             android:exported="false" />
         <activity
             android:name=".ui.collective.CollectiveInviteUsers"

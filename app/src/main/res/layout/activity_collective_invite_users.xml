@@ -103,7 +103,7 @@
             android:layout_height="10dp" />
 
         <ListView
-            android:id="@+id/friendsListView"
+            android:id="@+id/membersListView"
             android:layout_width="match_parent"
             android:layout_height="246dp" />
 

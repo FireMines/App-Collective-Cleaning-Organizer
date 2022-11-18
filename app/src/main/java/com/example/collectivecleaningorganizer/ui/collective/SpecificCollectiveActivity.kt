@@ -1,34 +1,19 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.BaseAdapter
-import android.widget.Spinner
-import androidx.annotation.RequiresApi
-import androidx.core.view.forEach
+import android.widget.*
 import com.example.collectivecleaningorganizer.*
-import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
-import com.example.collectivecleaningorganizer.ui.login.CreateUserActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.firestoreSettings
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.firestore.model.SnapshotVersion
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_specific_collective.*
-import kotlinx.android.synthetic.main.activity_task_overview.*
-import kotlinx.android.synthetic.main.task_layout.view.*
 import java.lang.Exception
 
 class SpecificCollectiveActivity : AppCompatActivity() {
@@ -82,6 +67,14 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         //}
         inviteMemberButton.setOnClickListener {
             startActivity(Intent(this, CollectiveInviteUsers::class.java))
+        }
+        removeMemberButton.setOnClickListener {
+            //Checking if there is only one member in the collective
+            if (collectiveMembersMap.size == 1) {
+                Toast.makeText(this, "There are no members to remove" , Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            startActivity(Intent(this, CollectiveRemoveMembers::class.java))
         }
 
     }
@@ -217,7 +210,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             //Removing the delete collection button as the user doesn't have permission for it
             deleteCollectiveButton.visibility = View.GONE
             //Removing the delete member button as the user doesn't have permission for it
-            deleteMemberButton.visibility = View.GONE
+            removeMemberButton.visibility = View.GONE
             return false
         }
         return true

@@ -159,12 +159,11 @@
                 android:layout_height="wrap_content"/>
 
             <Button
-                android:id="@+id/deleteMemberButton"
+                android:id="@+id/removeMemberButton"
                 android:layout_width="50dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:background="#b8d8db"
-                android:onClick="removeMembersFromCollective"
                 android:text="Remove members" />
         </LinearLayout>
 
