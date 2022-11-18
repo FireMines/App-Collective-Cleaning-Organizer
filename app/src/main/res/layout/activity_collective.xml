@@ -82,7 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#b8d8db"
-                android:text="Send request" />
+                android:onClick="joinCollectiveByCollectiveID"
+                android:text="Join" />
 
         </LinearLayout>
 

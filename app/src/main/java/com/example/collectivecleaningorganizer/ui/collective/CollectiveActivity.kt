@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
@@ -21,6 +23,7 @@ import java.lang.Exception
 class CollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private var tag = "CollectiveActivity"
+    private var userID = userData[0]?.id.toString()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collective)
@@ -34,9 +37,6 @@ class CollectiveActivity : AppCompatActivity() {
             return
         }
 
-        sendCollectiveJoinRequestButton.setOnClickListener {
-
-        }
     }
 
     fun createCollective(view:View) {
@@ -85,24 +85,62 @@ class CollectiveActivity : AppCompatActivity() {
 
     }
 
-    fun sendCollectiveJoinRequest(view:View) {
+    fun joinCollectiveByCollectiveID(view:View) {
+        Log.e(tag, "IS IT WORKING?")
         val enteredCollectiveID : String = collectiveIdEditText.text.toString()
-        if (!collectiveDocuments.contains(enteredCollectiveID)) {
-            //Print alert dialog explaning that the entered collectiveID is wrong and to try again
+        if (enteredCollectiveID.isBlank()) {
+            Toast.makeText(this, "Please enter a valid collective id", Toast.LENGTH_SHORT).show()
             return
         }
-        db.collection("collective").document(enteredCollectiveID).get()
-            .addOnSuccessListener { document ->
-                if (document.data == null) {
-                    //Alert dialog with error message telling the user that the collective dosnt exist
-                    return@addOnSuccessListener
+        Database().getDataFromDB("collective", enteredCollectiveID, object :DatabaseRequestListener {
+            override fun onSuccess(data: MutableMap<String, Any?>?) {
+                //Checking if the given collective ID doesn't exist
+                if (data == null) {
+                    Toast.makeText(this@CollectiveActivity, "Please enter a valid collective id", Toast.LENGTH_SHORT).show()
+                    Log.d(tag, "Cannot find the a collective with the given id")
+                    return
                 }
-                //val requestsMap : document.data.get("requests")
-                if (document.data != null) {
+                val membersMapData : MutableMap<String, String> = data["members"] as MutableMap<String, String>?
+                    ?: return
 
-                }
+                //Adding the user to the membersMapData, with the role of member
+                membersMapData[userID] = "Member"
+                Database().updateValueInDB("collective", enteredCollectiveID, "members", membersMapData, object : ResultListener {
+                    override fun onSuccess() {
+
+                        Database().updateValueInDB("users", userID, "collectiveID", enteredCollectiveID, object : ResultListener {
+                            override fun onSuccess() {
+                                Toast.makeText(this@CollectiveActivity, "You have successfully joined the collective!", Toast.LENGTH_LONG).show()
+                                startTaskOverviewActivity(userID)
+                                Log.d(tag, "Success in adding collective id to user")
+                            }
+
+                            override fun onFailure(error: Exception) {
+                                Toast.makeText(this@CollectiveActivity, "Failure to join collective. Error: $error", Toast.LENGTH_LONG).show()
+                                Log.e(tag, "Failure in adding collective id to user", error)
+                            }
+
+                        })
+                    }
+                    override fun onFailure(error: Exception) {
+                        Toast.makeText(this@CollectiveActivity, "Failure to join collective. Error: $error", Toast.LENGTH_LONG).show()
+                        Log.e(tag, "Failure in adding member to the collective member's map", error)
+
+                    }
+
+                })
+
+
 
             }
+
+            override fun onFailure(error: Exception) {
+                Toast.makeText(this@CollectiveActivity, "Failure to send request to database. Error: $error", Toast.LENGTH_LONG).show()
+                Log.e(tag, "Database request failure", error)
+            }
+
+        })
+
 
     }
 
