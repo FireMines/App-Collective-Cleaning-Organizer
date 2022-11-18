@@ -15,7 +15,7 @@ import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
-import com.example.collectivecleaningorganizer.userData
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import kotlinx.android.synthetic.main.activity_friends.*
@@ -58,7 +58,7 @@ class FriendsActivity : AppCompatActivity(){
     private fun init(){
         //Hent venner fra database og vis i scrollview
 
-        val uId = userData[0]?.id.toString()
+        val uId = Database.userData[0]?.id.toString()
 
         Database().getFriendsFromDB("users", uId, object : FriendListListener {
             override fun onSuccess(friendList: ArrayList<String>) {
@@ -101,7 +101,7 @@ class FriendsActivity : AppCompatActivity(){
     private fun sendRequest(){
         //Steder som nevner userId burde endres til cache
         //val userId = FirebaseAuth.getInstance().uid.toString()
-        val userId = userData[0]?.data?.get("username").toString()
+        val userId = Database.userData[0]?.data?.get("username").toString()
         //val idArr = arrayListOf<String>()
         //idArr.add(userId.toString())
         FriendRequest.text.toString()

@@ -34,12 +34,12 @@ class TaskOverviewActivity : AppCompatActivity() {
             return
         }
 
-        val collectiveID = userData[0]?.data?.get("collectiveID")
+        val collectiveID = Database.userData[0]?.data?.get("collectiveID")
         if (collectiveID == null) {
             //Start collective activity
         }
         //Starting a listener for the collective and listens for any changes done to the collective data
-        Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData,"collectiveData", object : ResultListener {
+        Database().databaseDataChangeListener("collective", collectiveID.toString(), Database.userCollectiveData,"collectiveData", object : ResultListener {
             override fun onSuccess() {
                 dbSync(userID)
             }
@@ -60,8 +60,8 @@ class TaskOverviewActivity : AppCompatActivity() {
 
         // Deletes tasks marked in checkbox when clicked
         delete_btn.setOnClickListener {
-            val collectiveTasks : ArrayList<MutableMap<String,String>>? = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
-            val collectiveID = userData[0]?.data?.get("collectiveID").toString()
+            val collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+            val collectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
 
             // Goes through all checked tasks and deletes them
             for (i in rv_todo.size -1 downTo  0) {
@@ -102,12 +102,15 @@ class TaskOverviewActivity : AppCompatActivity() {
         //    }
         //    false
         //}
+        allTasksButton.setOnClickListener {
+            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        }
     }
 
     private fun dbSync(userID : String) {
         removeAllRecipes()
         //Retrieving user's tasks stored in the cached user collective data
-        val collectiveTasks : ArrayList<MutableMap<String,String>>? = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+        val collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
 
         //Checking and handling if the cached data doesn't have any tasks
         if (collectiveTasks == null) {

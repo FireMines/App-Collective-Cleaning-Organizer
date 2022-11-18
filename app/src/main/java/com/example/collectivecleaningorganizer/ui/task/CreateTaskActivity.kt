@@ -12,8 +12,6 @@ import android.widget.*
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.example.collectivecleaningorganizer.userCollectiveData
-import com.example.collectivecleaningorganizer.userData
 import kotlinx.android.synthetic.main.activity_create_task.*
 
 
@@ -25,17 +23,17 @@ class CreateTaskActivity : AppCompatActivity() {
     private val tag = "CreateTaskActivity"
 
     //Initializing an array list to retrieve the categories data from the snapshot as an arraylist
-    private val categoriesArrayListFromSnapshot : ArrayList<String>? = userCollectiveData[0]?.data?.get("categories") as ArrayList<String>?
+    private val categoriesArrayListFromSnapshot : ArrayList<String>? = Database.userCollectiveData[0]?.data?.get("categories") as ArrayList<String>?
 
     //Initializing an array list for categories with a default value of "No category"
     private var categoriesArrayList : ArrayList<String> = arrayListOf("No Category")
     //Initializing the ID of the collective the user is apart of retrieved from the user data
-    private val collectiveID = userData[0]?.data?.get("collectiveID")
+    private val collectiveID = Database.userData[0]?.data?.get("collectiveID")
     override fun onCreate(savedInstanceState: Bundle?) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_task)
-        val userID = userData[0]?.id.toString()
+        val userID = Database.userData[0]?.id.toString()
         if (userID == null) {
             Log.e(tag, "the userID is null")
             return
@@ -85,7 +83,7 @@ class CreateTaskActivity : AppCompatActivity() {
      */
     private fun showMembersToAssign() {
         //Retrieving the collective members map from the snapshot
-        val collectiveMembersMap : MutableMap<String,String> = userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
+        val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
 
         //Creating an arraylist for the keys from the collective members map
         val collectiveMemberArrayList : ArrayList<String> = ArrayList(collectiveMembersMap.keys)
@@ -219,7 +217,7 @@ class CreateTaskActivity : AppCompatActivity() {
         var tasksArray : ArrayList<MutableMap<String,Any>>
 
         //Checking if the collectiveData snapshot doesn't have tasks data
-        if (userCollectiveData[0]?.data?.get("tasks") == null) {
+        if (Database.userCollectiveData[0]?.data?.get("tasks") == null) {
             //Initializing the tasksArray variable with an empty arraylist
             tasksArray = ArrayList<MutableMap<String,Any>>()
             Log.d("CreateTaskActivity()","No tasks in the collective")
@@ -227,7 +225,7 @@ class CreateTaskActivity : AppCompatActivity() {
 
         else {
             //Initializing the tasksArray variable with the task data from the collectiveData snapshot
-            tasksArray = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, Any>>
+            tasksArray = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, Any>>
         }
 
         //Initializing a mutable map for the task information

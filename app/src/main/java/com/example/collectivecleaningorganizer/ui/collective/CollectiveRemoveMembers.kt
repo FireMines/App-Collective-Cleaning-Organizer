@@ -13,15 +13,13 @@ import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.example.collectivecleaningorganizer.userCollectiveData
-import com.example.collectivecleaningorganizer.userData
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
 import java.lang.Exception
 
 class CollectiveRemoveMembers : AppCompatActivity() {
-    private val collectiveMembersMap : MutableMap<String,String> = userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
-    private val collectiveID : String = userCollectiveData[0]?.id.toString()
-    private val userID = userData[0]?.id.toString()
+    private val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
+    private val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
+    private val userID = Database.userData[0]?.id.toString()
     private val tag : String = "CollectiveRemoveMembers"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +48,7 @@ class CollectiveRemoveMembers : AppCompatActivity() {
             .setPositiveButton("Remove members") { _, _ ->
 
                 //Retrieving user's tasks stored in the cached user collective data
-                var collectiveTasks : ArrayList<MutableMap<String,String>>? = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+                var collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
                 val temporaryRemovedMemberNameList : ArrayList<String> = arrayListOf<String>()
                 //Iterating through the membersListView and checking which members got selected
                 for (i:Int in 0 until membersListView.count) {

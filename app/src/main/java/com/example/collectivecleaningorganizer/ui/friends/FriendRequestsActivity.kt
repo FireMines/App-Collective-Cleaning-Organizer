@@ -8,7 +8,6 @@ import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
-import com.example.collectivecleaningorganizer.userData
 import kotlinx.android.synthetic.main.activity_friendrequests.*
 import kotlinx.android.synthetic.main.activity_friends.*
 import kotlinx.android.synthetic.main.friend.view.*
@@ -26,7 +25,7 @@ class FriendRequestsActivity: AppCompatActivity() {
 
         //Testdata
 
-        val uId = userData[0]?.id.toString()
+        val uId = Database.userData[0]?.id.toString()
 
         Database().getFriendRequestListFromDB("users", uId, object : FriendListListener {
             override fun onSuccess(friendList: ArrayList<String>) {
@@ -56,8 +55,8 @@ class FriendRequestsActivity: AppCompatActivity() {
     private fun addFriend(name: String) {
         //Finn id i db
         //Sett friend felt i begge dber til å være hverandre sitt navn
-        val userName = userData[0]?.data?.get("username").toString()
-        val userId = userData[0]?.id.toString()
+        val userName = Database.userData[0]?.data?.get("username").toString()
+        val userId = Database.userData[0]?.id.toString()
         Database().getUid(name, object : StringListener {
             override fun onSuccess(uId: String) {
                 Database().getFriendsFromDB("users", uId, object : FriendListListener {

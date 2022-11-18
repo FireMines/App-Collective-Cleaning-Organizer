@@ -8,7 +8,6 @@ import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
-import com.example.collectivecleaningorganizer.userCollectiveData
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
@@ -37,7 +36,7 @@ class CollectiveInviteUsers : AppCompatActivity() {
             return
         }
         //Initializing a variable with the collective ID
-        val collectiveID : String = userCollectiveData[0]?.id.toString()
+        val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
         //Calling a DB request on the "usernames" collection and on the document id of the entered username
         Database().getDataFromDB("usernames", username, object : DatabaseRequestListener {
             /**

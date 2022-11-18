@@ -19,16 +19,16 @@ import java.lang.Exception
 class SpecificCollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private val tag = "SpecificCollectiveActivity"
-    private val collectiveMembersMap : MutableMap<String,String> = userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
-    private val collectiveID : String = userCollectiveData[0]?.id.toString()
-    private val userID = userData[0]?.id.toString()
+    private val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
+    private val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
+    private val userID = Database.userData[0]?.id.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_specific_collective)
 
         val roleList : MutableList<String> = mutableListOf<String>("Owner","Member")
-        val collectiveName : String = userCollectiveData[0]?.data?.get("name").toString()
+        val collectiveName : String = Database.userCollectiveData[0]?.data?.get("name").toString()
 
 
         var isUserAnOwner : Boolean = checkIfUserIsAnOwner(collectiveMembersMap[userID].toString())
@@ -140,7 +140,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                      */
 
                     //Retrieving user's tasks stored in the cached user collective data
-                    var collectiveTasks : ArrayList<MutableMap<String,String>>? = userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+                    var collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
 
                     //Checking if the collective task data exists and if its not empty
                     if (collectiveTasks != null && collectiveTasks.isNotEmpty()) {
@@ -174,7 +174,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                     override fun onSuccess() {
                         Log.d(tag, "the collectiveID has successfully been removed from the user")
                         //Removing the snapshot listener for the collective that the user left
-                        listenerMap["collectiveData"]?.remove()
+                        Database.listenerMap["collectiveData"]?.remove()
                         //Starting the CollectiveActivity
                         startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
 
@@ -183,7 +183,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                     override fun onFailure(error: Exception) {
                         Log.e(tag, "Failed to remove the collectiveID from the user", error)
 
-                        val collectiveID = userData[0]?.data?.get("collectiveID").toString()
+                        val collectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
                         collectiveMembersMap[userID] = "Member"
                         //Adding the user back into the collective so they can try again. User will be set to lowest rank
                         Database().updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)

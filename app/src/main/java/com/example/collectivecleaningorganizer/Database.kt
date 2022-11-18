@@ -15,12 +15,15 @@ import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.ktx.Firebase
 
 
-var collectiveDocuments = mutableMapOf<String, QueryDocumentSnapshot>()
-val userData = mutableListOf<DocumentSnapshot?>(null)
-var userCollectiveData = mutableListOf<DocumentSnapshot?>(null)
-var listenerMap = mutableMapOf<String,ListenerRegistration>()
+
 
 class Database {
+    companion object {
+        var collectiveDocuments = mutableMapOf<String, QueryDocumentSnapshot>()
+        val userData = mutableListOf<DocumentSnapshot?>(null)
+        var userCollectiveData = mutableListOf<DocumentSnapshot?>(null)
+        var listenerMap = mutableMapOf<String,ListenerRegistration>()
+    }
     private val db = Firebase.firestore
     private val tag = "Database"
     fun getAllCollectivesFromDB() {

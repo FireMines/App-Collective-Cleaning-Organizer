@@ -23,14 +23,14 @@ import java.lang.Exception
 class CollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private var tag = "CollectiveActivity"
-    private var userID = userData[0]?.id.toString()
+    private var userID = Database.userData[0]?.id.toString()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collective)
 
         Database().getAllCollectivesFromDB()
 
-        val collectiveID = userData[0]?.data?.get("collectiveID")
+        val collectiveID = Database.userData[0]?.data?.get("collectiveID")
         if (collectiveID != null) {
             //Database().databaseDataChangeListener("collective", collectiveID.toString(), userCollectiveData)
             startActivity(Intent(this, SpecificCollectiveActivity::class.java))
@@ -70,7 +70,7 @@ class CollectiveActivity : AppCompatActivity() {
 
 
     private fun generateUniqueCollectiveID(collectiveName : String) {
-        val userID = userData[0]?.id.toString()
+        val userID = Database.userData[0]?.id.toString()
 
         //Creating a random 4 digit number
         val randomNumber: String = String.format("%04d", (0..9999).random())
@@ -85,7 +85,7 @@ class CollectiveActivity : AppCompatActivity() {
             return
         }
         //Checking if there is a collective stored in the DB with the same collectiveID
-        if (collectiveDocuments.contains(collectiveId)) {
+        if (Database.collectiveDocuments.contains(collectiveId)) {
             Log.e(tag, "There already exists a collective with the same collectiveID. Recalling the function to generate a new ID")
             generateUniqueCollectiveID(collectiveName)
         }

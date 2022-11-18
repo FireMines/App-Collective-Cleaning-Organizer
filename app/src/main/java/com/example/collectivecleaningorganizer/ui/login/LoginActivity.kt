@@ -11,8 +11,6 @@ import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
-import com.example.collectivecleaningorganizer.userCollectiveData
-import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -73,14 +71,14 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun retrieveUserDataAndStoreInCache(userID : String) {
         //Calling retrieveDataAndAddToCache() function to retrieve the user data from DB and add it to a cache
-        Database().retrieveDataAndAddToCache("users", userID, userData, object : ResultListener {
+        Database().retrieveDataAndAddToCache("users", userID, Database.userData, object : ResultListener {
             //if onSuccess() is called back, it means that the retrieval of user data and storing it to a cache was successful
             override fun onSuccess() {
                 Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
                 //Starting a data change listener for the userData
-                Database().databaseDataChangeListener("users", userID, userData, "userData",null)
+                Database().databaseDataChangeListener("users", userID, Database.userData, "userData",null)
 
-                val collectiveID = userData[0]?.data?.get("collectiveID")
+                val collectiveID = Database.userData[0]?.data?.get("collectiveID")
 
 
                 //Checking if the user is apart of a collective or not
@@ -114,7 +112,7 @@ class LoginActivity : AppCompatActivity() {
         Database().retrieveDataAndAddToCache(
             "collective",
             collectiveID,
-            userCollectiveData,
+            Database.userCollectiveData,
             object : ResultListener {
                 //if onSuccess() is called back, it means that the retrieval of user collective data and storing it to a cache was successful
                 override fun onSuccess() {

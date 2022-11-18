@@ -13,8 +13,6 @@ import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.UniqueUsernameListener
-import com.example.collectivecleaningorganizer.userCollectiveData
-import com.example.collectivecleaningorganizer.userData
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_create_user.*
 import java.lang.Exception
@@ -126,13 +124,13 @@ class CreateUserActivity : AppCompatActivity() {
      */
     private fun login(){
         val userID = FirebaseAuth.getInstance().uid.toString()
-        Database().retrieveDataAndAddToCache("users", userID, userData, object : ResultListener {
+        Database().retrieveDataAndAddToCache("users", userID, Database.userData, object : ResultListener {
             //if onSuccess() is called back, it means that the retrieval of user data and storing it to a cache was successful
             override fun onSuccess() {
                 Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
                 //Starting a data change listener for the userData
-                Database().databaseDataChangeListener("users", userID, userData, "userdata",null)
-                val collectiveID = userData[0]?.data?.get("collectiveID")
+                Database().databaseDataChangeListener("users", userID, Database.userData, "userdata",null)
+                val collectiveID = Database.userData[0]?.data?.get("collectiveID")
 
 
                 //Checking if the user is apart of a collective or not
@@ -166,7 +164,7 @@ class CreateUserActivity : AppCompatActivity() {
         Database().retrieveDataAndAddToCache(
             "collective",
             collectiveID,
-            userCollectiveData,
+            Database.userCollectiveData,
             object : ResultListener {
                 //if onSuccess() is called back, it means that the retrieval of user collective data and storing it to a cache was successful
                 override fun onSuccess() {
