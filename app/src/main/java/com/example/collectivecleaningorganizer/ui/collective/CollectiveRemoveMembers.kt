@@ -9,9 +9,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
 import java.lang.Exception
 
@@ -47,6 +50,26 @@ class CollectiveRemoveMembers : AppCompatActivity() {
 
         //Attaching the ArrayAdapter to the listView
         membersListView.adapter = listViewAdapter
+
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.collective
+
+        navigationBarView.setOnItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.taskOverView -> {
+                    startActivity(Intent(this, TaskOverviewActivity::class.java))
+                    true
+                }
+                R.id.collective -> {
+                    startActivity(Intent(this, CollectiveActivity::class.java))
+                    true
+                }
+                R.id.friends -> {
+                    startActivity(Intent(this, FriendsActivity::class.java))
+                }
+            }
+            false
+        }
     }
 
     /**
