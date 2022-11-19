@@ -9,16 +9,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.Toast
-import androidx.core.view.allViews
-import androidx.core.view.get
 import androidx.core.view.iterator
-import androidx.core.view.size
-import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import kotlinx.android.synthetic.main.activity_specific_collective.*
-import kotlinx.android.synthetic.main.collective_member_row.*
 import kotlinx.android.synthetic.main.collective_member_row.view.*
 /**
  * A BaseAdapter class used to create a custom adapter for the collectiveMembersListView used in the SpecificCollectiveActivity and its corresponding layout file.
@@ -34,9 +29,13 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
                                val roleList: MutableList<String>, var changeMemberRolePermission : Boolean,
                                val onDataChange: OnDataChange
 ) : BaseAdapter() {
-
+    //Initializing an arraylist for the member names which are the map keys from the membersMap parameter
     private val memberNameList : ArrayList<String> = ArrayList(membersMap.keys)
+
+    //Initializing an arraylist for the member roles which are the map values from the membersMap parameter
     private var memberRoleList : ArrayList<String> = ArrayList(membersMap.values)
+
+    //Initializing a tag used for logging to know which file the log message came from
     private val tag : String = "CollectiveMembersAdapter"
 
     /**
@@ -185,7 +184,7 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
                                 context.collectiveRolesSpinner.isEnabled = false
                             }
                         }
-                        //Sending a success msg to user if invite is successful
+                        //Sending a success msg to user
                         Toast.makeText(context, "Successful in changing the member's role", Toast.LENGTH_SHORT).show()
 
                         //Attaching the onDataChange interface with the spinner listener and add the updated membersMap
