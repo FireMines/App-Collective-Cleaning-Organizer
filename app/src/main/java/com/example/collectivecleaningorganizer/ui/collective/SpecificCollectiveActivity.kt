@@ -10,10 +10,12 @@ import android.widget.*
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_specific_collective.*
@@ -55,24 +57,26 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         collectiveIDTextView.text = collectiveID
         collectiveMembersListView.adapter = adapter
 
-        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
 
-        //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            //when(item.itemId) {
-                //R.id.friends -> {
-                    //startActivity(Intent(this, FriendsActivity::class.java))
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.collective
+
+        navigationBarView.setOnItemSelectedListener() { it ->
+            when(it.itemId) {
+                R.id.friends -> {
+                    startActivity(Intent(this, FriendsActivity::class.java))
                     true
-                //}
-                //R.id.tasks -> {
-                    //startActivity(Intent(this, TaskActivity::class.java))
-                    //true
-                //}
-                //R.id.collective -> {
-                    //true
-                //}
-            //}
-            //false
-        //}
+                }
+                R.id.taskOverView -> {
+                    startActivity(Intent(this, TaskOverviewActivity::class.java))
+                    true
+                }
+                R.id.collective -> {
+                    true
+                }
+            }
+            false
+        }
 
         inviteMemberButton.setOnClickListener {
             startActivity(Intent(this, CollectiveInviteUsers::class.java))

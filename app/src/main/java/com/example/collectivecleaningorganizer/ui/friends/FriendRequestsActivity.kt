@@ -1,13 +1,17 @@
 package com.example.collectivecleaningorganizer.ui.friends
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_friendrequests.*
 import kotlinx.android.synthetic.main.activity_friends.*
 import kotlinx.android.synthetic.main.friend.view.*
@@ -18,6 +22,27 @@ class FriendRequestsActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friendrequests)
         init()
+
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.friends
+
+        navigationBarView.setOnItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.taskOverView -> {
+                    startActivity(Intent(this, TaskOverviewActivity::class.java))
+                    true
+                }
+                R.id.collective -> {
+                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+                    true
+                }
+                R.id.friends -> {
+                    startActivity(Intent(this, FriendsActivity::class.java))
+                    true
+                }
+            }
+            false
+        }
     }
 
     private fun init(){

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.GridLayout.Spec
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.core.view.iterator
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_friendrequests.*
 import kotlinx.android.synthetic.main.activity_task_overview.*
 import kotlinx.android.synthetic.main.task_layout.view.*
 import java.lang.Exception
@@ -82,26 +84,24 @@ class TaskOverviewActivity : AppCompatActivity() {
         }
 
 
-        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.taskOverView
 
-        //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-         //   when(item.itemId) {
-          //      R.id.friends -> {
-          //          startActivity(Intent(this, FriendsActivity::class.java))
-          //          true
-           //     }
-           //     R.id.collective -> {
-           //         startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-           //         true
-           //     }
-           //     R.id.tasks -> {
-           //         true
-           //     }
-           // }
-           // false
-       // }
-        allTasksButton.setOnClickListener {
-            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        navigationBarView.setOnItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.friends -> {
+                    startActivity(Intent(this, FriendsActivity::class.java))
+                    true
+                }
+                R.id.collective -> {
+                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+                    true
+                }
+                R.id.taskOverView -> {
+                    true
+                }
+            }
+            false
         }
     }
 

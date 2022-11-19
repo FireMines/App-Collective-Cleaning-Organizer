@@ -10,9 +10,12 @@ import android.widget.ListView
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
 import java.lang.Exception
 
@@ -39,6 +42,26 @@ class CollectiveRemoveMembers : AppCompatActivity() {
         val listViewAdapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,temporaryMembersToDeleteList)
         //Attaching the ArrayAdapter to the listView
         membersListView.adapter = listViewAdapter
+
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.collective
+
+        navigationBarView.setOnItemSelectedListener() { it ->
+            when(it.itemId) {
+                R.id.friends -> {
+                    startActivity(Intent(this, FriendsActivity::class.java))
+                    true
+                }
+                R.id.taskOverView -> {
+                    startActivity(Intent(this, TaskOverviewActivity::class.java))
+                    true
+                }
+                R.id.collective -> {
+                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+                }
+            }
+            false
+        }
     }
 
 
