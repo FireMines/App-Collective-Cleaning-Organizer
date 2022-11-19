@@ -6,30 +6,34 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
-import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
+import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
 import java.lang.Exception
 
 class CollectiveRemoveMembers : AppCompatActivity() {
+    //Initializing the members map retrieved from the collectiveData in the DB
     private val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
+
+    //Initializing the collectiveID retrieved from the collectiveData in the DB
     private val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
-    private val userID = Database.userData[0]?.id.toString()
+
+    //Initializing the username retrieved from the userData in the DB
     private val username = Database.userData[0]?.get("username").toString()
+
+    //Initializing a tag used for logging to know which file the log message came from
     private val tag : String = "CollectiveRemoveMembers"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Setting the content view of the activity
         setContentView(R.layout.activity_collective_remove_members)
 
-        //Initializing an temporary arraylist which is empty
+        //Initializing a temporary arraylist which is empty
         val temporaryMembersToDeleteList : ArrayList<String> = arrayListOf()
 
         //Adding all the names from the collectiveMembersMap keys (which are the member names) to the temporaryMembersToDeleteList
@@ -40,60 +44,71 @@ class CollectiveRemoveMembers : AppCompatActivity() {
 
         //Creating an ArrayAdapter for the listview
         val listViewAdapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,temporaryMembersToDeleteList)
+
         //Attaching the ArrayAdapter to the listView
         membersListView.adapter = listViewAdapter
-
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.collective
-
-        navigationBarView.setOnItemSelectedListener() { it ->
-            when(it.itemId) {
-                R.id.friends -> {
-                    startActivity(Intent(this, FriendsActivity::class.java))
-                    true
-                }
-                R.id.taskOverView -> {
-                    startActivity(Intent(this, TaskOverviewActivity::class.java))
-                    true
-                }
-                R.id.collective -> {
-                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-                }
-            }
-            false
-        }
     }
 
-
+    /**
+     * This is a function that removes selected members from the collective if the user confirms the action.
+     * This function is triggered when the user presses the "Remove Members" button
+     * @param view is the "Remove Members" button
+     */
     fun removeMembersFromCollective(view: View) {
+        //Initializing a variable to keep track of amount of names that were checked
+        var amountOfCheckedNames : Int = 0
 
-        //Building an alert dialog that shows a view with a listview where the user can choose members to remove
+        //Iterating through the membersListView
+        for (i:Int in 0 until membersListView.count) {
+            //Statement checking if the member's check box is checked
+            if (membersListView.isItemChecked(i)) {
+                //Incrementing the value of amountOfCheckedNames by 1
+                amountOfCheckedNames = amountOfCheckedNames.inc()
+            }
+        }
+        //Checking if the amount of checked boxes/names are 0
+        if (amountOfCheckedNames == 0) {
+            //Sending an error message to the user
+            Toast.makeText(this, "Please select atlas one member in order to remove", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        //Building an dialog to give the user a confirmation message confirming if they want to remove the members or not
         Utilities().alertDialogBuilder(this,"Removing confirmation", "Are you sure you want to remove the member(s)?", null)
             .setPositiveButton("Remove members") { _, _ ->
 
-                //Retrieving user's tasks stored in the cached user collective data
+                //Retrieving user's tasks stored in the cached collective data
                 var collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+
+                //Creating an temporary arraylist and initializing it as an empty arraylist
                 val temporaryRemovedMemberNameList : ArrayList<String> = arrayListOf<String>()
-                //Iterating through the membersListView and checking which members got selected
+
+                //Iterating through the membersListView
                 for (i:Int in 0 until membersListView.count) {
-                    //Statement checking if the member's check box is checked
+
+                    //Checking if the member's check box is checked
                     if (membersListView.isItemChecked(i)) {
-                        //Initializing the member's name retrieved from the membersListView row
+
+                        //Initializing a variable with the member's name retrieved from the membersListView row
                         val memberName :String = membersListView.getItemAtPosition(i).toString()
+
+                        //Adding the checked member's name to the temporaryRemovedMemberNameList Arraylist
                         temporaryRemovedMemberNameList.add(memberName)
-                        //Removing the selected member from the collectiveMembersmap
+
+                        //Removing the selected member from the collective members map data
                         collectiveMembersMap.remove(memberName)
                     }
                 }
                 //Checking if the collective task data exists and if its not empty
                 if (collectiveTasks != null && collectiveTasks.isNotEmpty()) {
+
                     //Iterating through the list containing names of members that were removed
                     for (i:Int in 0 until temporaryRemovedMemberNameList.size) {
-                        //Removing the each user from all tasks that are assigned to them
+                        //Removing each removed user from all tasks that are assigned to them
                         collectiveTasks = Utilities().removeMemberFromTasks(collectiveTasks!!,temporaryRemovedMemberNameList[i])
 
-                        //Removing the collectiveID from the userData of the user that is being removed
-                        removeCollectiveIDFromUser(temporaryRemovedMemberNameList[i])
+                        //Removing the collectiveID from the userData of those removed users
+                        removeCollectiveIDFromRemovedMembers(temporaryRemovedMemberNameList[i])
                     }
 
                     /*
@@ -105,51 +120,62 @@ class CollectiveRemoveMembers : AppCompatActivity() {
 
                 //Updating the collective members map with the updated contents that doesn't include the removed members
                 Database().updateValueInDB("collective",collectiveID,"members",collectiveMembersMap,object : ResultListener {
+                    /**
+                     * This function is triggered when the database request to update the collective members data is successful
+                     */
                     override fun onSuccess() {
+                        //Sending a success msg to user
                         Toast.makeText(this@CollectiveRemoveMembers, "The members were successfully removed", Toast.LENGTH_LONG).show()
+
+                        //Starting the SpecificCollectiveActivity activity
                         startActivity(Intent(this@CollectiveRemoveMembers, SpecificCollectiveActivity::class.java))
                     }
 
+                    /**
+                     * This function is triggered when the database request to update the collective members data is a failure
+                     * @param error returns the error exception
+                     */
                     override fun onFailure(error: Exception) {
                         Log.e(tag, "Error when trying to update the collective members map ",error)
                     }
-
                 })
-
             }
             .setNegativeButton("Cancel", null)
             .create()
             .show()
     }
 
-    private fun removeCollectiveIDFromUser(username : String) {
-        Log.e("username", username)
-        Database().getDataFromDB("usernames",username, object :DatabaseRequestListener {
-            override fun onSuccess(data: MutableMap<String, Any?>?) {
-                //Checking if the given username doesn't exist in the usernames collection in DB
-                if (data == null) {
-                    Log.e(tag, "ERROR: Cannot find the username in the usernames collection.")
+    /**
+     * A function that removes the collectiveID from the removed member's user data
+     * @param username is the username of the removed member
+     */
+    private fun removeCollectiveIDFromRemovedMembers(username : String) {
+        //Sending a database request to retrieve the user ID from the given username
+        Database().getUid(username, object : StringListener {
+            /**
+             * This function is triggered when the database request to retrieve the User ID from the given username is successful
+             * @param uId is the user ID of the given username
+             */
+            override fun onSuccess(uId: String) {
+                //Checking and handling if the given username doesn't exist in the DB
+                if (uId == "") {
+                    Log.e(tag, "ERROR. cannot find any userID for the given username. Thus cannot remove collectiveID from the following username: $username")
                     return
                 }
-                //Else Checking if the username has an invalid uid field value
-                else if (data["uid"] == "" || data["uid"] == null) {
-                    Log.e(tag, "UserID is empty or a null value")
-                    return
-                }
-                //Else retrieve the userdata of the given username
-                else {
-                    //Initializing a variable with the uid of the user that is getting invited
-                    val userIDToRemove : String= data["uid"].toString()
-                    Database().updateValueInDB("users", userIDToRemove,"collectiveID",null, null)
-                }
+                //Updating the removed user's collectiveID to remove the ID of the collective the user was removed from
+                Database().updateValueInDB("users", uId,"collectiveID",null, null)
             }
 
+            /**
+             * This function is triggered when the database request to retrieve the User ID from the given username is a failure
+             * @param error returns the error exception
+             */
             override fun onFailure(error: Exception) {
-                Log.e(tag, "Failed to remove the collectiveID from the user", error)
+                Log.e(tag, "Database request failure to retrieve userID from the username: $username")
             }
-
-        } )
+        })
     }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,12 +11,11 @@ import android.widget.*
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_specific_collective.*
@@ -24,7 +24,7 @@ import java.lang.Exception
 class SpecificCollectiveActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private val tag = "SpecificCollectiveActivity"
-    private val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
+    private var collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
     private val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
     private val userID = Database.userData[0]?.id.toString()
     private val username = Database.userData[0]?.get("username").toString()
@@ -33,6 +33,59 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_specific_collective)
 
+        //Doing a database request to retrieve the latest collective information
+        Database().getDataFromDB("collective", collectiveID, object : DatabaseRequestListener {
+            @SuppressLint("LongLogTag")
+            override fun onSuccess(data: MutableMap<String, Any?>?) {
+                if (data == null) {
+                    Log.e(tag, "Could not find any collective data for the collective id: $collectiveID")
+                    return
+                }
+                Log.d(tag, "Successfully retrieved collective data")
+                collectiveMembersMap = data?.get("members") as MutableMap<String, String>
+                showDataToScreen()
+            }
+
+            @SuppressLint("LongLogTag")
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Failure to retrieve collective data from db", error)
+            }
+
+        })
+
+        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+
+        //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            //when(item.itemId) {
+                //R.id.friends -> {
+                    //startActivity(Intent(this, FriendsActivity::class.java))
+                    true
+                //}
+                //R.id.tasks -> {
+                    //startActivity(Intent(this, TaskActivity::class.java))
+                    //true
+                //}
+                //R.id.collective -> {
+                    //true
+                //}
+            //}
+            //false
+        //}
+
+        inviteMemberButton.setOnClickListener {
+            startActivity(Intent(this, CollectiveInviteUsers::class.java))
+        }
+        removeMemberButton.setOnClickListener {
+            //Checking if there is only one member in the collective
+            if (collectiveMembersMap.size == 1) {
+                Toast.makeText(this, "There are no members to remove" , Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            startActivity(Intent(this, CollectiveRemoveMembers::class.java))
+        }
+
+    }
+    fun showDataToScreen() {
         val roleList : MutableList<String> = mutableListOf<String>("Owner","Member")
         val collectiveName : String = Database.userCollectiveData[0]?.data?.get("name").toString()
 
@@ -56,40 +109,6 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         collectiveNameTextView.text = collectiveName
         collectiveIDTextView.text = collectiveID
         collectiveMembersListView.adapter = adapter
-
-
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.collective
-
-        navigationBarView.setOnItemSelectedListener() { it ->
-            when(it.itemId) {
-                R.id.friends -> {
-                    startActivity(Intent(this, FriendsActivity::class.java))
-                    true
-                }
-                R.id.taskOverView -> {
-                    startActivity(Intent(this, TaskOverviewActivity::class.java))
-                    true
-                }
-                R.id.collective -> {
-                    true
-                }
-            }
-            false
-        }
-
-        inviteMemberButton.setOnClickListener {
-            startActivity(Intent(this, CollectiveInviteUsers::class.java))
-        }
-        removeMemberButton.setOnClickListener {
-            //Checking if there is only one member in the collective
-            if (collectiveMembersMap.size == 1) {
-                Toast.makeText(this, "There are no members to remove" , Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            startActivity(Intent(this, CollectiveRemoveMembers::class.java))
-        }
-
     }
 
     /**
@@ -180,34 +199,61 @@ class SpecificCollectiveActivity : AppCompatActivity() {
                     Database().removeDocumentFromDB("collective", collectiveID,null)
                 }
                 //Removing the collectiveID from the userData
-                Database().updateValueInDB("users", userID,"collectiveID",null, object:
-                    ResultListener {
-                    @SuppressLint("LongLogTag")
-                    override fun onSuccess() {
-                        Log.d(tag, "the collectiveID has successfully been removed from the user")
-                        //Removing the snapshot listener for the collective that the user left
-                        Database.listenerMap["collectiveData"]?.remove()
-                        //Starting the CollectiveActivity
-                        startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
-
-                    }
-                    @SuppressLint("LongLogTag")
-                    override fun onFailure(error: Exception) {
-                        Log.e(tag, "Failed to remove the collectiveID from the user", error)
-
-                        val collectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
-                        collectiveMembersMap[username] = "Member"
-                        //Adding the user back into the collective so they can try again. User will be set to lowest rank
-                        Database().updateValueInDB("collective", collectiveID,"members",collectiveMembersMap,null)
-                    }
-                })
+                removeCollectiveIDfromUserData(userID)
 
             }
             .setNegativeButton("Cancel", null)
             .create()
             .show()
     }
+    fun deleteCollective(view: View) {
+        val title : String = "Delete confirmation"
+        val message : String = "Are you sure you want to delete the collective? There is no turning back"
 
+        Utilities().alertDialogBuilder(this, title, message, null)
+            .setPositiveButton("Confirm deleting") { _, _ ->
+
+                //Deleting the collective from the DB
+                Database().removeDocumentFromDB("collective", collectiveID,null)
+
+                //Removing the collectiveID from the user's data
+                removeCollectiveIDfromUserData(userID)
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
+    }
+    private fun removeCollectiveIDfromUserData(userID : String) {
+        //Removing the collectiveID from the userData
+        Database().updateValueInDB("users", userID,"collectiveID",null, object:
+            ResultListener {
+            @SuppressLint("LongLogTag")
+            override fun onSuccess() {
+                Log.d(tag, "the collectiveID has successfully been removed from the user")
+                //Removing the snapshot listener for the collective that the user left
+                Database.listenerMap["collectiveData"]?.remove()
+                //Starting the CollectiveActivity
+                startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
+
+            }
+
+            @SuppressLint("LongLogTag")
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Failed to remove the collectiveID from the user", error)
+
+                val collectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
+                collectiveMembersMap[username] = "Member"
+                //Adding the user back into the collective so they can try again. User will be set to lowest rank
+                Database().updateValueInDB(
+                    "collective",
+                    collectiveID,
+                    "members",
+                    collectiveMembersMap,
+                    null
+                )
+            }
+        })
+    }
     fun checkIfUserIsAnOwner(userRole : String) : Boolean {
         //If the user isn't an owner, then they cant remove members, change roles or delete collection
         if (userRole.lowercase() != "Owner".lowercase()) {

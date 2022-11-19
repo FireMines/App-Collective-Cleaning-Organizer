@@ -56,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#b8d8db"
-                android:text="See collective requests" />
+                android:onClick="seeCollectiveInviteRequests"
+                android:text="See collective invites" />
         </LinearLayout>
 
         <Space
@@ -78,12 +79,12 @@
                 android:inputType="textPersonName" />
 
             <Button
-                android:id="@+id/sendCollectiveJoinRequestButton"
+                android:id="@+id/joinCollectiveByUserInputButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#b8d8db"
-                android:onClick="joinCollectiveByCollectiveID"
+                android:onClick="joinCollectiveByID"
                 android:text="Join" />
 
         </LinearLayout>

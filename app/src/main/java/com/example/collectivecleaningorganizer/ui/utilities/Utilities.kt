@@ -3,6 +3,7 @@ package com.example.collectivecleaningorganizer.ui.utilities
 import android.app.AlertDialog
 import android.content.Context
 import android.view.View
+import com.example.collectivecleaningorganizer.R
 
 class Utilities {
     /**
@@ -14,7 +15,7 @@ class Utilities {
      */
     fun alertDialogBuilder(context : Context, title: String?, message: String?, view: View?): AlertDialog.Builder {
 
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context, R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Background)
             .setTitle(title)
             .setMessage(message)
             .setView(view)
