@@ -123,14 +123,17 @@ class TaskOverviewActivity : AppCompatActivity() {
             view.duedate_tv.text = task["dueDate"]
             val desc = task["description"].toString()
             view.task_tv.setOnClickListener{
-                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), task["assigned"].toString(), userID)
+                Log.e("index", collectiveTasks[collectiveTasks.indexOf(task)]["assigned"].toString())
+                val assignedMembers : ArrayList<String> = collectiveTasks[collectiveTasks.indexOf(task)]["assigned"] as ArrayList<String>
+
+                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), assignedMembers, collectiveTasks.indexOf(task), userID)
             }
             rv_todo.addView(view)
             Log.e("Tasks:", task.entries.toString())
         }
     }
 
-    private fun openTaskPage(name : String, dueDate : String, description : String, category : String, assigned : String, userID: String) {
+    private fun openTaskPage(name : String, dueDate : String, description : String, category : String, assigned : ArrayList<String>, index : Int, userID: String) {
         val newIntent = Intent(this, TaskActivity::class.java)
 
         newIntent.putExtra("uid",userID)
@@ -139,6 +142,7 @@ class TaskOverviewActivity : AppCompatActivity() {
         newIntent.putExtra("description", description)
         newIntent.putExtra("assigned", assigned)
         newIntent.putExtra("category", category)
+        newIntent.putExtra("index", index)
 
         startActivity(newIntent)
     }
