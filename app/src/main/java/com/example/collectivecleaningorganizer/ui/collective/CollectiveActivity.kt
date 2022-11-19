@@ -19,7 +19,8 @@ import kotlinx.android.synthetic.main.activity_collective.*
 import java.lang.Exception
 
 /**
- * This is a class for a CollectiveActivity. It is used to create a collective page for the user has the option to either create or join a collective
+ * This is an AppCompatActivity class for a CollectiveActivity.
+ * It is used to create a collective page for the user has the option to either create or join a collective
  */
 class CollectiveActivity : AppCompatActivity() {
     //Initializing a tag used for logging to know which file the log message came from
