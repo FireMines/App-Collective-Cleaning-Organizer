@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_view_task.taskDescription
 import kotlinx.android.synthetic.main.activity_view_task.taskDueDate
 import kotlinx.android.synthetic.main.activity_view_task.taskName
 import kotlinx.android.synthetic.main.activity_view_task.view.*
-
+import kotlinx.android.synthetic.main.task_layout.view.*
 
 
 class TaskActivity : AppCompatActivity() {
@@ -53,6 +53,12 @@ class TaskActivity : AppCompatActivity() {
         taskCategories.adapter = categoryForTask
 
 
+        editTask_btn.setOnClickListener{
+            Log.e("NAME:", taskName.text.toString())
+            editTaskPage(taskName.text.toString(),taskDueDate.text.toString(), taskDescription.text.toString(), "task[].toString()", "task[].toString()", userID)
+        }
+
+
         back_btn.setOnClickListener{
             val intentTaskPage: Intent = Intent(this, TaskOverviewActivity::class.java)
             intentTaskPage.putExtra("uid",userID)
@@ -61,4 +67,17 @@ class TaskActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun editTaskPage(name : String, dueDate : String, description : String, category : String, assigned : String, userID: String) {
+        val newIntent = Intent(this, EditTaskActivity::class.java)
+
+        newIntent.putExtra("uid",userID)
+        newIntent.putExtra("name",name)
+        newIntent.putExtra("dueDate", dueDate)
+        newIntent.putExtra("description", description)
+        newIntent.putExtra("assigned", assigned)
+        newIntent.putExtra("category", category)
+
+        startActivity(newIntent)
+    }
 }
