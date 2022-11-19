@@ -48,6 +48,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
+        <Button
+            android:id="@+id/editTask_btn"
+            android:layout_width="116dp"
+            android:layout_height="48dp"
+            android:background="#b8d8db"
+            android:text="Edit task" />
+
     </LinearLayout>
 
     <LinearLayout
