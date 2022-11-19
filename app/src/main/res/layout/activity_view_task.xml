@@ -162,7 +162,8 @@
             android:id="@+id/assignCollectiveMembersListView"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:choiceMode="multipleChoice" />
+            android:choiceMode="multipleChoice"
+            android:clickable="false" />
 
         <Space
             android:layout_width="match_parent"
