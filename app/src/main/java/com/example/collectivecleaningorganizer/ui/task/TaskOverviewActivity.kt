@@ -11,6 +11,7 @@ import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
+import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -101,6 +102,9 @@ class TaskOverviewActivity : AppCompatActivity() {
        // }
         allTasksButton.setOnClickListener {
             startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        }
+        myTaskButton.setOnClickListener {
+            startActivity(Intent(this, FriendsActivity::class.java))
         }
     }
 
