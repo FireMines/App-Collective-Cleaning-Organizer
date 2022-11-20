@@ -17,7 +17,6 @@ import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
-import kotlinx.android.synthetic.main.activity_edit_task.*
 import java.lang.Exception
 /**
  * This is an AppCompatActivity class for a CollectiveActivity.
@@ -109,6 +108,8 @@ class CollectiveInviteUsers : AppCompatActivity() {
      * @param view is the "Invite selected friends" button
      */
     fun inviteFromFriendsList(view : View) {
+        //Initializing an counter
+        var amountOfSelectedFriends = 0
         //Iterating through the friendsListView and checking which friend got selected
         for (i:Int in 0 until friendsListView.count) {
             //Statement checking if the item's check box is checked
@@ -116,9 +117,16 @@ class CollectiveInviteUsers : AppCompatActivity() {
                 //Initializing the friend's name retrieved from the friendsListView row
                 val friendUsername :String = friendsListView.getItemAtPosition(i).toString()
 
+                //Incrementing the counter by 1
+                amountOfSelectedFriends = amountOfSelectedFriends.inc()
+
                 //Calling the sendInviteUsers() to attempt to send a invite request to join the collective
                 sendInviteUsers(friendUsername)
             }
+        }
+        if (amountOfSelectedFriends ==0) {
+            Toast.makeText(this@CollectiveInviteUsers, "Please select atleast 1 member", Toast.LENGTH_SHORT).show()
+            return
         }
     }
 
