@@ -11,7 +11,6 @@ import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
-import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -19,11 +18,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
 import kotlinx.android.synthetic.main.task_layout.view.*
-import org.checkerframework.checker.units.qual.A
-import org.checkerframework.checker.units.qual.s
 
 
 class TaskOverviewActivity : AppCompatActivity() {
+    private var username = Database.userData[0]?.get("username").toString()
 
     private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,12 +101,8 @@ class TaskOverviewActivity : AppCompatActivity() {
         }
 
 
-        allTasksButton.setOnClickListener {
-            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-        }
-        myTaskButton.setOnClickListener {
-            startActivity(Intent(this, FriendsActivity::class.java))
-        }
+
+
     }
 
     private fun dbSync(userID : String) {
@@ -116,7 +110,12 @@ class TaskOverviewActivity : AppCompatActivity() {
         //Retrieving user's tasks stored in the cached user collective data
         val collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
 
-        //collectiveTasks.filter { s -> s ==  }
+        val sorted = collectiveTasks?.filter{ s->
+            val test = s["assigned"] as ArrayList<String>
+            test.contains(username)}?.toList()        //collectiveTasks.filter { s -> s ==  }
+
+
+        Log.e("user", userID)
 
         //Checking and handling if the cached data doesn't have any tasks
         if (collectiveTasks == null) {
@@ -124,19 +123,14 @@ class TaskOverviewActivity : AppCompatActivity() {
             return
         }
 
-        //Iterating through the collectiveTasks array
-        for (task in collectiveTasks) {
-            val view = layoutInflater.inflate(R.layout.task_layout, null)
-            view.task_tv.text = task["name"]
-            view.duedate_tv.text = task["dueDate"]
-            val desc = task["description"].toString()
-            view.task_tv.setOnClickListener{
-                Log.e("index", collectiveTasks[collectiveTasks.indexOf(task)]["assigned"].toString())
-                val assignedMembers : ArrayList<String> = collectiveTasks[collectiveTasks.indexOf(task)]["assigned"] as ArrayList<String>
-                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), assignedMembers, collectiveTasks.indexOf(task), userID)
-            }
-            rv_todo.addView(view)
-            Log.e("Tasks:", task.entries.toString())
+        showTasks(userID ,collectiveTasks)
+
+        allTasksButton.setOnClickListener {
+            showTasks(userID ,collectiveTasks)
+
+        }
+        myTaskButton.setOnClickListener {
+            showTasks(userID ,sorted)
         }
     }
 
@@ -162,6 +156,24 @@ class TaskOverviewActivity : AppCompatActivity() {
             i.next()
             i.remove()
         }
+    }
+
+    private fun showTasks(userID: String, collectiveTasks: List<MutableMap<String, String>>?) {
+        rv_todo.removeAllViews()
+        for (task in collectiveTasks!!) {
+            val view = layoutInflater.inflate(R.layout.task_layout, null)
+            view.task_tv.text = task["name"]
+            view.duedate_tv.text = task["dueDate"]
+            val desc = task["description"].toString()
+            view.task_tv.setOnClickListener{
+                Log.e("index", collectiveTasks[collectiveTasks.indexOf(task)]["assigned"].toString())
+                val assignedMembers : ArrayList<String> = collectiveTasks[collectiveTasks.indexOf(task)]["assigned"] as ArrayList<String>
+                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), assignedMembers, collectiveTasks.indexOf(task), userID)
+            }
+            rv_todo.addView(view)
+            Log.e("Tasks:", task.entries.toString())
+        }
+
     }
 }
 
