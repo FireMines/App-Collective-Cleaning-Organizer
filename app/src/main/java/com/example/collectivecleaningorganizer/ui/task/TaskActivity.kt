@@ -29,7 +29,6 @@ class TaskActivity : AppCompatActivity() {
             return
         }
 
-
         setContentView(R.layout.activity_view_task)
         setTitle("Task description page")
 
@@ -60,7 +59,6 @@ class TaskActivity : AppCompatActivity() {
 
 
         editTask_btn.setOnClickListener{
-            Log.e("NAME:", assigned.toString())
             editTaskPage(taskName.text.toString(),taskDueDate.text.toString(), taskDescription.text.toString(), intent.getStringExtra("category").toString(), assigned, userID)
         }
 
