@@ -22,12 +22,13 @@ import kotlinx.android.synthetic.main.task_layout.view.*
 
 class TaskOverviewActivity : AppCompatActivity() {
     private var username = Database.userData[0]?.get("username").toString()
+    var userID = Database.userData[0]?.id.toString()
 
     private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_overview)
-        val userID = intent.getStringExtra("uid")
+        //val userID = intent.getStringExtra("uid")
         if (userID == null) {
             Log.d("TaskOverview: Error", "the userID is null")
             return
