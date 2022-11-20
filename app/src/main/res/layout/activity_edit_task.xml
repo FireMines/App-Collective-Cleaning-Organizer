@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7a9e9f"
-    tools:context=".ui.task.CreateTaskActivity">
+    tools:context=".ui.task.EditTaskActivity">
 
     <TextView
         android:id="@+id/taskPageTitle"
@@ -216,7 +216,6 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:background="#DC4141"
-                    android:onClick="deleteCategory"
                     android:text="DELETE A CATEGORY"
                     android:textColor="#FFFFFF"
                     tools:ignore="TextContrastCheck" />
@@ -232,7 +231,6 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:background="#b8d8db"
-                    android:onClick="createNewCategory"
                     android:text="CREATE A NEW CATEGORY" />
             </LinearLayout>
         </LinearLayout>
