@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
+import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_edit_task.*
 import kotlinx.android.synthetic.main.activity_view_task.*
 import kotlinx.android.synthetic.main.activity_view_task.assignCollectiveMembersListView
@@ -69,6 +72,27 @@ class TaskActivity : AppCompatActivity() {
             startActivity(intentTaskPage)
 
         }
+
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.taskOverView
+
+        navigationBarView.setOnItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.taskOverView -> {
+                    startActivity(Intent(this, TaskOverviewActivity::class.java))
+                    true
+                }
+                R.id.collective -> {
+                    startActivity(Intent(this, CollectiveActivity::class.java))
+                    true
+                }
+                R.id.friends -> {
+                    startActivity(Intent(this, FriendsActivity::class.java))
+                }
+            }
+            false
+        }
+
     }
 
 

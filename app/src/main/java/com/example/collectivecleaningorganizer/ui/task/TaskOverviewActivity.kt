@@ -10,9 +10,11 @@ import androidx.core.view.size
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
@@ -81,25 +83,26 @@ class TaskOverviewActivity : AppCompatActivity() {
             startActivity(intentLogoutPage)
         }
 
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.taskOverView
 
-        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.setOnItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.taskOverView -> {
+                    true
+                }
+                R.id.collective -> {
+                    startActivity(Intent(this, CollectiveActivity::class.java))
+                    true
+                }
+                R.id.friends -> {
+                    startActivity(Intent(this, FriendsActivity::class.java))
+                }
+            }
+            false
+        }
 
-        //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-         //   when(item.itemId) {
-          //      R.id.friends -> {
-          //          startActivity(Intent(this, FriendsActivity::class.java))
-          //          true
-           //     }
-           //     R.id.collective -> {
-           //         startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-           //         true
-           //     }
-           //     R.id.tasks -> {
-           //         true
-           //     }
-           // }
-           // false
-       // }
+
         allTasksButton.setOnClickListener {
             startActivity(Intent(this, SpecificCollectiveActivity::class.java))
         }
