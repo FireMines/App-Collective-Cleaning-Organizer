@@ -3,23 +3,21 @@ package com.example.collectivecleaningorganizer.ui.task
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.core.view.size
-import com.example.collectivecleaningorganizer.*
-import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
-import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
+import com.example.collectivecleaningorganizer.Database
+import com.example.collectivecleaningorganizer.LogOutActivity
+import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
-import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
+import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_task_overview.*
 import kotlinx.android.synthetic.main.task_layout.view.*
-import java.lang.Exception
+import org.checkerframework.checker.units.qual.A
+import org.checkerframework.checker.units.qual.s
 
 
 class TaskOverviewActivity : AppCompatActivity() {
@@ -33,6 +31,7 @@ class TaskOverviewActivity : AppCompatActivity() {
             Log.d("TaskOverview: Error", "the userID is null")
             return
         }
+
 
         val collectiveID = Database.userData[0]?.data?.get("collectiveID")
         if (collectiveID == null) {
@@ -110,6 +109,8 @@ class TaskOverviewActivity : AppCompatActivity() {
         //Retrieving user's tasks stored in the cached user collective data
         val collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
 
+        //collectiveTasks.filter { s -> s ==  }
+
         //Checking and handling if the cached data doesn't have any tasks
         if (collectiveTasks == null) {
             Log.d("TaskOverviewActivity","No tasks in the collective")
@@ -123,14 +124,16 @@ class TaskOverviewActivity : AppCompatActivity() {
             view.duedate_tv.text = task["dueDate"]
             val desc = task["description"].toString()
             view.task_tv.setOnClickListener{
-                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), task["assigned"].toString(), userID)
+                Log.e("index", collectiveTasks[collectiveTasks.indexOf(task)]["assigned"].toString())
+                val assignedMembers : ArrayList<String> = collectiveTasks[collectiveTasks.indexOf(task)]["assigned"] as ArrayList<String>
+                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), assignedMembers, collectiveTasks.indexOf(task), userID)
             }
             rv_todo.addView(view)
             Log.e("Tasks:", task.entries.toString())
         }
     }
 
-    private fun openTaskPage(name : String, dueDate : String, description : String, category : String, assigned : String, userID: String) {
+    private fun openTaskPage(name : String, dueDate : String, description : String, category : String, assigned : ArrayList<String>, index : Int, userID: String) {
         val newIntent = Intent(this, TaskActivity::class.java)
 
         newIntent.putExtra("uid",userID)
@@ -139,6 +142,8 @@ class TaskOverviewActivity : AppCompatActivity() {
         newIntent.putExtra("description", description)
         newIntent.putExtra("assigned", assigned)
         newIntent.putExtra("category", category)
+        newIntent.putExtra("index", index)
+
 
         startActivity(newIntent)
     }

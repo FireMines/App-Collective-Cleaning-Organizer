@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#7a9e9f"
     tools:context=".ui.collective.CollectiveInviteUsers">
 
     <ImageButton
@@ -81,7 +82,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="inviteUserByUsername"
-                android:text="Invite" />
+                android:text="Invite"
+                android:background="#b8d8db"/>
+
         </LinearLayout>
 
         <Space
@@ -115,7 +118,19 @@
             android:gravity="center"
             android:minHeight="48dp"
             android:text="Invite selected friends"
+            android:background="#b8d8db"
             tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
     </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/purple_500"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

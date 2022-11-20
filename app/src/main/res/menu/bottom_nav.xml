@@ -4,12 +4,10 @@
     <item
         android:id="@+id/friends"
         android:title="Friends"
-        android:icon="@drawable/ic_baseline_groups_24"
-        />
+        android:icon="@drawable/ic_baseline_groups_24"/>
 
     <item
-        android:id="@+id/tasks"
-        android:enabled="true"
+        android:id="@+id/taskOverView"
         android:title="Tasks"
         android:icon="@drawable/ic_baseline_assignment_24"/>
 

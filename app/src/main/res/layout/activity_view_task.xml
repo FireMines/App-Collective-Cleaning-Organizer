@@ -48,6 +48,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
+        <Button
+            android:id="@+id/editTask_btn"
+            android:layout_width="116dp"
+            android:layout_height="48dp"
+            android:background="#b8d8db"
+            android:text="Edit task" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -155,7 +162,8 @@
             android:id="@+id/assignCollectiveMembersListView"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:choiceMode="multipleChoice" />
+            android:choiceMode="multipleChoice"
+            android:clickable="false" />
 
         <Space
             android:layout_width="match_parent"

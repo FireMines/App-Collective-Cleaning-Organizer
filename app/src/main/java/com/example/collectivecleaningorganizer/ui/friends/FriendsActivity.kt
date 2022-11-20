@@ -18,7 +18,10 @@ import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.android.synthetic.main.activity_friends.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.activity_task_overview.*
 import kotlinx.android.synthetic.main.friend.view.*
 import java.lang.Exception
@@ -37,24 +40,25 @@ class FriendsActivity : AppCompatActivity(){
         init()
 
 
-       // val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.friends
 
-       // bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-          //  when(item.itemId) {
-              //  R.id.tasks -> {
-                //    startActivity(Intent(this, TaskOverviewActivity::class.java))
-               //     true
-               // }
-               // R.id.collective -> {
-                //    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-                //    true
-               // }
-               // R.id.friends -> {
-                //    true
-              //  }
-            //}
-            //false
-        //}
+        navigationBarView.setOnItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.taskOverView -> {
+                    startActivity(Intent(this, TaskOverviewActivity::class.java))
+                    true
+                }
+                R.id.collective -> {
+                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+                    true
+                }
+                R.id.friends -> {
+                    true
+                }
+            }
+            false
+        }
 
     }
 
