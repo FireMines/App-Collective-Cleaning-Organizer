@@ -15,6 +15,7 @@ import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.UniqueUsernameListener
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_create_user.*
+import kotlinx.android.synthetic.main.activity_view_task.*
 import java.lang.Exception
 
 
@@ -25,6 +26,11 @@ class CreateUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_user)
         init()
+
+        // Takes the user back to the Task Overview Activity
+        createUserBack_btn.setOnClickListener{
+            this.finish()
+        }
     }
 
     private fun init(){
