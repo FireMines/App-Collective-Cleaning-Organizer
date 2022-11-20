@@ -17,7 +17,10 @@ import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
 import java.lang.Exception
-
+/**
+ * This is an AppCompatActivity class for a CollectiveRemoveMembers Activity.
+ * It is used to create a page where Owners of a collective can remove members
+ */
 class CollectiveRemoveMembers : AppCompatActivity() {
     //Initializing the members map retrieved from the collectiveData in the DB
     private val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>

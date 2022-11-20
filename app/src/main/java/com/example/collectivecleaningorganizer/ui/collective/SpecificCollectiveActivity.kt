@@ -17,7 +17,10 @@ import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_specific_collective.*
 import java.lang.Exception
-
+/**
+ * This is an AppCompatActivity class for a SpecifricCollectiveActivity.
+ * It is used to create a collective page that shows detailed information about the collective the user is in
+ */
 class SpecificCollectiveActivity : AppCompatActivity() {
     //Initializing a tag used for logging to know which file the log message came from
     private val tag = "SpecificCollectiveActivity"

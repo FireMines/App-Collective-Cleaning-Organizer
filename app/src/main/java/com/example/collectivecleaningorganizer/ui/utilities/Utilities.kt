@@ -5,6 +5,9 @@ import android.content.Context
 import android.view.View
 import com.example.collectivecleaningorganizer.R
 
+/**
+ * A class that hold functions considered as a utility for the app
+ */
 class Utilities {
     /**
      * A function that builds an alert dialog
@@ -21,6 +24,12 @@ class Utilities {
             .setView(view)
     }
 
+    /**
+     * A function that removes a member from tasks assigned to them
+     * @param collectiveTasks is the arraylist containing the collective tasks
+     * @param username is the username we want to remove from the tasks
+     * @return returns an arraylist with a mutable<String,String> as its value
+     */
     fun removeMemberFromTasks(collectiveTasks : ArrayList<MutableMap<String,String>>, username : String) : ArrayList<MutableMap<String,String>> {
         //Iterating through the collectiveTasks arraylist
         for (task in collectiveTasks) {
