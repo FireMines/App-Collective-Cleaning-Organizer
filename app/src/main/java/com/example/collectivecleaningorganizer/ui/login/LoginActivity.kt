@@ -12,8 +12,6 @@ import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
 import java.lang.Exception
 
@@ -30,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
         forgotPassword.setOnClickListener {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
+        // Starts CreateUserActivity when clicking on the signUp button
         signup.setOnClickListener {
             startActivity(Intent(this, CreateUserActivity::class.java))
         }
@@ -42,7 +41,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // function to login user
+    /**
+     * A function that is used to login a specific user
+     * This function uses firebase authentication signInWithEmailAndPassword method
+     * This function calls the retrieveUserDataAndStoreInCache
+     * @param userID is the id of the user
+     */
     private fun login() {
         val email = emailLogin.text.toString()
         val password = passwordLogin.text.toString()
@@ -53,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("log in", "login:success")
                 Toast.makeText(this, "Successful login", Toast.LENGTH_SHORT).show()   // displays message to user
 
-                //DB request to retrieve amy user data
+                //DB request to retrieve any user data
                 val userID = task.result.user?.uid.toString()
                 //Calling function to retrieve the user data from DB and add it to a cache
                 retrieveUserDataAndStoreInCache(userID)

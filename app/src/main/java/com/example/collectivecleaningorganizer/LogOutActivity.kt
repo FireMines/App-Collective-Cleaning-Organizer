@@ -13,7 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_log_out.*
-import kotlinx.android.synthetic.main.friend.*
 
 class LogOutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +59,11 @@ class LogOutActivity : AppCompatActivity() {
         }
     }
 
-    // logs out the user
+    /**
+     * A function that is used to log out a specific user.
+     *  The function calls the firebase auth.sigOut() method.
+     *  The fucntion removes both the database listener for userData and collectiveData
+     */
     private fun logout() {
         Firebase.auth.signOut()
         Database.listenerMap["userData"]?.remove()

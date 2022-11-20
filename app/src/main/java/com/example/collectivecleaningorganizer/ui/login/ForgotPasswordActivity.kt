@@ -13,11 +13,13 @@ class ForgotPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
 
+        // back button to send user back to the login page
         forgottPasswordBackButton.setOnClickListener {
             // sends user back to login page
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
+        // wen user presses the submit button
         submitButton.setOnClickListener {
             val email = forgotPasswordEmail.text.toString() // gets email entered by user
 
