@@ -11,6 +11,7 @@ import android.widget.*
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
@@ -53,24 +54,24 @@ class SpecificCollectiveActivity : AppCompatActivity() {
 
         })
 
-        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        navigationBarView.selectedItemId = R.id.collective
 
-        //bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            //when(item.itemId) {
-                //R.id.friends -> {
-                    //startActivity(Intent(this, FriendsActivity::class.java))
+        navigationBarView.setOnItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.taskOverView -> {
+                    startActivity(Intent(this, TaskOverviewActivity::class.java))
                     true
-                //}
-                //R.id.tasks -> {
-                    //startActivity(Intent(this, TaskActivity::class.java))
-                    //true
-                //}
-                //R.id.collective -> {
-                    //true
-                //}
-            //}
-            //false
-        //}
+                }
+                R.id.collective -> {
+                    true
+                }
+                R.id.friends -> {
+                    startActivity(Intent(this, FriendsActivity::class.java))
+                }
+            }
+            false
+        }
 
         inviteMemberButton.setOnClickListener {
             startActivity(Intent(this, CollectiveInviteUsers::class.java))
