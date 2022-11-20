@@ -1,16 +1,13 @@
 package com.example.collectivecleaningorganizer.ui.task
 
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.android.synthetic.main.activity_create_task.back_btn
 import kotlinx.android.synthetic.main.activity_edit_task.*
 import java.util.*
@@ -30,50 +27,45 @@ class EditTaskActivity : AppCompatActivity() {
             Log.d("TaskOverview: Error", "the userID is null")
             return
         }
-
+        // Sets data for assigned
         assigned    = intent.getStringArrayListExtra("assigned") as ArrayList<String>
-
-
-        //Initializing a mutable map for the task information
-        val taskInformation = mutableMapOf<String,Any>()
-        //var tasksArray : ArrayList<MutableMap<String,Any>>
-
-        //Initializing the ID of the collective the user is apart of retrieved from the user data
 
         setContentView(R.layout.activity_edit_task)
         setTitle("Task description page")
 
+        // Sets data in the intent from the edit texts
         editTaskName.setText(intent.getStringExtra("name").toString())
         editTaskDescription.setText(intent.getStringExtra("description").toString())
         editTaskDueDate.text    = intent.getStringExtra("dueDate").toString()
-        //editAssignCollectiveMembersListView.text    = intent.getStringExtra("description").toString()
 
 
         val categories : ArrayList<String>? = Database.userCollectiveData[0]?.data?.get("categories") as ArrayList<String>?
         val catagoryIndex : Int? = categories?.indexOf(intent.getStringExtra("category"))
-        //categories.add()
 
         val categoryForTask = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,categories!!)
         editTaskCategories.adapter = categoryForTask
         editTaskCategories.setSelection(catagoryIndex!!, true)
 
-
+        // Opens a date picker dialog option
         editTaskDueDate.setOnClickListener{
             Utilities().showDatePickerDialog(this, editTaskDueDate)
         }
+        // Deletes a category
         editDeleteCategoryButton.setOnClickListener {
             Utilities().deleteCategory(this,categoriesArrayList,collectiveID.toString())
         }
+        // Creates a new category
         editCreateNewCategoryButton.setOnClickListener {
             Utilities().createNewCategory(this,categoriesArrayList,collectiveID.toString())
         }
+        // Saves/ updates the task you are in to the database
         saveOrUpdateButton.setOnClickListener {
             updateTask()
         }
 
         //A click listener for the back button.
         back_btn.setOnClickListener {
-            //Finishes this (CreateTaskActivity) and goes back to the TaskOverViewActivity
+            //Finishes this (EditTaskActivity) and goes back to the TaskActivity
             this.finish()
         }
         showMembersToAssign()
@@ -98,11 +90,6 @@ class EditTaskActivity : AppCompatActivity() {
                 assignedMembers.add(memberName)
             }
         }
-/*
-        editTaskDueDate.setOnClickListener {
-            Utilities().showDatePickerDialog(this, editTaskDueDate)
-        }*/
-        //Initializing a mutable map used to store the members assigned or non assigned members
 
         //Initializing a mutable map for the task information
         val taskInformation = mutableMapOf<String,Any>()
@@ -143,6 +130,4 @@ class EditTaskActivity : AppCompatActivity() {
             editAssignCollectiveMembersListView.setItemChecked(indexOfAssignedName,true)
         }
     }
-
-
 }

@@ -28,7 +28,6 @@ class TaskOverviewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_overview)
-        //val userID = intent.getStringExtra("uid")
         if (userID == null) {
             Log.d("TaskOverview: Error", "the userID is null")
             return
@@ -37,8 +36,8 @@ class TaskOverviewActivity : AppCompatActivity() {
 
         val collectiveID = Database.userData[0]?.data?.get("collectiveID")
         if (collectiveID == null) {
-            //Start collective activity
         }
+
         //Starting a listener for the collective and listens for any changes done to the collective data
         Database().databaseDataChangeListener("collective", collectiveID.toString(), Database.userCollectiveData,"collectiveData", object : ResultListener {
             override fun onSuccess() {
@@ -111,12 +110,11 @@ class TaskOverviewActivity : AppCompatActivity() {
         //Retrieving user's tasks stored in the cached user collective data
         val collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
 
+        // The sorted list of ONLY the current logged in users tasks
         val sorted = collectiveTasks?.filter{ s->
             val test = s["assigned"] as ArrayList<String>
-            test.contains(username)}?.toList()        //collectiveTasks.filter { s -> s ==  }
+            test.contains(username)}?.toList()
 
-
-        Log.e("user", userID)
 
         //Checking and handling if the cached data doesn't have any tasks
         if (collectiveTasks == null) {
@@ -124,17 +122,30 @@ class TaskOverviewActivity : AppCompatActivity() {
             return
         }
 
+        // Show all tasks when database updates and on start of app
         showTasks(userID ,collectiveTasks)
 
+        // Show all tasks in collective
         allTasksButton.setOnClickListener {
             showTasks(userID ,collectiveTasks)
-
         }
+
+        // Show all tasks assigned to the logged in user
         myTaskButton.setOnClickListener {
             showTasks(userID ,sorted)
         }
     }
 
+    /**
+     * This is a function that opens the Task page
+     * @param name is the name of the task you want to enter
+     * @param dueDate is the due date of the task you want to enter
+     * @param description is the description of the task you want to enter
+     * @param category is the category of the task you want to enter
+     * @param assigned is which person(s) assigned to the task you want to enter
+     * @param index is the index of the task you are entering
+     * @param userID is the userID of the current user
+     */
     private fun openTaskPage(name : String, dueDate : String, description : String, category : String, assigned : ArrayList<String>, index : Int, userID: String) {
         val newIntent = Intent(this, TaskActivity::class.java)
 
@@ -146,11 +157,12 @@ class TaskOverviewActivity : AppCompatActivity() {
         newIntent.putExtra("category", category)
         newIntent.putExtra("index", index)
 
-
         startActivity(newIntent)
     }
 
-
+    /**
+     * Removes all recipes
+     */
     private fun removeAllRecipes(){
         val i = rv_todo.iterator()
         while (i.hasNext()){
@@ -159,6 +171,11 @@ class TaskOverviewActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Adds all tasks you want to show to the view and makes them enterable when clicked
+     * @param userId is the id of the logged in user
+     * @param collectiveTasks is all the tasks in the collective
+     */
     private fun showTasks(userID: String, collectiveTasks: List<MutableMap<String, String>>?) {
         rv_todo.removeAllViews()
         for (task in collectiveTasks!!) {
@@ -174,7 +191,6 @@ class TaskOverviewActivity : AppCompatActivity() {
             rv_todo.addView(view)
             Log.e("Tasks:", task.entries.toString())
         }
-
     }
 }
 
