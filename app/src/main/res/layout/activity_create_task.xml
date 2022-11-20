@@ -141,7 +141,6 @@
             android:gravity="center_vertical"
             android:hint="Click to choose the due date"
             android:minHeight="48dp"
-            android:onClick="showDatePickerDialog"
             android:textSize="20sp" />
 
         <Space
@@ -216,7 +215,6 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:background="#DC4141"
-                    android:onClick="deleteCategory"
                     android:text="DELETE A CATEGORY"
                     android:textColor="#FFFFFF"
                     tools:ignore="TextContrastCheck" />
@@ -232,7 +230,6 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:background="#b8d8db"
-                    android:onClick="createNewCategory"
                     android:text="CREATE A NEW CATEGORY" />
             </LinearLayout>
         </LinearLayout>
