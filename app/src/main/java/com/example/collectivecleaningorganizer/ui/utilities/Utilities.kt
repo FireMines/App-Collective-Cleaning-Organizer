@@ -44,4 +44,22 @@ class Utilities {
         }
         return collectiveTasks
     }
+
+    /**
+     * This is a function that removes a deleted category from all tasks that has it selected as their category
+     * @param collectiveTasks is the arraylist containing the collective tasks
+     * @param removedCategoryName is the name of the removed category name
+     * @return returns an arraylist with a mutable<String,String> as its value
+     */
+    fun removeCategoryFromTasks (collectiveTasks : ArrayList<MutableMap<String,String>>, removedCategoryName : String) : ArrayList<MutableMap<String,String>> {
+        //Iterating through the collectiveTasks arraylist
+        for (task in collectiveTasks) {
+            //Checking if the category of the task is the same as the removed category name
+            if (task["category"].toString().lowercase() == removedCategoryName.lowercase()) {
+                //Changing the task's category to the default name of "No Category"
+                task["category"] = "No Category"
+            }
+        }
+        return collectiveTasks
+    }
 }
