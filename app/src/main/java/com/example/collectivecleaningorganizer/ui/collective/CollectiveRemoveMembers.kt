@@ -109,7 +109,7 @@ class CollectiveRemoveMembers : AppCompatActivity() {
         Utilities().alertDialogBuilder(this,"Removing confirmation", "Are you sure you want to remove the member(s)?", null)
             .setPositiveButton("Remove members") { _, _ ->
 
-                //Retrieving user's tasks stored in the cached collective data
+                //Retrieving collective's tasks stored in the cached collective data
                 var collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
 
                 //Creating an temporary arraylist and initializing it as an empty arraylist

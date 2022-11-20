@@ -200,6 +200,22 @@ class CreateTaskActivity : AppCompatActivity() {
 
                 //Updating the categories data with the updated contents of categoriesArrayList
                 Database().updateValueInDB("collective",collectiveID.toString(),"categories",categoriesArrayList,null)
+
+                //Retrieving collective's tasks stored in the cached collective data
+                var collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+
+                //Checking if the collective task data exists and if its not empty
+                if (collectiveTasks != null && collectiveTasks.isNotEmpty()) {
+                    //Removing the category from all tasks that has the category assigned to it
+                    collectiveTasks = Utilities().removeCategoryFromTasks(collectiveTasks,selectedCategory)
+                    /*
+                    Updating the collective task data in DB,
+                    with a data that that has removed the category from all tasks that was assigned to them
+                    */
+                    Database().updateValueInDB("collective", collectiveID.toString(),"tasks",collectiveTasks,null)
+
+                }
+
             }
             .setNegativeButton("Cancel", null)
             .create()
