@@ -1,19 +1,23 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
+import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
+import kotlinx.android.synthetic.main.activity_edit_task.*
 import java.lang.Exception
 /**
  * This is an AppCompatActivity class for a CollectiveActivity.
@@ -22,6 +26,8 @@ import java.lang.Exception
 class CollectiveInviteUsers : AppCompatActivity() {
     //Initializing a tag used for logging to know which file the log message came from
     private val tag :String= "CollectiveInviteUsers"
+    //Initializing the userID retrieved from the userData in the DB
+    private val userID : String = Database.userData[0]?.id.toString()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,14 +55,79 @@ class CollectiveInviteUsers : AppCompatActivity() {
             false
         }
 
+        //An onclick listener for the back arrow
+        backButton.setOnClickListener {
+            this.finish()
+        }
+
+        //Calling the showFriends() function to populate the listview with user's friends
+        showFriends()
+
     }
 
     /**
-     * A function that sends a user an invite request to join the collective. This invite is sent if the user enters a valid username to send the invite to
+     * This is a function that populates the listview with the id "friendsListView" with friends
+     */
+    private fun showFriends() {
+        //Sends a database request to retrieve a list of user's friends
+        Database().getFriendsFromDB("users",userID, object : FriendListListener {
+            @SuppressLint("SetTextI18n")
+            /**
+             * This function is triggered when the database request to retrieve the friends list the is successful
+             * @param friendList is the retrieved friendslist
+             */
+            override fun onSuccess(friendList: ArrayList<String>) {
+                //Checking if the friendlist is empty and handling it accordingly
+                if (friendList.isEmpty()) {
+                    noFriendsTextView.text = "You have no friends to invite"
+                    //Removing the listview used to display friends
+                    friendsListView.visibility = View.GONE
+                    //Removing the button used to invite friends
+                    removeMembersButton.visibility = View.GONE
+                    return
+                }
+                //Removing the textview used to display that the user doesn't have friends
+                noFriendsTextView.visibility = View.GONE
+                //Creating an arrayadapter with the friendslist
+                val arrayAdapter = ArrayAdapter<String>(this@CollectiveInviteUsers,android.R.layout.simple_list_item_multiple_choice,friendList)
+                //Attaching the adapter to the friends listView
+                friendsListView.adapter = arrayAdapter
+            }
+            /**
+             * This function is triggered when the database request to retrieve the friends list is a failure
+             * @param error returns the error exception
+             */
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Database failure to retrieve user: $userID's friends")
+            }
+        } )
+    }
+
+    /**
+     * A function that invites a person by using the friendlist and the friends the user selected
+     * This function triggers when the user presses the "Invite selected friends" button
+     * @param view is the "Invite selected friends" button
+     */
+    fun inviteFromFriendsList(view : View) {
+        //Iterating through the friendsListView and checking which friend got selected
+        for (i:Int in 0 until friendsListView.count) {
+            //Statement checking if the item's check box is checked
+            if (friendsListView.isItemChecked(i)) {
+                //Initializing the friend's name retrieved from the friendsListView row
+                val friendUsername :String = friendsListView.getItemAtPosition(i).toString()
+
+                //Calling the sendInviteUsers() to attempt to send a invite request to join the collective
+                sendInviteUsers(friendUsername)
+            }
+        }
+    }
+
+    /**
+     * A function that invites a person by using the given username the user entered
      * @param view is the button named "Invite" which calls this function when clicked
      */
     fun inviteUserByUsername(view: View) {
-        //Initalizing a variable for the entered username
+        //Initializing a variable for the entered username
         val username : String = username.text.toString()
 
         //Checking if the entered username is invalid
@@ -65,6 +136,16 @@ class CollectiveInviteUsers : AppCompatActivity() {
                 , Toast.LENGTH_SHORT).show()
             return
         }
+        //Calling the sendInviteUsers() to attempt to send a invite request to join the collective
+        sendInviteUsers(username)
+
+    }
+
+    /**
+     * A function to attempt to send a user an invite to join a collective
+     * @param username is the username of the person we want to invite
+     */
+    private fun sendInviteUsers(username : String) {
         //Initializing a variable with the collective ID
         val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
 
@@ -143,7 +224,6 @@ class CollectiveInviteUsers : AppCompatActivity() {
                         return
                     }
                 })
-
             }
             /**
              * This function is triggered when the database request to get the UID from the given username is a failure
