@@ -52,7 +52,7 @@ class CollectiveRemoveMembers : AppCompatActivity() {
         val listViewAdapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,temporaryMembersToDeleteList)
 
         //Attaching the ArrayAdapter to the listView
-        membersListView.adapter = listViewAdapter
+        friendsListView.adapter = listViewAdapter
 
         val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
         navigationBarView.selectedItemId = R.id.collective
@@ -73,7 +73,13 @@ class CollectiveRemoveMembers : AppCompatActivity() {
             }
             false
         }
+        //An onclick listener for the back arrow
+        backButton.setOnClickListener {
+            this.finish()
+        }
+
     }
+
 
     /**
      * This is a function that removes selected members from the collective if the user confirms the action.
@@ -85,9 +91,9 @@ class CollectiveRemoveMembers : AppCompatActivity() {
         var amountOfCheckedNames : Int = 0
 
         //Iterating through the membersListView
-        for (i:Int in 0 until membersListView.count) {
+        for (i:Int in 0 until friendsListView.count) {
             //Statement checking if the member's check box is checked
-            if (membersListView.isItemChecked(i)) {
+            if (friendsListView.isItemChecked(i)) {
                 //Incrementing the value of amountOfCheckedNames by 1
                 amountOfCheckedNames = amountOfCheckedNames.inc()
             }
@@ -110,13 +116,13 @@ class CollectiveRemoveMembers : AppCompatActivity() {
                 val temporaryRemovedMemberNameList : ArrayList<String> = arrayListOf<String>()
 
                 //Iterating through the membersListView
-                for (i:Int in 0 until membersListView.count) {
+                for (i:Int in 0 until friendsListView.count) {
 
                     //Checking if the member's check box is checked
-                    if (membersListView.isItemChecked(i)) {
+                    if (friendsListView.isItemChecked(i)) {
 
                         //Initializing a variable with the member's name retrieved from the membersListView row
-                        val memberName :String = membersListView.getItemAtPosition(i).toString()
+                        val memberName :String = friendsListView.getItemAtPosition(i).toString()
 
                         //Adding the checked member's name to the temporaryRemovedMemberNameList Arraylist
                         temporaryRemovedMemberNameList.add(memberName)
