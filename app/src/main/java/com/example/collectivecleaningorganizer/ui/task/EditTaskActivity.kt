@@ -3,26 +3,14 @@ package com.example.collectivecleaningorganizer.ui.task
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_create_task.*
-import kotlinx.android.synthetic.main.activity_create_task.assignCollectiveMembersListView
 import kotlinx.android.synthetic.main.activity_create_task.back_btn
-import kotlinx.android.synthetic.main.activity_create_task.taskCategories
-import kotlinx.android.synthetic.main.activity_create_task.taskDescription
-import kotlinx.android.synthetic.main.activity_create_task.taskDueDate
-import kotlinx.android.synthetic.main.activity_create_task.taskName
 import kotlinx.android.synthetic.main.activity_edit_task.*
-import kotlinx.android.synthetic.main.activity_view_task.*
 import java.util.*
 
 
@@ -42,7 +30,6 @@ class EditTaskActivity : AppCompatActivity() {
 
         assigned    = intent.getStringArrayListExtra("assigned") as ArrayList<String>
 
-        Log.e("assigned here", assigned.toString())
 
         //Initializing a mutable map for the task information
         val taskInformation = mutableMapOf<String,Any>()
@@ -53,8 +40,6 @@ class EditTaskActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_task)
         setTitle("Task description page")
 
-        Log.e("YOOO", "PAPA")
-        Log.e("NAMEyoyo:", intent.getStringExtra("name").toString())
         editTaskName.setText(intent.getStringExtra("name").toString())
         editTaskDescription.setText(intent.getStringExtra("description").toString())
         editTaskDueDate.text    = intent.getStringExtra("dueDate").toString()
@@ -99,7 +84,6 @@ class EditTaskActivity : AppCompatActivity() {
                 //Initializing the member's name retrieved from the assignCollectiveMembersListView row
                 val memberName :String = editAssignCollectiveMembersListView.getItemAtPosition(i).toString()
 
-                Log.e("membername", memberName)
                 //Adding the assigned member's name to the assignedMembers arraylist
                 assignedMembers.add(memberName)
             }
@@ -146,4 +130,53 @@ class EditTaskActivity : AppCompatActivity() {
             editAssignCollectiveMembersListView.setItemChecked(indexOfAssignedName,true)
         }
     }
+
+    /**
+     * A function that is called everytime the user clicks on the TextView element with the id "taskDueDate"
+     * It shows a date picker dialog where the user can choose a due date
+     * @param view the textview that the user clicks on in order to run this function
+     */
+    fun showDatePickerDialog(view: View) {
+        //Creating a calendar instance
+        val calendar = Calendar.getInstance()
+
+        //Getting the current day
+        var day : Int = calendar.get(Calendar.DAY_OF_MONTH)
+
+        //Getting the current month
+        var month : Int = calendar.get(Calendar.MONTH)
+
+        //Getting the current year
+        var year : Int = calendar.get(Calendar.YEAR)
+
+        //Checking if the the user has already chosen a date, and getting the datePickerDialog to show that date instead of current date
+        if (editTaskDueDate.text != "") {
+            //Splitting the taskDueDate to get the day, month and year
+            val dueDate : List<String> = editTaskDueDate.text.split("/")
+
+            //Getting the chosen day as a number
+            day = dueDate[0].toInt()
+
+            //Getting the chosen month as a number
+            // and decrementing the month to show the correct month in the dialog as the calander instance's month is from range 0 to 11.
+            month = dueDate[1].toInt().dec()
+
+            //Getting the chosen year as a number
+            year = dueDate[2].toInt()
+        }
+        //Creating a date picker dialog allowing the user to choose a date
+        val datePickerDialog = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { datePicker : DatePicker, pickedYear: Int, pickedMonth: Int, pickedDay : Int ->
+            //Setting the date into the EditText element with the id "taskDueDate".
+            //Incrementing the month to give the correct month value as the calander instance's month is from range 0 to 11.
+            editTaskDueDate.setText("$pickedDay/${pickedMonth.inc()}/$pickedYear")
+
+        }, year, month, day)
+
+        //Not allowing the dialog to show past dates
+        datePickerDialog.datePicker.minDate = calendar.getTimeInMillis();
+
+        //Showing the datepicker dialog
+        datePickerDialog.show()
+    }
+
 }
