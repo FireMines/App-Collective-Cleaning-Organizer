@@ -99,9 +99,66 @@ class FriendsActivity : AppCompatActivity(){
             val check = i.next()
             if (check.FriendName.text.toString() == name){
                 i.remove()
-                //Also remove from database entry
             }
         }
+        val username = Database.userData[0]?.data?.get("username").toString()
+        val uId = Database.userData[0]?.id.toString()
+        Database().getFriendsFromDB("users", uId, object : FriendListListener{
+            override fun onSuccess(friendList: ArrayList<String>) {
+                val it = friendList.iterator()
+                while (it.hasNext()) {
+                    if (it.next().toString() == name) {
+                        it.remove()
+                    }
+                }
+                    Database().updateValueInDB("users", uId, "Friends", friendList, object : ResultListener {
+                        override fun onSuccess() {
+                            //Gi konf på request sent
+                            Log.e("Bruh", "Bruh")
+                        }
+
+                        override fun onFailure(error: Exception) {
+                            Log.e("TaskOverviewActivity", "Failure with listener")
+                        }
+                    })
+                }
+            override fun onFailure(error: Exception) {
+                Log.e("getFriends", "Failure to get friends")
+            }
+        })
+
+        Database().getUid(name, object : StringListener {
+            override fun onSuccess(uId: String) {
+                Database().getFriendsFromDB("users", uId, object : FriendListListener {
+                    override fun onSuccess(friendList: ArrayList<String>) {
+                        val it = friendList.iterator()
+                        while (it.hasNext()) {
+                            if (it.next().toString() == username) {
+                                it.remove()
+                            }
+                        }
+                        Database().updateValueInDB("users", uId, "Friends", friendList, object : ResultListener {
+                                override fun onSuccess() {
+                                    //Gi konf på request sent
+                                    Log.e("Bruh", "Bruh")
+                                }
+
+                                override fun onFailure(error: Exception) {
+                                    Log.e("TaskOverviewActivity", "Failure with listener")
+                                }
+                            })
+                    }
+
+                    override fun onFailure(error: Exception) {
+                        Log.e("getFriends", "Failure to get friends")
+                    }
+                })
+            }
+
+            override fun onFailure(error: Exception) {
+                Log.e("getUid", "Failure to get user id")
+            }
+        })
     }
 
 
@@ -124,19 +181,35 @@ class FriendsActivity : AppCompatActivity(){
                             }
                         }
                         if (!dupe) {
-                            friendList.add(userId)
-                            Database().updateValueInDB("users", uId, "FriendRequests", friendList, object : ResultListener {
-                                override fun onSuccess() {
-                                    //Gi konf på request sent
-                                    Log.e("Bruh", "Bruh")
-                                }
+                            Database().getFriendsFromDB("users", uId, object : FriendListListener{
+                                override fun onSuccess(friendList: ArrayList<String>) {
+                                    val it = friendList.iterator()
+                                    var dupe = false
+                                    while (it.hasNext()) {
+                                        if (it.next().toString() == userId) {
+                                            dupe = true
+                                        }
+                                    }
+                                    if (!dupe) {
+                                        friendList.add(userId)
+                                        Database().updateValueInDB("users", uId, "FriendRequests", friendList, object : ResultListener {
+                                            override fun onSuccess() {
+                                                //Gi konf på request sent
+                                                Log.e("Bruh", "Bruh")
+                                            }
 
-                                override fun onFailure(error: Exception) {
-                                    Log.e("TaskOverviewActivity", "Failure with listener")
+                                            override fun onFailure(error: Exception) {
+                                                Log.e("TaskOverviewActivity", "Failure with listener")
+                                            }
+                                        })
+                                    }
                                 }
-                            })
+                                override fun onFailure(error: Exception) {
+                                    Log.e("getFriends", "Failure to get friends")
+                                }
+                                })
+                            }
                         }
-                    }
                     override fun onFailure(error: Exception) {
                         Log.e("getFriendRequests", "Failure to get friend requests")
                     }

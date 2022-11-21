@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.iterator
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
@@ -27,7 +28,7 @@ class FriendRequestsActivity: AppCompatActivity() {
         navigationBarView.selectedItemId = R.id.friends
 
         navigationBarView.setOnItemSelectedListener { it ->
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.taskOverView -> {
                     startActivity(Intent(this, TaskOverviewActivity::class.java))
                     true
@@ -45,7 +46,7 @@ class FriendRequestsActivity: AppCompatActivity() {
         }
     }
 
-    private fun init(){
+    private fun init() {
         //Hent venner fra database og vis i scrollview
 
         //Testdata
@@ -59,6 +60,7 @@ class FriendRequestsActivity: AppCompatActivity() {
                     addRequestsScroll(it.next().toString())
                 }
             }
+
             override fun onFailure(error: Exception) {
                 Log.e("getFriendRequests", "Failure to get friend requests")
             }
@@ -67,17 +69,24 @@ class FriendRequestsActivity: AppCompatActivity() {
 
     }
 
-    private fun addRequestsScroll(name: String){
+    private fun addRequestsScroll(name: String) {
         val view = layoutInflater.inflate(R.layout.friend, null)
         view.FriendName.text = name
         view.ButtonRemoveFriend.text = "Accept request"
-        view.ButtonRemoveFriend.setOnClickListener{
+        view.ButtonRemoveFriend.setOnClickListener {
             addFriend(name)
         }
         RequestsScroll.addView(view)
     }
 
     private fun addFriend(name: String) {
+        val it = RequestsScroll.iterator()
+        while (it.hasNext()){
+            val check = it.next()
+            if(check.FriendName.text.toString() == name){
+                it.remove()
+           }
+        }
         //Finn id i db
         //Sett friend felt i begge dber til å være hverandre sitt navn
         val userName = Database.userData[0]?.data?.get("username").toString()
@@ -86,22 +95,30 @@ class FriendRequestsActivity: AppCompatActivity() {
             override fun onSuccess(uId: String) {
                 Database().getFriendsFromDB("users", uId, object : FriendListListener {
                     override fun onSuccess(friendList: ArrayList<String>) {
-                            friendList.add(userName)
-                            Database().updateValueInDB("users", uId, "Friends", friendList, object : ResultListener {
+                        friendList.add(userName)
+                        Database().updateValueInDB(
+                            "users",
+                            uId,
+                            "Friends",
+                            friendList,
+                            object : ResultListener {
                                 override fun onSuccess() {
                                     Log.e("Bruh", "Bruh")
                                 }
+
                                 override fun onFailure(error: Exception) {
                                     Log.e("TaskOverviewActivity", "Failure with listener")
                                 }
                             })
                     }
+
                     override fun onFailure(error: Exception) {
                         Log.e("getFriendRequests", "Failure to get friend requests")
                     }
 
                 })
             }
+
             override fun onFailure(error: Exception) {
                 Log.e("not good", "not good")
             }
@@ -110,19 +127,50 @@ class FriendRequestsActivity: AppCompatActivity() {
         Database().getFriendsFromDB("users", userId, object : FriendListListener {
             override fun onSuccess(friendList: ArrayList<String>) {
                 friendList.add(name)
-                Database().updateValueInDB("users", userId, "Friends", friendList, object : ResultListener {
+                Database().updateValueInDB(
+                    "users",
+                    userId,
+                    "Friends",
+                    friendList,
+                    object : ResultListener {
+                        override fun onSuccess() {
+                            Log.e("Bruh", "Bruh")
+                        }
+
+                        override fun onFailure(error: Exception) {
+                            Log.e("TaskOverviewActivity", "Failure with listener")
+                        }
+                    })
+            }
+
+            override fun onFailure(error: Exception) {
+                Log.e("getFriendRequests", "Failure to get friend requests")
+            }
+
+        })
+        Database().getFriendRequestListFromDB("users", userId, object : FriendListListener {
+            override fun onSuccess(friendList: ArrayList<String>) {
+                val it = friendList.iterator()
+                while (it.hasNext()) {
+                    if (it.next().toString() == name) {
+                        it.remove()
+                    }
+                }
+                Database().updateValueInDB("users", userId, "FriendRequests", friendList, object : ResultListener {
                     override fun onSuccess() {
+                        //Gi konf på request sent
                         Log.e("Bruh", "Bruh")
                     }
+
                     override fun onFailure(error: Exception) {
                         Log.e("TaskOverviewActivity", "Failure with listener")
                     }
                 })
             }
+
             override fun onFailure(error: Exception) {
                 Log.e("getFriendRequests", "Failure to get friend requests")
             }
-
         })
     }
 }
