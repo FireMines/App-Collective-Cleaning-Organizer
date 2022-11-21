@@ -11,10 +11,13 @@ import android.widget.Spinner
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.login.LoginActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_collective.*
 import java.lang.Exception
 
@@ -46,6 +49,11 @@ class CollectiveActivity : AppCompatActivity() {
             //Sending the user to the Activity called "SpecificCollectiveActivity" which shows detailed information about the collective the user is in
             startActivity(Intent(this, SpecificCollectiveActivity::class.java))
             return
+        }
+
+        //Sends user back to the login page if user does not create or join an existing collective
+        backToLoginPageButton.setOnClickListener {
+            logout()
         }
     }
 
@@ -106,7 +114,21 @@ class CollectiveActivity : AppCompatActivity() {
             .setNegativeButton("Cancel", null)
             .create()
             .show()
+    }
 
+    /**
+     * A function that is used to log out a new user that does not create or join a collective.
+     *  The function calls the firebase auth.sigOut() method.
+     *  The function removes both the database listener for userData and collectiveData
+     */
+    private fun logout() {
+        Firebase.auth.signOut()
+        Database.listenerMap["userData"]?.remove()
+        Database.listenerMap["collectiveData"]?.remove()
+        startActivity(Intent(this, LoginActivity::class.java))
+
+        Toast.makeText(this,"You must create or join an existing collective after signing up."
+                ,Toast.LENGTH_LONG).show()
     }
 
     /**

@@ -62,7 +62,7 @@ class LogOutActivity : AppCompatActivity() {
     /**
      * A function that is used to log out a specific user.
      *  The function calls the firebase auth.sigOut() method.
-     *  The fucntion removes both the database listener for userData and collectiveData
+     *  The function removes both the database listener for userData and collectiveData
      */
     private fun logout() {
         Firebase.auth.signOut()
