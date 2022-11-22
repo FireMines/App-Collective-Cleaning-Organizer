@@ -164,7 +164,7 @@
         <ListView
             android:id="@+id/assignCollectiveMembersListView"
             android:layout_width="match_parent"
-            android:layout_height="87dp"
+            android:layout_height="114dp"
             android:choiceMode="multipleChoice"
             android:fadeScrollbars="false"
             android:isScrollContainer="true"
@@ -194,44 +194,38 @@
             android:layout_height="106dp"
             android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/taskCategories"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                tools:ignore="TouchTargetSizeCheck" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="82dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/deleteCategoryButton"
-                    android:layout_width="156dp"
+                <Spinner
+                    android:id="@+id/taskCategories"
+                    android:layout_width="281dp"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:background="#DC4141"
-                    android:text="DELETE A CATEGORY"
-                    android:textColor="#FFFFFF"
-                    tools:ignore="TextContrastCheck" />
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <Space
-                    android:layout_width="10dp"
-                    android:layout_height="13dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <Button
-                    android:id="@+id/createNewCategoryButton"
-                    android:layout_width="156dp"
+                <ImageButton
+                    android:id="@+id/deleteCategoryButton"
+                    android:layout_width="40dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:background="#b8d8db"
-                    android:text="CREATE A NEW CATEGORY" />
+                    app:srcCompat="@android:drawable/ic_delete"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <ImageButton
+                    android:id="@+id/createNewCategoryButton"
+                    android:layout_width="40dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/ic_input_add" />
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
