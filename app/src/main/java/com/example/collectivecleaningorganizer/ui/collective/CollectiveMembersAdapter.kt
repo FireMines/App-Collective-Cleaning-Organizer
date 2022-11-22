@@ -163,32 +163,38 @@ class CollectiveMembersAdapter(val context: Activity, val membersMap :MutableMap
                 //Creating an confirmation alert dialog confirming if the user wants to change someone's role or not
                 Utilities().alertDialogBuilder(context, title, message,null)
                     .setPositiveButton("Confirm ") { _, _ ->
-                        //Getting the selected role from the spinner
-                        val selectedRole = parent.getItemAtPosition(position).toString()
+                        try {
+                            //Getting the selected role from the spinner
+                            val selectedRole = parent.getItemAtPosition(position).toString()
 
-                        //Updating the member's new role in the memberRoleList with the selectedRole
-                        memberRoleList[p0] = selectedRole
+                            //Updating the member's new role in the memberRoleList with the selectedRole
+                            memberRoleList[p0] = selectedRole
 
-                        //Updating the member's role in the membersMap with the selectedRole
-                        membersMap[memberNameList[p0]] = memberRoleList[p0]
+                            //Updating the member's role in the membersMap with the selectedRole
+                            membersMap[memberNameList[p0]] = memberRoleList[p0]
 
-                        //If the user's own rank is changed from owner to Member, the user will lose the ability to change member roles.
-                        if (membersMap[username] != "Owner") {
-                            //Iterating through the collectiveMembersListView and disabling the spinner used for changing roles
-                            for (context in context.collectiveMembersListView.iterator()) {
-                                //Changing the changeMemberRolePermission to false to avoid
-                                //the spinners being enabled again due to scrolling in the listView triggers the getview() function
-                                changeMemberRolePermission = false
+                            //If the user's own rank is changed from owner to Member, the user will lose the ability to change member roles.
+                            if (membersMap[username] != "Owner") {
+                                //Iterating through the collectiveMembersListView and disabling the spinner used for changing roles
+                                for (context in context.collectiveMembersListView.iterator()) {
+                                    //Changing the changeMemberRolePermission to false to avoid
+                                    //the spinners being enabled again due to scrolling in the listView triggers the getview() function
+                                    changeMemberRolePermission = false
 
-                                //Disabling the spinner
-                                context.collectiveRolesSpinner.isEnabled = false
+                                    //Disabling the spinner
+                                    context.collectiveRolesSpinner.isEnabled = false
+                                }
                             }
-                        }
-                        //Sending a success msg to user
-                        Toast.makeText(context, "Successful in changing the member's role", Toast.LENGTH_SHORT).show()
+                            //Sending a success msg to user
+                            Toast.makeText(context, "Successful in changing the member's role", Toast.LENGTH_SHORT).show()
 
-                        //Attaching the onDataChange interface with the spinner listener and add the updated membersMap
-                        onDataChange.collectiveMemberRolesChanged(membersMap)
+                            //Attaching the onDataChange interface with the spinner listener and add the updated membersMap
+                            onDataChange.collectiveMemberRolesChanged(membersMap)
+                        }
+                        catch (error : Exception) {
+                            Log.e(tag, "An error occured when trying to change the role")
+                            parent.setSelection(rolePositionInSpinner)
+                        }
                     }
                     .setNegativeButton("Cancel") { _, _ ->
                         //Setting the selected value back to what it was
