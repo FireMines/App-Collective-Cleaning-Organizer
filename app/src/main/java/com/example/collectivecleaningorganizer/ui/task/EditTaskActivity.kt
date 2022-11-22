@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
+import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.android.synthetic.main.activity_create_task.back_btn
 import kotlinx.android.synthetic.main.activity_edit_task.*
 import java.util.*
@@ -19,7 +20,9 @@ class EditTaskActivity : AppCompatActivity() {
     val collectiveID = Database.userData[0]?.data?.get("collectiveID")
     lateinit var assigned : ArrayList<String>
     private var categoriesArrayList : ArrayList<String> = arrayListOf("No Category")
-
+    //Initializing an array list to retrieve the categories data from the snapshot as an arraylist
+    private val categoriesArrayListFromSnapshot : ArrayList<String>? = Database.userCollectiveData[0]?.data?.get("categories") as ArrayList<String>?
+    private val tag : String = "EditTaskActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val userID = intent.getStringExtra("uid")
@@ -38,11 +41,16 @@ class EditTaskActivity : AppCompatActivity() {
         editTaskDescription.setText(intent.getStringExtra("description").toString())
         editTaskDueDate.text    = intent.getStringExtra("dueDate").toString()
 
+        //Checking if the categories data exist in the snapshot
+        if (categoriesArrayListFromSnapshot != null && categoriesArrayListFromSnapshot.isNotEmpty()) {
+            //Replacing the contents of the categoriesArrayListFromSnapshot into categoriesArrayList
+            categoriesArrayList = categoriesArrayListFromSnapshot
+            Log.d(tag, "There exists category data in the snapshot. Using the arraylist found in the snapshot")
+        }
 
-        val categories : ArrayList<String>? = Database.userCollectiveData[0]?.data?.get("categories") as ArrayList<String>?
-        val catagoryIndex : Int? = categories?.indexOf(intent.getStringExtra("category"))
-
-        val categoryForTask = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,categories!!)
+        val catagoryIndex : Int? = categoriesArrayListFromSnapshot?.indexOf(intent.getStringExtra("category"))
+        Log.e("Index", catagoryIndex.toString())
+        val categoryForTask = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,categoriesArrayList!!)
         editTaskCategories.adapter = categoryForTask
         editTaskCategories.setSelection(catagoryIndex!!, true)
 
@@ -130,4 +138,6 @@ class EditTaskActivity : AppCompatActivity() {
             editAssignCollectiveMembersListView.setItemChecked(indexOfAssignedName,true)
         }
     }
+
+
 }
