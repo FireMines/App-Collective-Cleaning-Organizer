@@ -99,10 +99,6 @@ class TaskOverviewActivity : AppCompatActivity() {
             }
             false
         }
-
-
-
-
     }
 
     private fun dbSync(userID : String) {
