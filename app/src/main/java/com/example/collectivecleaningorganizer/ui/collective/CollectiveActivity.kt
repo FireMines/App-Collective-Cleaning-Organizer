@@ -53,7 +53,16 @@ class CollectiveActivity : AppCompatActivity() {
 
         //Sends user back to the login page if user does not create or join an existing collective
         backToLoginPageButton.setOnClickListener {
-            logout()
+            //Creating a dialog confirming if the user wants to logout
+            Utilities().alertDialogBuilder(this,"Log out", "Are you sure you want to log out?", null)
+                .setPositiveButton("OK") { _, _ ->
+                    //Calling the logout function
+                    logout()
+                }
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show()
+
         }
     }
 
@@ -131,13 +140,13 @@ class CollectiveActivity : AppCompatActivity() {
         try {
             //Signing out
             Firebase.auth.signOut()
-            //Removing the listens for the userdata
+            //Removing the listens for the userdata if it exists
             Database.listenerMap["userData"]?.remove()
-            //Removing the listener for the collective data
+            //Removing the listener for the collective data if it exists
             Database.listenerMap["collectiveData"]?.remove()
             startActivity(Intent(this, LoginActivity::class.java))
 
-            Toast.makeText(this,"You must create or join an existing collective after signing up."
+            Toast.makeText(this,"Successfully logged out"
                 ,Toast.LENGTH_LONG).show()
         }
         catch (error : Exception) {
