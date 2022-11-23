@@ -98,15 +98,14 @@
             android:layout_height="175dp" />
     </LinearLayout>
 
-    <ImageButton
+
+    <ImageView
         android:id="@+id/backToLoginPageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_width="46dp"
+        android:layout_height="29dp"
         android:layout_marginTop="16dp"
-        android:background="#7a9e9f"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backarrow" />
+        app:srcCompat="@drawable/baseline_logout_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
