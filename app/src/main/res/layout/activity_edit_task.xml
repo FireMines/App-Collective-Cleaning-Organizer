@@ -138,8 +138,8 @@
             android:id="@+id/editTaskDueDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_calendar_today_24"
             android:gravity="center_vertical"
-            android:hint="Click to choose the due date"
             android:minHeight="48dp"
             android:textSize="20sp" />
 

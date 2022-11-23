@@ -88,7 +88,7 @@ class CreateTaskActivity : AppCompatActivity() {
         createNewCategoryButton.setOnClickListener {
             Utilities().createNewCategory(this,categoriesArrayList,collectiveID.toString())
         }
-
+        //Calling the setCurrentDate() function to set the current date into the due date field in the layout
         Utilities().setCurrentDate(taskDueDate)
     }
 
