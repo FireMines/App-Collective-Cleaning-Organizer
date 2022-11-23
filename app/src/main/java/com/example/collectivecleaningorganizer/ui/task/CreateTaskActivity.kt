@@ -88,6 +88,8 @@ class CreateTaskActivity : AppCompatActivity() {
         createNewCategoryButton.setOnClickListener {
             Utilities().createNewCategory(this,categoriesArrayList,collectiveID.toString())
         }
+
+        Utilities().setCurrentDate(taskDueDate)
     }
 
     /**

@@ -9,6 +9,7 @@ import android.widget.*
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import kotlinx.android.synthetic.main.activity_create_task.*
+import org.w3c.dom.Text
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -241,5 +242,24 @@ class Utilities {
             }
         }
         return false
+    }
+
+    /**
+     * A function used to set the current date in the due date field for the create task and edit task activity
+     * @param taskDueDate is the TextView where we are placing the date
+     */
+    fun setCurrentDate(taskDueDate : TextView) {
+        //Creating a calendar instance
+        val calendar = Calendar.getInstance()
+
+        //Getting the current day
+        var day : Int = calendar.get(Calendar.DAY_OF_MONTH)
+
+        //Getting the current month
+        var month : Int = calendar.get(Calendar.MONTH)+1
+
+        //Getting the current year
+        var year : Int = calendar.get(Calendar.YEAR)
+        taskDueDate.text = "$day/$month/$year"
     }
 }
