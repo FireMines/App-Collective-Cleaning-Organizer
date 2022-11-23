@@ -104,6 +104,8 @@ class CreateTaskActivity : AppCompatActivity() {
                 Log.d(tag, "There exists category data in the snapshot. Using the arraylist found in the snapshot")
             }
             else {
+                //Storing the category list the "No Category" to the DB
+                Database().updateValueInDB("collective", collectiveID.toString(),"categories", categoriesArrayList, null)
                 Log.d(tag, "There are no category data in the snapshot. Using an almost empty arraylist with default value: 'No category'")
             }
 
