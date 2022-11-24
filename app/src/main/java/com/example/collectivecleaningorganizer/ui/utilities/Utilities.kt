@@ -7,6 +7,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
@@ -277,7 +278,7 @@ class Utilities {
      * @param id is the id of the selected menu item
      * @param navigationBarview selected navigation bar
      */
-    fun navigation(context: Context, id: Int, navigationbarview : NavigationBarView) {
+    fun navigation(app: AppCompatActivity, id: Int, navigationbarview : NavigationBarView) {
         //Retrieving the collectiveID from the userdata
         val collectiveID = Database.userData[0]?.data?.get("collectiveID")
 
@@ -290,32 +291,35 @@ class Utilities {
                 R.id.taskOverView -> {
                     //Checking if the user isnt apart of a collective
                     if (collectiveID == null) {
-                        Toast.makeText(context, "Please join a collective first", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(app, "Please join a collective first", Toast.LENGTH_SHORT).show()
                     }
                     else {
-                        val intent = Intent(context, TaskOverviewActivity::class.java)
+                        val intent = Intent(app, TaskOverviewActivity::class.java)
+                        //Finishing the activity the user was on
+                        app.finish()
                         //Starts new activity
-                        context.startActivity(intent)
-                        //true
+                        app.startActivity(intent)
                     }
                 }
                 // if the menu id is collective
                 R.id.collective -> {
-                    var intent = Intent(context, SpecificCollectiveActivity::class.java)
+                    var intent = Intent(app, SpecificCollectiveActivity::class.java)
                     if (collectiveID == null) {
-                        intent = Intent(context, CollectiveActivity::class.java)
+                        intent = Intent(app, CollectiveActivity::class.java)
                     }
 
+                    //Finishing the activity the user was on
+                    app.finish()
                     //Starts new activity
-                    context.startActivity(intent)
-                    //true
+                    app.startActivity(intent)
                 }
                 //if the menu id is friends
                 R.id.friends -> {
-                    val intent = Intent(context, FriendsActivity::class.java)
+                    val intent = Intent(app, FriendsActivity::class.java)
+                    //Finishing the activity the user was on
+                    app.finish()
                     //Starts new activity
-                    context.startActivity(intent)
-                    //true
+                    app.startActivity(intent)
                 }
             }
             false
