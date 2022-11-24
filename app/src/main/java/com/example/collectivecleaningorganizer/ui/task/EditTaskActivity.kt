@@ -84,62 +84,90 @@ class EditTaskActivity : AppCompatActivity() {
     }
 
     private fun updateTask() {
-        //Checking if the given username is empty and handling it accordingly
-        if (editTaskName.text.toString() == "") {
-            Toast.makeText(this, "Please write a task name in order to create the task", Toast.LENGTH_LONG).show()
-            return
-        }
-        val assignedMembers : ArrayList<String> = arrayListOf()
-
-        //Iterating through the assignCollectiveMembersListView and checking which members got assigned
-        for (i:Int in 0 until editAssignCollectiveMembersListView.count) {
-            //Statement checking if the item's check box is checked
-            if (editAssignCollectiveMembersListView.isItemChecked(i)) {
-                //Initializing the member's name retrieved from the assignCollectiveMembersListView row
-                val memberName :String = editAssignCollectiveMembersListView.getItemAtPosition(i).toString()
-
-                //Adding the assigned member's name to the assignedMembers arraylist
-                assignedMembers.add(memberName)
+        try {
+            //Checking if the given username is empty and handling it accordingly
+            if (editTaskName.text.toString() == "") {
+                Toast.makeText(
+                    this,
+                    "Please write a task name in order to create the task",
+                    Toast.LENGTH_LONG
+                ).show()
+                return
             }
+            val assignedMembers: ArrayList<String> = arrayListOf()
+
+            //Iterating through the assignCollectiveMembersListView and checking which members got assigned
+            for (i: Int in 0 until editAssignCollectiveMembersListView.count) {
+                //Statement checking if the item's check box is checked
+                if (editAssignCollectiveMembersListView.isItemChecked(i)) {
+                    //Initializing the member's name retrieved from the assignCollectiveMembersListView row
+                    val memberName: String =
+                        editAssignCollectiveMembersListView.getItemAtPosition(i).toString()
+
+                    //Adding the assigned member's name to the assignedMembers arraylist
+                    assignedMembers.add(memberName)
+                }
+            }
+
+            //Initializing a mutable map for the task information
+            val taskInformation = mutableMapOf<String, Any>()
+
+            //Adding all the task information to the task map
+            taskInformation["name"] = editTaskName.text.toString()
+            taskInformation["description"] = editTaskDescription.text.toString()
+            taskInformation["dueDate"] = editTaskDueDate.text.toString()
+            taskInformation["assigned"] = assignedMembers
+            taskInformation["category"] = editTaskCategories.selectedItem.toString()
+            collectiveTasks?.set(intent.getIntExtra("index", 0), taskInformation)
+
+            Database().updateValueInDB(
+                "collective",
+                collectiveID.toString(),
+                "tasks",
+                collectiveTasks,
+                null
+            )
+
+            //Finishing the CreateTaskActivity and returning back to the TaskOverviewActivity
+            this.finish()
         }
-
-        //Initializing a mutable map for the task information
-        val taskInformation = mutableMapOf<String,Any>()
-
-        //Adding all the task information to the task map
-        taskInformation["name"] = editTaskName.text.toString()
-        taskInformation["description"] = editTaskDescription.text.toString()
-        taskInformation["dueDate"] = editTaskDueDate.text.toString()
-        taskInformation["assigned"] = assignedMembers
-        taskInformation["category"] = editTaskCategories.selectedItem.toString()
-        collectiveTasks?.set(intent.getIntExtra("index",0), taskInformation)
-
-        Database().updateValueInDB("collective",collectiveID.toString(),"tasks",collectiveTasks,null)
-
-        //Finishing the CreateTaskActivity and returning back to the TaskOverviewActivity
-        this.finish()
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying to update the task. Try again ", Toast.LENGTH_LONG).show()
+            Log.e(tag, "Error when trying to run the updateTask() function",error)
+        }
     }
 
     /**
      * A function that shows all the members of the collective. It is shown in the listview with the id "assignCollectiveMembersListView"
      */
     private fun showMembersToAssign() {
-        //Retrieving the collective members map from the snapshot
-        val collectiveMembersMap : MutableMap<String,String> = Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
+        try {
+            //Retrieving the collective members map from the snapshot
+            val collectiveMembersMap: MutableMap<String, String> =
+                Database.userCollectiveData[0]?.data?.get("members") as MutableMap<String, String>
 
-        //Creating an arraylist for the keys from the collective members map
-        val collectiveMemberArrayList : ArrayList<String> = ArrayList(collectiveMembersMap.keys)
+            //Creating an arraylist for the keys from the collective members map
+            val collectiveMemberArrayList: ArrayList<String> = ArrayList(collectiveMembersMap.keys)
 
-        //Creating an ArrayAdapter with the "simple_list_item_multiple_choice" layout and adding the collectiveMemberArrayList to the adapter
-        val membersAdapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice,collectiveMemberArrayList)
+            //Creating an ArrayAdapter with the "simple_list_item_multiple_choice" layout and adding the collectiveMemberArrayList to the adapter
+            val membersAdapter = ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_multiple_choice,
+                collectiveMemberArrayList
+            )
 
-        //Assigning the adapter to the ListView with the id "assignCollectiveMembersListView"
-        editAssignCollectiveMembersListView.adapter = membersAdapter
+            //Assigning the adapter to the ListView with the id "assignCollectiveMembersListView"
+            editAssignCollectiveMembersListView.adapter = membersAdapter
 
-        for (i : Int in 0 until assigned.size) {
-            val assignedName : String= assigned[i]
-            val indexOfAssignedName = collectiveMemberArrayList.indexOf(assignedName)
-            editAssignCollectiveMembersListView.setItemChecked(indexOfAssignedName,true)
+            for (i: Int in 0 until assigned.size) {
+                val assignedName: String = assigned[i]
+                val indexOfAssignedName = collectiveMemberArrayList.indexOf(assignedName)
+                editAssignCollectiveMembersListView.setItemChecked(indexOfAssignedName, true)
+            }
+        }
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying to show members to assing in the task. Try again ", Toast.LENGTH_LONG).show()
+            Log.e(tag, "Error when trying to run the showMembersToAssign() function",error)
         }
     }
 

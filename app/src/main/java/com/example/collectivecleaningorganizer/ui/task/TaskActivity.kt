@@ -1,9 +1,11 @@
 package com.example.collectivecleaningorganizer.ui.task
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
@@ -84,16 +86,22 @@ class TaskActivity : AppCompatActivity() {
      * @param userID is the userID of the current user
      */
     private fun editTaskPage(name : String, dueDate : String, description : String, category : String, assigned : ArrayList<String>, userID: String) {
-        val newIntent = Intent(this, EditTaskActivity::class.java)
+        try {
+            val newIntent = Intent(this, EditTaskActivity::class.java)
 
-        newIntent.putExtra("uid",userID)
-        newIntent.putExtra("name",name)
-        newIntent.putExtra("dueDate", dueDate)
-        newIntent.putExtra("description", description)
-        newIntent.putExtra("assigned", assigned)
-        newIntent.putExtra("category", category)
-        newIntent.putExtra("index", intent.getIntExtra("index",0))
+            newIntent.putExtra("uid", userID)
+            newIntent.putExtra("name", name)
+            newIntent.putExtra("dueDate", dueDate)
+            newIntent.putExtra("description", description)
+            newIntent.putExtra("assigned", assigned)
+            newIntent.putExtra("category", category)
+            newIntent.putExtra("index", intent.getIntExtra("index", 0))
 
-        startActivity(newIntent)
+            startActivity(newIntent)
+        }
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying to edit the task. Try again ", Toast.LENGTH_LONG).show()
+            Log.e(TAG, "Error when trying to run the editTaskPage() function",error)
+        }
     }
 }

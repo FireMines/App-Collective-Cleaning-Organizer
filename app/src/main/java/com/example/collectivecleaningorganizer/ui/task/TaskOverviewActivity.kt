@@ -1,8 +1,10 @@
 package com.example.collectivecleaningorganizer.ui.task
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.core.view.iterator
@@ -79,34 +81,43 @@ class TaskOverviewActivity : AppCompatActivity() {
 
 
     private fun dbSync(userID : String) {
-        removeAllRecipes()
-        //Retrieving user's tasks stored in the cached user collective data
-        val collectiveTasks : ArrayList<MutableMap<String,String>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
+        try {
+            removeAllTasksFromView()
+            //Retrieving user's tasks stored in the cached user collective data
+            val collectiveTasks: ArrayList<MutableMap<String, String>>? =
+                Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, String>>?
 
-        // The sorted list of ONLY the current logged in users tasks
-        val sorted = collectiveTasks?.filter{ s->
-            val test = s["assigned"] as ArrayList<String>
-            test.contains(username)}?.toList()
+            // The sorted list of ONLY the current logged in users tasks
+            val sorted = collectiveTasks?.filter { s ->
+                val test = s["assigned"] as ArrayList<String>
+                test.contains(username)
+            }?.toList()
 
 
-        //Checking and handling if the cached data doesn't have any tasks
-        if (collectiveTasks == null) {
-            Log.d("TaskOverviewActivity","No tasks in the collective")
-            return
+            //Checking and handling if the cached data doesn't have any tasks
+            if (collectiveTasks == null) {
+                Log.d("TaskOverviewActivity", "No tasks in the collective")
+                return
+            }
+
+            // Show all tasks when database updates and on start of app
+            showTasks(userID, collectiveTasks)
+
+            // Show all tasks in collective
+            allTasksButton.setOnClickListener {
+                showTasks(userID, collectiveTasks)
+            }
+
+            // Show all tasks assigned to the logged in user
+            myTaskButton.setOnClickListener {
+                showTasks(userID, sorted)
+            }
+        }
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying to update all tasks in overview. Try again ", Toast.LENGTH_LONG).show()
+            Log.e(TAG, "Error when trying to run the dbSync() function",error)
         }
 
-        // Show all tasks when database updates and on start of app
-        showTasks(userID ,collectiveTasks)
-
-        // Show all tasks in collective
-        allTasksButton.setOnClickListener {
-            showTasks(userID ,collectiveTasks)
-        }
-
-        // Show all tasks assigned to the logged in user
-        myTaskButton.setOnClickListener {
-            showTasks(userID ,sorted)
-        }
     }
 
     /**
@@ -120,27 +131,43 @@ class TaskOverviewActivity : AppCompatActivity() {
      * @param userID is the userID of the current user
      */
     private fun openTaskPage(name : String, dueDate : String, description : String, category : String, assigned : ArrayList<String>, index : Int, userID: String) {
-        val newIntent = Intent(this, TaskActivity::class.java)
+        try {
+            val newIntent = Intent(this, TaskActivity::class.java)
 
-        newIntent.putExtra("uid",userID)
-        newIntent.putExtra("name",name)
-        newIntent.putExtra("dueDate", dueDate)
-        newIntent.putExtra("description", description)
-        newIntent.putExtra("assigned", assigned)
-        newIntent.putExtra("category", category)
-        newIntent.putExtra("index", index)
+            newIntent.putExtra("uid", userID)
+            newIntent.putExtra("name", name)
+            newIntent.putExtra("dueDate", dueDate)
+            newIntent.putExtra("description", description)
+            newIntent.putExtra("assigned", assigned)
+            newIntent.putExtra("category", category)
+            newIntent.putExtra("index", index)
 
-        startActivity(newIntent)
+            startActivity(newIntent)
+        }
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying to open the task. Try again ", Toast.LENGTH_LONG).show()
+            Log.e(TAG, "Error when trying to run the openTaskPage() function",error)
+        }
+
     }
 
     /**
      * Removes all recipes
      */
-    private fun removeAllRecipes(){
-        val i = rv_todo.iterator()
-        while (i.hasNext()){
-            i.next()
-            i.remove()
+    private fun removeAllTasksFromView() {
+        try {
+            val i = rv_todo.iterator()
+            while (i.hasNext()) {
+                i.next()
+                i.remove()
+            }
+        } catch (error: Exception) {
+            Toast.makeText(
+                this,
+                "An error occurred when trying to remove all tasks. Try again ",
+                Toast.LENGTH_LONG
+            ).show()
+            Log.e(TAG, "Error when trying to run the removeAllTasksFromView() function", error)
         }
     }
 
@@ -150,19 +177,25 @@ class TaskOverviewActivity : AppCompatActivity() {
      * @param collectiveTasks is all the tasks in the collective
      */
     private fun showTasks(userID: String, collectiveTasks: List<MutableMap<String, String>>?) {
-        rv_todo.removeAllViews()
-        for (task in collectiveTasks!!) {
-            val view = layoutInflater.inflate(R.layout.task_layout, null)
-            view.task_tv.text = task["name"]
-            view.duedate_tv.text = task["dueDate"]
-            val desc = task["description"].toString()
-            view.task_tv.setOnClickListener{
-                Log.e("index", collectiveTasks[collectiveTasks.indexOf(task)]["assigned"].toString())
-                val assignedMembers : ArrayList<String> = collectiveTasks[collectiveTasks.indexOf(task)]["assigned"] as ArrayList<String>
-                openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), assignedMembers, collectiveTasks.indexOf(task), userID)
+        try {
+            rv_todo.removeAllViews()
+            for (task in collectiveTasks!!) {
+                val view = layoutInflater.inflate(R.layout.task_layout, null)
+                view.task_tv.text = task["name"]
+                view.duedate_tv.text = task["dueDate"]
+                val desc = task["description"].toString()
+                view.task_tv.setOnClickListener{
+                    Log.e("index", collectiveTasks[collectiveTasks.indexOf(task)]["assigned"].toString())
+                    val assignedMembers : ArrayList<String> = collectiveTasks[collectiveTasks.indexOf(task)]["assigned"] as ArrayList<String>
+                    openTaskPage(view.task_tv.text.toString(),view.duedate_tv.text.toString(), desc, task["category"].toString(), assignedMembers, collectiveTasks.indexOf(task), userID)
+                }
+                rv_todo.addView(view)
+                Log.e("Tasks:", task.entries.toString())
             }
-            rv_todo.addView(view)
-            Log.e("Tasks:", task.entries.toString())
+        }
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying to show the task. Try again ", Toast.LENGTH_LONG).show()
+            Log.e(TAG, "Error when trying to run the showTasks() function",error)
         }
     }
 }
