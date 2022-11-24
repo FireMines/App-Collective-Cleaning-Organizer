@@ -21,7 +21,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".LogOutActivity"
+            android:name=".ui.login.LogOutActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan">
             <meta-data

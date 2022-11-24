@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7a9e9f"
-    tools:context=".LogOutActivity">
+    tools:context=".ui.login.LogOutActivity">
 
     <ImageButton
         android:id="@+id/backToTaskOverviewButton"

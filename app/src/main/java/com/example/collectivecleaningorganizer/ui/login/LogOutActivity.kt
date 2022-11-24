@@ -1,11 +1,12 @@
-package com.example.collectivecleaningorganizer
+package com.example.collectivecleaningorganizer.ui.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.collectivecleaningorganizer.ui.login.LoginActivity
+import com.example.collectivecleaningorganizer.Database
+import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.firebase.auth.ktx.auth
