@@ -3,11 +3,20 @@ package com.example.collectivecleaningorganizer.ui.utilities
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.content.ContextCompat.startActivity
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
+import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
+import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskActivity
+import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import kotlinx.android.synthetic.main.activity_create_task.*
 import org.w3c.dom.Text
 import java.util.*
@@ -261,5 +270,32 @@ class Utilities {
         //Getting the current year
         var year : Int = calendar.get(Calendar.YEAR)
         taskDueDate.text = "$day/$month/$year"
+    }
+
+    fun navigation(context: Context, id: Int, navigationBarview : NavigationBarView) {
+
+        navigationBarview.selectedItemId = id
+
+        navigationBarview.setOnItemSelectedListener {
+
+            when(it.itemId) {
+                R.id.taskOverView -> {
+                    val intent = Intent(context, TaskOverviewActivity::class.java)
+                    context.startActivity(intent)
+                    true
+                }
+                R.id.collective -> {
+                    val intent = Intent(context, CollectiveActivity::class.java)
+                    context.startActivity(intent)
+                    true
+                }
+                R.id.friends -> {
+                    val intent = Intent(context, FriendsActivity::class.java)
+                    context.startActivity(intent)
+                    true
+                }
+            }
+            false
+        }
     }
 }

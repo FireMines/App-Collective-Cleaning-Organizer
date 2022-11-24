@@ -12,9 +12,11 @@ import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
+import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_friendrequests.*
 import kotlinx.android.synthetic.main.activity_friends.*
+import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.friend.view.*
 import java.lang.Exception
 
@@ -24,26 +26,28 @@ class FriendRequestsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_friendrequests)
         init()
 
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.friends
+        Utilities().navigation(this, R.id.friends, bottom_navigator_friend_request)
 
-        navigationBarView.setOnItemSelectedListener { it ->
-            when (it.itemId) {
-                R.id.taskOverView -> {
-                    startActivity(Intent(this, TaskOverviewActivity::class.java))
-                    true
-                }
-                R.id.collective -> {
-                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-                    true
-                }
-                R.id.friends -> {
-                    startActivity(Intent(this, FriendsActivity::class.java))
-                    true
-                }
-            }
-            false
-        }
+        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        //navigationBarView.selectedItemId = R.id.friends
+
+        //navigationBarView.setOnItemSelectedListener { it ->
+        //    when (it.itemId) {
+        //        R.id.taskOverView -> {
+        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
+        //            true
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        //            true
+        //        }
+        //        R.id.friends -> {
+        //            startActivity(Intent(this, FriendsActivity::class.java))
+        //            true
+        //        }
+        //    }
+        //    false
+       // }
     }
 
     private fun init() {

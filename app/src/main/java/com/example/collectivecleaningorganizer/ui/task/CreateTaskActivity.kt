@@ -16,7 +16,9 @@ import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveA
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.grpc.okhttp.internal.Util
 import kotlinx.android.synthetic.main.activity_create_task.*
+import kotlinx.android.synthetic.main.activity_log_out.*
 
 
 import java.util.*
@@ -59,25 +61,27 @@ class CreateTaskActivity : AppCompatActivity() {
         //Calling the showMembersToAssign() to populate the listview with collective members
         showMembersToAssign()
 
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.taskOverView
+        Utilities().navigation(this, R.id.taskOverView, bottom_navigator_create_task)
 
-        navigationBarView.setOnItemSelectedListener { it ->
-            when(it.itemId) {
-                R.id.taskOverView -> {
-                    startActivity(Intent(this, TaskOverviewActivity::class.java))
-                    true
-                }
-                R.id.collective -> {
-                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-                    true
-                }
-                R.id.friends -> {
-                    startActivity(Intent(this, FriendsActivity::class.java))
-                }
-            }
-            false
-        }
+        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        //navigationBarView.selectedItemId = R.id.taskOverView
+
+        //navigationBarView.setOnItemSelectedListener { it ->
+        //    when(it.itemId) {
+        //        R.id.taskOverView -> {
+        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
+        //            true
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        //            true
+        //        }
+        //        R.id.friends -> {
+        //            startActivity(Intent(this, FriendsActivity::class.java))
+        //        }
+        //    }
+        //    false
+        //}
 
         taskDueDate.setOnClickListener{
             Utilities().showDatePickerDialog(this, taskDueDate)

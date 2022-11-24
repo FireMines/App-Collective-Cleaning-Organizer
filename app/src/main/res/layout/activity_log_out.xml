@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.386" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigator"
+        android:id="@+id/bottom_navigator_log_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

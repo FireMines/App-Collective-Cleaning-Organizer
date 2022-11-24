@@ -9,6 +9,7 @@ import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveA
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.login.LoginActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
+import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -38,25 +39,27 @@ class LogOutActivity : AppCompatActivity() {
             logout()
         }
 
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.taskOverView
+        Utilities().navigation(this, R.id.taskOverView, bottom_navigator_log_out)
 
-        navigationBarView.setOnItemSelectedListener { it ->
-            when(it.itemId) {
-                R.id.taskOverView -> {
-                    startActivity(Intent(this, TaskOverviewActivity::class.java))
-                    true
-                }
-                R.id.collective -> {
-                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-                    true
-                }
-                R.id.friends -> {
-                    startActivity(Intent(this, FriendsActivity::class.java))
-                }
-            }
-            false
-        }
+        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        //navigationBarView.selectedItemId = R.id.taskOverView
+
+        //navigationBarView.setOnItemSelectedListener { it ->
+        //    when(it.itemId) {
+        //        R.id.taskOverView -> {
+        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
+        //            true
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        //            true
+        //        }
+        //        R.id.friends -> {
+        //            startActivity(Intent(this, FriendsActivity::class.java))
+        //        }
+        //    }
+        //    false
+      //  }
     }
 
     /**

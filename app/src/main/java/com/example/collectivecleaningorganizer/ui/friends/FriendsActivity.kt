@@ -15,10 +15,12 @@ import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
+import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
+
+
 import kotlinx.android.synthetic.main.activity_create_task.*
+import kotlinx.android.synthetic.main.activity_friendrequests.*
 import kotlinx.android.synthetic.main.activity_friends.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_specific_collective.*
@@ -40,27 +42,35 @@ class FriendsActivity : AppCompatActivity(){
         init()
 
 
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.friends
+        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        //navigationBarView.selectedItemId = R.id.friends
 
-        navigationBarView.setOnItemSelectedListener { it ->
-            when(it.itemId) {
-                R.id.taskOverView -> {
-                    startActivity(Intent(this, TaskOverviewActivity::class.java))
-                    true
-                }
-                R.id.collective -> {
-                    startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-                    true
-                }
-                R.id.friends -> {
-                    true
-                }
-            }
-            false
-        }
+        //navigationBarView.setOnItemSelectedListener { it ->
+        //    when(it.itemId) {
+        //        R.id.taskOverView -> {
+        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
+        //            true
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        //            true
+        //        }
+        //        R.id.friends -> {
+        //            startActivity(Intent(this, FriendsActivity::class.java))
+        //        }
+        //    }
+        //    false
+       // }
+
+       Utilities().navigation(this, R.id.friends, bottom_navigator_friends)
 
     }
+
+
+
+
+
+
 
     private fun init(){
         //Hent venner fra database og vis i scrollview

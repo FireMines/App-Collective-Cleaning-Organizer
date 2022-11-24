@@ -15,7 +15,9 @@ import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.grpc.okhttp.internal.Util
 import kotlinx.android.synthetic.main.activity_collective_remove_members.*
+import kotlinx.android.synthetic.main.activity_specific_collective.*
 import java.lang.Exception
 /**
  * This is an AppCompatActivity class for a CollectiveRemoveMembers Activity.
@@ -54,25 +56,27 @@ class CollectiveRemoveMembers : AppCompatActivity() {
         //Attaching the ArrayAdapter to the listView
         membersListView.adapter = listViewAdapter
 
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.collective
+        Utilities().navigation(this, R.id.collective, bottom_navigator_remove_members)
 
-        navigationBarView.setOnItemSelectedListener { it ->
-            when(it.itemId) {
-                R.id.taskOverView -> {
-                    startActivity(Intent(this, TaskOverviewActivity::class.java))
-                    true
-                }
-                R.id.collective -> {
-                    startActivity(Intent(this, CollectiveActivity::class.java))
-                    true
-                }
-                R.id.friends -> {
-                    startActivity(Intent(this, FriendsActivity::class.java))
-                }
-            }
-            false
-        }
+        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        //navigationBarView.selectedItemId = R.id.collective
+
+        //navigationBarView.setOnItemSelectedListener { it ->
+        //    when(it.itemId) {
+        //        R.id.taskOverView -> {
+        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
+        //            true
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, CollectiveActivity::class.java))
+        //            true
+        //        }
+        //        R.id.friends -> {
+        //            startActivity(Intent(this, FriendsActivity::class.java))
+        //        }
+        //    }
+        //    false
+       // }
         //An onclick listener for the back arrow
         backButton.setOnClickListener {
             this.finish()

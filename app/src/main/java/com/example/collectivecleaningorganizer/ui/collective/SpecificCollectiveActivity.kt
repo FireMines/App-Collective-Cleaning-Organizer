@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import android.widget.GridLayout.Spec
 import com.example.collectivecleaningorganizer.*
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
@@ -15,6 +16,7 @@ import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.grpc.okhttp.internal.Util
 import kotlinx.android.synthetic.main.activity_specific_collective.*
 import java.lang.Exception
 /**
@@ -70,28 +72,6 @@ class SpecificCollectiveActivity : AppCompatActivity() {
 
         })
 
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.collective
-
-
-        navigationBarView.setOnItemSelectedListener { it ->
-            when(it.itemId) {
-                R.id.taskOverView -> {
-                    startActivity(Intent(this, TaskOverviewActivity::class.java))
-                    true
-
-                }
-                R.id.collective -> {
-                    true
-                }
-                R.id.friends -> {
-                    startActivity(Intent(this, FriendsActivity::class.java))
-                }
-            }
-            false
-        }
-
-
         //An onclick listener for the "Invite members" button
         inviteMemberButton.setOnClickListener {
             //Starting the activity called "CollectiveInviteUsers"
@@ -108,7 +88,31 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             startActivity(Intent(this, CollectiveRemoveMembers::class.java))
         }
 
+        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        //navigationBarView.selectedItemId = R.id.collective
+
+
+        //navigationBarView.setOnItemSelectedListener { it ->
+        //    when(it.itemId) {
+        //        R.id.taskOverView -> {
+        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
+        //            true
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+        //        }
+        //        R.id.friends -> {
+        //            startActivity(Intent(this, FriendsActivity::class.java))
+        //        }
+        //    }
+        //    false
+        //}
+
+        Utilities().navigation(this, R.id.collective, bottom_navigator_specific_collective)
     }
+
+
+
 
     /**
      * A function that sets the collective data to the contents of the layout

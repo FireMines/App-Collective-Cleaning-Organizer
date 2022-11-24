@@ -77,6 +77,8 @@ class EditTaskActivity : AppCompatActivity() {
             this.finish()
         }
         showMembersToAssign()
+
+        Utilities().navigation(this,R.id.taskOverView,bottom_navigator_edit_task)
     }
 
     private fun updateTask() {

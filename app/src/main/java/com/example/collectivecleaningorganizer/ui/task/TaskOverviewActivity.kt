@@ -3,6 +3,7 @@ package com.example.collectivecleaningorganizer.ui.task
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.core.view.iterator
@@ -11,11 +12,14 @@ import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
+import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
+import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.activity_task_overview.*
 import kotlinx.android.synthetic.main.task_layout.view.*
 
@@ -81,25 +85,29 @@ class TaskOverviewActivity : AppCompatActivity() {
             startActivity(intentLogoutPage)
         }
 
-        val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        navigationBarView.selectedItemId = R.id.taskOverView
+        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
+        //navigationBarView.selectedItemId = R.id.taskOverView
 
-        navigationBarView.setOnItemSelectedListener { it ->
-            when(it.itemId) {
-                R.id.taskOverView -> {
-                    true
-                }
-                R.id.collective -> {
-                    startActivity(Intent(this, CollectiveActivity::class.java))
-                    true
-                }
-                R.id.friends -> {
-                    startActivity(Intent(this, FriendsActivity::class.java))
-                }
-            }
-            false
-        }
+        //navigationBarView.setOnItemSelectedListener { it ->
+        //    when(it.itemId) {
+        //        R.id.taskOverView -> {
+        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
+        //        }
+        //        R.id.collective -> {
+        //            startActivity(Intent(this, CollectiveActivity::class.java))
+        //            true
+        //        }
+        //        R.id.friends -> {
+        //            startActivity(Intent(this, FriendsActivity::class.java))
+        //        }
+        //    }
+        //    false
+      //  }
+
+        Utilities().navigation(this, R.id.taskOverView, bottom_navigator_task_overview)
     }
+
+
 
     private fun dbSync(userID : String) {
         removeAllRecipes()
