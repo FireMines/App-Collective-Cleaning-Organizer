@@ -7,21 +7,17 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.core.content.ContextCompat.startActivity
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.login.LoginActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_create_task.*
-import org.w3c.dom.Text
 import java.util.*
 import kotlin.collections.ArrayList
 
