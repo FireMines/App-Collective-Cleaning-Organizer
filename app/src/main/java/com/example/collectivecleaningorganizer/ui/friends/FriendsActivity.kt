@@ -156,7 +156,7 @@ class FriendsActivity : AppCompatActivity(){
         FriendRequest.text.toString()
         Database().getUid(FriendRequest.text.toString(), object : StringListener {
             override fun onSuccess(uId: String) {
-                Database().getFriendRequestListFromDB("users", uId, object : FriendListListener {
+                Database().getFriendsFromDB("users", uId, object : FriendListListener {
                     override fun onSuccess(friendList: ArrayList<String>) {
                         val it = friendList.iterator()
                         var dupe = false
@@ -166,8 +166,9 @@ class FriendsActivity : AppCompatActivity(){
                             }
                         }
                         if (!dupe) {
-                            Database().getFriendsFromDB("users", uId, object : FriendListListener{
+                            Database().getFriendRequestListFromDB("users", uId, object : FriendListListener{
                                 override fun onSuccess(friendList: ArrayList<String>) {
+                                    Log.e("Bruh", friendList.toString())
                                     val it = friendList.iterator()
                                     var dupe = false
                                     while (it.hasNext()) {
@@ -177,6 +178,7 @@ class FriendsActivity : AppCompatActivity(){
                                     }
                                     if (!dupe) {
                                         friendList.add(userId)
+                                        Log.e("Bruh", friendList.toString())
                                         Database().updateValueInDB("users", uId, "FriendRequests", friendList, object : ResultListener {
                                             override fun onSuccess() {
                                                 //Gi konf på request sent

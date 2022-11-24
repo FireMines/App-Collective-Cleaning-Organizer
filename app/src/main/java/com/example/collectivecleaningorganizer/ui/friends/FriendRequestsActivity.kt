@@ -14,6 +14,7 @@ import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_create_user.*
 import kotlinx.android.synthetic.main.activity_friendrequests.*
 import kotlinx.android.synthetic.main.activity_friends.*
 import kotlinx.android.synthetic.main.activity_specific_collective.*
@@ -37,6 +38,11 @@ class FriendRequestsActivity: AppCompatActivity() {
         //Testdata
 
         val uId = Database.userData[0]?.id.toString()
+
+        // Takes the user back to the Login Activity
+        friendRequestsBack_btn.setOnClickListener{
+            this.finish()
+        }
 
         Database().getFriendRequestListFromDB("users", uId, object : FriendListListener {
             override fun onSuccess(friendList: ArrayList<String>) {

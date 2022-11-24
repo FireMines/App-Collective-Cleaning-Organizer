@@ -27,7 +27,7 @@ class CreateUserActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_user)
         init()
 
-        // Takes the user back to the Task Overview Activity
+        // Takes the user back to the Login Activity
         createUserBack_btn.setOnClickListener{
             this.finish()
         }
@@ -51,14 +51,17 @@ class CreateUserActivity : AppCompatActivity() {
         //En eller annen konfirmasjonsskjerm dersom handlingene over forekommer plettfritt
 
         //Opprett heller en error streng som fylles ettersom med krav
-        if (CreatePassword.text.toString() != CreateConfirmPassword.text.toString()){
-            val alertDialog: AlertDialog = AlertDialog.Builder(this).create()
-            alertDialog.setTitle("Alert")
-            var message = CreatePassword.text.toString() + " does not equal " + CreateConfirmPassword.text.toString()
-            alertDialog.setMessage(message)
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
-            alertDialog.show()
+        if(CreatePassword.text.toString() == "" || CreateConfirmPassword.text.toString() == "" || CreateUser.text.toString() == "" || CreateName.text.toString() == "" || CreateEmail.text.toString() == ""){
+            Toast.makeText(this@CreateUserActivity, "All fields must be filled", Toast.LENGTH_SHORT).show()
+        }
+        else if (CreateName.text.toString().length > 20){
+            Toast.makeText(this@CreateUserActivity, "Username is too long", Toast.LENGTH_SHORT).show()
+        }
+        else if (CreateName.text.toString().length < 6){
+            Toast.makeText(this@CreateUserActivity, "Username is too short", Toast.LENGTH_SHORT).show()
+        }
+        else if (CreatePassword.text.toString() != CreateConfirmPassword.text.toString()){
+            Toast.makeText(this@CreateUserActivity, "Entered passwords are not the same", Toast.LENGTH_SHORT).show()
         }
         //Helt tomt crasher appen foreløpig
         else{
