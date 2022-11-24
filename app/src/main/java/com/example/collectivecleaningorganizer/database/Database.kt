@@ -1,4 +1,4 @@
-package com.example.collectivecleaningorganizer
+package com.example.collectivecleaningorganizer.database
 
 import android.util.Log
 import com.example.collectivecleaningorganizer.ui.utilities.*

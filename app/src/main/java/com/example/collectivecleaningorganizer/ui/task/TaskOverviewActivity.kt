@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.core.view.iterator
 import androidx.core.view.size
-import com.example.collectivecleaningorganizer.Database
+import com.example.collectivecleaningorganizer.database.Database
 import com.example.collectivecleaningorganizer.ui.login.LogOutActivity
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener

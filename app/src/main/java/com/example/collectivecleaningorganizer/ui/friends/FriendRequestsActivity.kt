@@ -6,19 +6,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.iterator
-import com.example.collectivecleaningorganizer.Database
+import com.example.collectivecleaningorganizer.database.Database
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_create_user.*
 import kotlinx.android.synthetic.main.activity_friendrequests.*
-import kotlinx.android.synthetic.main.activity_friends.*
-import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.friend.view.*
 import java.lang.Exception
 

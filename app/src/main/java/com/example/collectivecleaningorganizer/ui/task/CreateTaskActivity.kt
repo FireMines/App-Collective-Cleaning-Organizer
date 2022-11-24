@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.widget.*
-import com.example.collectivecleaningorganizer.Database
+import com.example.collectivecleaningorganizer.database.Database
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.collective.CollectiveRemoveMembers
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import kotlinx.android.synthetic.main.activity_create_task.*
 
 
-import java.util.*
 import kotlin.collections.ArrayList
 
 class CreateTaskActivity : AppCompatActivity() {

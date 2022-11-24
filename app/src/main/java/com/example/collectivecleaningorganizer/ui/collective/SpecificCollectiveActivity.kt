@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.collectivecleaningorganizer.*
+import com.example.collectivecleaningorganizer.database.Database
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
