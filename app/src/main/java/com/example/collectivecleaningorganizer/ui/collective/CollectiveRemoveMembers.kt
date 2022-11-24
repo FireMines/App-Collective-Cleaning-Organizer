@@ -59,6 +59,9 @@ class CollectiveRemoveMembers : AppCompatActivity() {
 
         //An onclick listener for the back arrow
         backButton.setOnClickListener {
+            //Starting the activity called "CollectiveRemoveMembers"
+            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+            //Finishing the current Activity
             this.finish()
         }
 

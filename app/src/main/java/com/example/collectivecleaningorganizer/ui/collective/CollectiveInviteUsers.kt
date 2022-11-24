@@ -1,6 +1,7 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -38,6 +39,9 @@ class CollectiveInviteUsers : AppCompatActivity() {
 
         //An onclick listener for the back arrow
         backButton.setOnClickListener {
+            //Starting the activity called "CollectiveRemoveMembers"
+            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
+            //Finishing the current Activity
             this.finish()
         }
 
