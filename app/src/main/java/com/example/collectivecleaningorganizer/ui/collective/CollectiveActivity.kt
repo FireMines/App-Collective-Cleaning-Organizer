@@ -77,10 +77,10 @@ class CollectiveActivity : AppCompatActivity() {
                         //Sending an error message to the user
                         Toast.makeText(this, "The collective name cannot be empty. Try again", Toast.LENGTH_SHORT).show()
                         return@setPositiveButton
-                    }//Else checking if the length of the name isnt between 4 and 16.. making it invalid
-                    else if (collectiveName.length !in 4..16) {
+                    }//Else checking if the length of the name isnt between 4 and 32.. making it invalid
+                    else if (collectiveName.length !in 4..32) {
                         //Sending an error message to the user
-                        Toast.makeText(this, "The collective name must be between 4 and 16 characters long", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "The collective name must be between 4 and 32 characters long", Toast.LENGTH_SHORT).show()
                         return@setPositiveButton
                     }
                     else {
