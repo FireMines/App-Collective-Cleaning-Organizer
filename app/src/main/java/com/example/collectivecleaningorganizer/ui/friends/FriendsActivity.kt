@@ -86,6 +86,7 @@ class FriendsActivity : AppCompatActivity(){
 
     /**
      * Removes select friend from the ui and the database of both persons
+     * The user will be asked if they are certain they want to remove the friend in order to avoid "misclicks"
      * @param name friend to be removed
      */
     private fun removeFriend(name:String) {
