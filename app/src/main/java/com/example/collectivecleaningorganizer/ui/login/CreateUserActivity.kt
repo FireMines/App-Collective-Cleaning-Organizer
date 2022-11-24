@@ -64,65 +64,94 @@ class CreateUserActivity : AppCompatActivity() {
             Toast.makeText(this@CreateUserActivity, "Entered passwords are not the same", Toast.LENGTH_SHORT).show()
         }
         //Helt tomt crasher appen foreløpig
-        else{
-            Database().checkUniqueUsername(CreateName.text.toString().lowercase(), object : UniqueUsernameListener {
-                override fun onSuccess(unique: Boolean) {
-                    if (unique) {
-                        val auth = FirebaseAuth.getInstance()
+        else {
+            Database().checkUniqueUsername(
+                CreateName.text.toString().lowercase(),
+                object : UniqueUsernameListener {
+                    override fun onSuccess(unique: Boolean) {
+                        if (unique) {
+                            val auth = FirebaseAuth.getInstance()
 
-                        //val auth = FirebaseAuth.getInstance()
-                        //Sjekk at suksess
-                        auth.createUserWithEmailAndPassword(CreateEmail.text.toString(), CreatePassword.text.toString()).addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                println("UID:" + task.result.user?.uid)
-                                Toast.makeText(this@CreateUserActivity, "User created", Toast.LENGTH_SHORT).show()
+                            //val auth = FirebaseAuth.getInstance()
+                            //Sjekk at suksess
+                            auth.createUserWithEmailAndPassword(
+                                CreateEmail.text.toString(),
+                                CreatePassword.text.toString()
+                            ).addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    println("UID:" + task.result.user?.uid)
+                                    Toast.makeText(
+                                        this@CreateUserActivity,
+                                        "User created",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
-                                val uid = hashMapOf(
-                                    "uid" to auth.uid.toString()
-                                )
-                                Database().addToDB("usernames", CreateName.text.toString().lowercase(), uid, object : ResultListener {
-                                    override fun onSuccess() {
-                                        //Navn lagt til ett av stedene
-                                        Log.e(tag, "Bruh")
-                                    }
+                                    val uid = hashMapOf(
+                                        "uid" to auth.uid.toString()
+                                    )
+                                    Database().addToDB(
+                                        "usernames",
+                                        CreateName.text.toString().lowercase(),
+                                        uid,
+                                        object : ResultListener {
+                                            override fun onSuccess() {
+                                                //Navn lagt til ett av stedene
+                                                Log.e(tag, "Bruh")
+                                            }
 
-                                    override fun onFailure(error: Exception) {
-                                        Log.e(tag, "Failure with listener")
-                                    }
-                                })
+                                            override fun onFailure(error: Exception) {
+                                                Log.e(tag, "Failure with listener")
+                                            }
+                                        })
 
-                                val username = hashMapOf(
-                                    "username" to CreateName.text.toString().lowercase()
-                                )
-                                Database().addToDB("users", auth.uid.toString(), username, object : ResultListener {
-                                    override fun onSuccess() {
-                                        //Navn lagt til ett av stedene
-                                        Log.e(tag, "Bruh")
-                                    }
+                                    val username = hashMapOf(
+                                        "username" to CreateName.text.toString().lowercase()
+                                    )
+                                    Database().addToDB(
+                                        "users",
+                                        auth.uid.toString(),
+                                        username,
+                                        object : ResultListener {
+                                            override fun onSuccess() {
+                                                //Navn lagt til ett av stedene
+                                                Log.e(tag, "Bruh")
+                                            }
 
-                                    override fun onFailure(error: Exception) {
-                                        Log.e(tag, "Failure with listener")
-                                    }
-                                })
+                                            override fun onFailure(error: Exception) {
+                                                Log.e(tag, "Failure with listener")
+                                            }
+                                        })
 
-                                login()
+                                    login()
 
-                            } else {
-                                Toast.makeText(this@CreateUserActivity, "Email is not unique or password is too weak", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(
+                                        this@CreateUserActivity,
+                                        "Email is not unique or password is too weak",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
+                        } else {
+                            //Username not unique
+                            Log.e(tag, "Username is not unique")
+                            Toast.makeText(
+                                this@CreateUserActivity,
+                                "Username is not unique",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
-                    else {
-                        //Username not unique
-                        Log.e(tag,"Username is not unique")
-                        Toast.makeText(this@CreateUserActivity, "Username is not unique", Toast.LENGTH_SHORT).show()
-                    }
-                }
 
-                override fun onFailure(error: Exception) {
-                    Log.e(tag,"Failure to connect to database")
-                }
-            })
+                    override fun onFailure(error: Exception) {
+                        Log.e(tag, "Failure to connect to database")
+                        Toast.makeText(
+                            this@CreateUserActivity,
+                            "Error communicating with database",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
         }
     }
 

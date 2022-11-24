@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.friend.view.*
 import java.lang.Exception
 
 class FriendRequestsActivity: AppCompatActivity() {
+    private var tag: String = "FriendRequestsActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friendrequests)
@@ -54,7 +55,7 @@ class FriendRequestsActivity: AppCompatActivity() {
             }
 
             override fun onFailure(error: Exception) {
-                Log.e("getFriendRequests", "Failure to get friend requests")
+                Log.e(tag, "Failure to get friend requests")
             }
 
         })
@@ -71,6 +72,14 @@ class FriendRequestsActivity: AppCompatActivity() {
         RequestsScroll.addView(view)
     }
 
+    private fun dbError(){
+        Toast.makeText(
+            this@FriendRequestsActivity,
+            "Error when communicating with the database",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     private fun addFriend(name: String) {
         val it = RequestsScroll.iterator()
         while (it.hasNext()) {
@@ -83,106 +92,101 @@ class FriendRequestsActivity: AppCompatActivity() {
         //Sett friend felt i begge dber til å være hverandre sitt navn
         val userName = Database.userData[0]?.data?.get("username").toString()
         val userId = Database.userData[0]?.id.toString()
-        try {
-            Database().getUid(name, object : StringListener {
-                override fun onSuccess(uId: String) {
-                    Database().getFriendsFromDB("users", uId, object : FriendListListener {
-                        override fun onSuccess(friendList: ArrayList<String>) {
-                            friendList.add(userName)
-                            Database().updateValueInDB(
-                                "users",
-                                uId,
-                                "Friends",
-                                friendList,
-                                object : ResultListener {
-                                    override fun onSuccess() {
-                                        Log.e("Bruh", "Bruh")
-                                    }
+        Database().getUid(name, object : StringListener {
+            override fun onSuccess(uId: String) {
+                Database().getFriendsFromDB("users", uId, object : FriendListListener {
+                    override fun onSuccess(friendList: ArrayList<String>) {
+                        friendList.add(userName)
+                        Database().updateValueInDB(
+                            "users",
+                            uId,
+                            "Friends",
+                            friendList,
+                            object : ResultListener {
+                                override fun onSuccess() {
+                                }
 
-                                    override fun onFailure(error: Exception) {
-                                        Log.e("TaskOverviewActivity", "Failure with listener")
-                                    }
-                                })
+                                override fun onFailure(error: Exception) {
+                                    Log.e(tag, "Failure with listener")
+                                    dbError()
+                                }
+                            })
+                    }
+
+                    override fun onFailure(error: Exception) {
+                        Log.e(tag, "Failure to get friend requests")
+                        dbError()
+                    }
+
+                })
+            }
+
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "not good")
+                dbError()
+            }
+        })
+
+        Database().getFriendsFromDB("users", userId, object : FriendListListener {
+            override fun onSuccess(friendList: ArrayList<String>) {
+                friendList.add(name)
+                Database().updateValueInDB(
+                    "users",
+                    userId,
+                    "Friends",
+                    friendList,
+                    object : ResultListener {
+                        override fun onSuccess() {
                         }
 
                         override fun onFailure(error: Exception) {
-                            Log.e("getFriendRequests", "Failure to get friend requests")
+                            Log.e(tag, "Failure with listener")
+                            dbError()
                         }
-
                     })
-                }
+            }
 
-                override fun onFailure(error: Exception) {
-                    Log.e("not good", "not good")
-                }
-            })
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Failure to get friend requests")
+                dbError()
+            }
 
-            Database().getFriendsFromDB("users", userId, object : FriendListListener {
-                override fun onSuccess(friendList: ArrayList<String>) {
-                    friendList.add(name)
-                    Database().updateValueInDB(
-                        "users",
-                        userId,
-                        "Friends",
-                        friendList,
-                        object : ResultListener {
-                            override fun onSuccess() {
-                                Log.e("Bruh", "Bruh")
-                            }
-
-                            override fun onFailure(error: Exception) {
-                                Log.e("TaskOverviewActivity", "Failure with listener")
-                            }
-                        })
-                }
-
-                override fun onFailure(error: Exception) {
-                    Log.e("getFriendRequests", "Failure to get friend requests")
-                }
-
-            })
-            Database().getFriendRequestListFromDB("users", userId, object : FriendListListener {
-                override fun onSuccess(friendList: ArrayList<String>) {
-                    val it = friendList.iterator()
-                    while (it.hasNext()) {
-                        if (it.next().toString() == name) {
-                            it.remove()
-                        }
+        })
+        Database().getFriendRequestListFromDB("users", userId, object : FriendListListener {
+            override fun onSuccess(friendList: ArrayList<String>) {
+                val it = friendList.iterator()
+                while (it.hasNext()) {
+                    if (it.next().toString() == name) {
+                        it.remove()
                     }
-                    Database().updateValueInDB(
-                        "users",
-                        userId,
-                        "FriendRequests",
-                        friendList,
-                        object : ResultListener {
-                            override fun onSuccess() {
-                                //Gi konf på request sent
-                                Log.e("Bruh", "Bruh")
-                            }
-
-                            override fun onFailure(error: Exception) {
-                                Log.e("TaskOverviewActivity", "Failure with listener")
-                            }
-                        })
                 }
+                Database().updateValueInDB(
+                    "users",
+                    userId,
+                    "FriendRequests",
+                    friendList,
+                    object : ResultListener {
+                        override fun onSuccess() {
 
-                override fun onFailure(error: Exception) {
-                    Log.e("getFriendRequests", "Failure to get friend requests")
-                }
-            })
+                        }
 
-            Toast.makeText(
-                this@FriendRequestsActivity,
-                "Friend added",
-                Toast.LENGTH_SHORT
-            ).show()
-        } catch (e : Exception){
-            Toast.makeText(
-                this@FriendRequestsActivity,
-                "Error when communicating with database",
-                Toast.LENGTH_SHORT
-            ).show()
-            Log.e("Bruh", e.toString())
-        }
+                        override fun onFailure(error: Exception) {
+                            Log.e(tag, "Failure with listener")
+                            dbError()
+                        }
+                    })
+            }
+
+            override fun onFailure(error: Exception) {
+                Log.e(tag, "Failure to get friend requests")
+                dbError()
+            }
+        })
+
+        Toast.makeText(
+            this@FriendRequestsActivity,
+            "Friend added",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
