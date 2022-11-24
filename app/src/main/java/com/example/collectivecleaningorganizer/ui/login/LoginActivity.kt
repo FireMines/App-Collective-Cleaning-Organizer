@@ -86,45 +86,59 @@ class LoginActivity : AppCompatActivity() {
      * @param userID is the ID of the user
      */
     private fun retrieveUserDataAndStoreInCache(userID: String) {
-        //Calling retrieveDataAndAddToCache() function to retrieve the user data from DB and add it to a cache
-        Database().retrieveDataAndAddToCache(
-            "users",
-            userID,
-            Database.userData,
-            object : ResultListener {
-                //if onSuccess() is called back, it means that the retrieval of user data and storing it to a cache was successful
-                override fun onSuccess() {
-                    Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
-                    //Starting a data change listener for the userData
-                    Database().databaseDataChangeListener(
-                        "users",
-                        userID,
-                        Database.userData,
-                        "userData",
-                        null
-                    )
+        try {
+            //Calling retrieveDataAndAddToCache() function to retrieve the user data from DB and add it to a cache
+            Database().retrieveDataAndAddToCache(
+                "users",
+                userID,
+                Database.userData,
+                object : ResultListener {
+                    //if onSuccess() is called back, it means that the retrieval of user data and storing it to a cache was successful
+                    override fun onSuccess() {
+                        Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
+                        //Starting a data change listener for the userData
+                        Database().databaseDataChangeListener(
+                            "users",
+                            userID,
+                            Database.userData,
+                            "userData",
+                            null
+                        )
 
-                    val collectiveID = Database.userData[0]?.data?.get("collectiveID")
+                        val collectiveID = Database.userData[0]?.data?.get("collectiveID")
 
 
-                    //Checking if the user is apart of a collective or not
-                    if (collectiveID == null) {
-                        //initializing an intent for CollectiveActivity
-                        val intent = Intent(this@LoginActivity, CollectiveActivity::class.java)
-                        //Adding the userID to the intent
-                        intent.putExtra("uid", userID)
-                        startActivity(intent)
-                    } else {
-                        //Calling a function to retrieve the user collective data from DB and add it to a cache
-                        retrieveUserCollectiveDataAndStoreInCache(collectiveID.toString(), userID)
+                        //Checking if the user is apart of a collective or not
+                        if (collectiveID == null) {
+                            //initializing an intent for CollectiveActivity
+                            val intent = Intent(this@LoginActivity, CollectiveActivity::class.java)
+                            //Adding the userID to the intent
+                            intent.putExtra("uid", userID)
+                            startActivity(intent)
+                        } else {
+                            //Calling a function to retrieve the user collective data from DB and add it to a cache
+                            retrieveUserCollectiveDataAndStoreInCache(
+                                collectiveID.toString(),
+                                userID
+                            )
+                        }
                     }
-                }
 
-                //if onFailure() is called back, it means that the retrieval of user data and storing it to a cache was a failure
-                override fun onFailure(error: Exception) {
-                    Log.e(tag, "An error occurred while trying to retrieve the user data.", error)
-                }
-            })
+                    //if onFailure() is called back, it means that the retrieval of user data and storing it to a cache was a failure
+                    override fun onFailure(error: Exception) {
+                        Log.e(
+                            tag,
+                            "An error occurred while trying to retrieve the user data.",
+                            error
+                        )
+                    }
+                })
+
+        }
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying retrieve user data and store it in cache. Try again \"", Toast.LENGTH_LONG).show()
+            Log.e(tag, "Error when trying to run the  retrieveUserDataAndStoreInCache() function",error)
+        }
     }
 
     /**
