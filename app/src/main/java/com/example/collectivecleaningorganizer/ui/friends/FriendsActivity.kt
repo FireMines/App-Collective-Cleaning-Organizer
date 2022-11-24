@@ -123,7 +123,11 @@ class FriendsActivity : AppCompatActivity(){
                         }
                         Database().updateValueInDB("users", uId, "Friends", friendList, object : ResultListener {
                                 override fun onSuccess() {
-
+                                    Toast.makeText(
+                                        this@FriendsActivity,
+                                        "Friend removed",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
 
                                 override fun onFailure(error: Exception) {
@@ -145,11 +149,6 @@ class FriendsActivity : AppCompatActivity(){
                 dbError()
             }
         })
-        Toast.makeText(
-            this@FriendsActivity,
-            "Friend removed",
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
 

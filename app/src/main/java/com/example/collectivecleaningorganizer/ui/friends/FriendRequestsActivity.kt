@@ -167,7 +167,11 @@ class FriendRequestsActivity: AppCompatActivity() {
                     friendList,
                     object : ResultListener {
                         override fun onSuccess() {
-
+                            Toast.makeText(
+                                this@FriendRequestsActivity,
+                                "Friend added",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                         override fun onFailure(error: Exception) {
@@ -182,11 +186,5 @@ class FriendRequestsActivity: AppCompatActivity() {
                 dbError()
             }
         })
-
-        Toast.makeText(
-            this@FriendRequestsActivity,
-            "Friend added",
-            Toast.LENGTH_SHORT
-        ).show()
     }
 }
