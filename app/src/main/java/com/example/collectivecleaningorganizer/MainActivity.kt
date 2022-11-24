@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         // Sends the user straight to the login activity
         startActivity(Intent(this, LoginActivity::class.java))
+        this.finish()
 
     }
 

@@ -14,7 +14,6 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_log_out.*
 
 class LogOutActivity : AppCompatActivity() {
-    private var tag: String = "LogoutActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_out)
@@ -31,11 +30,12 @@ class LogOutActivity : AppCompatActivity() {
             val intentTaskPage: Intent = Intent(this, TaskOverviewActivity::class.java)
             intentTaskPage.putExtra("uid",userId)
             startActivity(intentTaskPage)
+            this.finish()
         }
 
         // when user clicks on logout button
         logOutButton.setOnClickListener {
-            logout()
+            Utilities().logout(this)
         }
 
         //Handles the applications navigation
@@ -43,23 +43,4 @@ class LogOutActivity : AppCompatActivity() {
 
     }
 
-    /**
-     * A function that is used to log out a specific user.
-     *  The function calls the firebase auth.sigOut() method.
-     *  The function removes both the database listener for userData and collectiveData
-     */
-    private fun logout() {
-        try {
-            Firebase.auth.signOut()
-            Database.listenerMap["userData"]?.remove()
-            Database.listenerMap["collectiveData"]?.remove()
-            startActivity(Intent(this, LoginActivity::class.java))
-
-            Toast.makeText(this, "Logout Successful", Toast.LENGTH_LONG).show()
-        }
-        catch (error : Exception) {
-            Toast.makeText(this, "An error occurred when trying to log out. Try again ", Toast.LENGTH_LONG).show()
-            Log.e(tag, "Error when trying to run the logout() function",error)
-        }
-    }
 }

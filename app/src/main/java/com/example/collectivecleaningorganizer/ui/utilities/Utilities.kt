@@ -330,7 +330,7 @@ class Utilities {
      *  The function calls the firebase auth.sigOut() method.
      *  The function removes both the database listener for userData and collectiveData
      */
-     fun logout(context: Context) {
+     fun logout(app: AppCompatActivity) {
         try {
             //Signing out
             Firebase.auth.signOut()
@@ -339,16 +339,16 @@ class Utilities {
             //Removing the listener for the collective data if it exists
             Database.listenerMap["collectiveData"]?.remove()
             //Creating an intent for the login activity
-            val intent = Intent(context, LoginActivity::class.java)
+            val intent = Intent(app, LoginActivity::class.java)
             //Sending the user back to login page
-            context.startActivity(intent)
+            app.startActivity(intent)
             //Finishing the current Activity
-            //app.finish()
-            Toast.makeText(context,"Successfully logged out"
+            app.finish()
+            Toast.makeText(app,"Successfully logged out"
                 ,Toast.LENGTH_LONG).show()
         }
         catch (error : Exception) {
-            Toast.makeText(context, "An error occurred when trying to log out. Try again ", Toast.LENGTH_LONG).show()
+            Toast.makeText(app, "An error occurred when trying to log out. Try again ", Toast.LENGTH_LONG).show()
             Log.e("Logout", "Error when trying to run the logout() function",error)
         }
     }
