@@ -74,6 +74,8 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         inviteMemberButton.setOnClickListener {
             //Starting the activity called "CollectiveInviteUsers"
             startActivity(Intent(this, CollectiveInviteUsers::class.java))
+            //Finishing the current Activity
+            this.finish()
         }
         //An onclick listener for the "Remove members" button
         removeMemberButton.setOnClickListener {
@@ -84,6 +86,8 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             }
             //Starting the activity called "CollectiveRemoveMembers"
             startActivity(Intent(this, CollectiveRemoveMembers::class.java))
+            //Finishing the current Activity
+            this.finish()
         }
 
         //Handles the applications navigation
@@ -307,6 +311,8 @@ class SpecificCollectiveActivity : AppCompatActivity() {
 
                     //Starting the CollectiveActivity
                     startActivity(Intent(this@SpecificCollectiveActivity, CollectiveActivity::class.java))
+                    //Finishing the current Activity
+                    this@SpecificCollectiveActivity.finish()
                 }
 
                 @SuppressLint("LongLogTag")

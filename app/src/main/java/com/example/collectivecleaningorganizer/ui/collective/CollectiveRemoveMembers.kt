@@ -146,6 +146,8 @@ class CollectiveRemoveMembers : AppCompatActivity() {
 
                             //Starting the SpecificCollectiveActivity activity
                             startActivity(Intent(this@CollectiveRemoveMembers, SpecificCollectiveActivity::class.java))
+                            //Finishing the activity the user was on
+                            this@CollectiveRemoveMembers.finish()
                         }
 
                         /**
