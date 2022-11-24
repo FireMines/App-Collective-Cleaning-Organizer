@@ -8,11 +8,13 @@ import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
+import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
+import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
-import java.lang.Exception
+import kotlin.Exception
 
 class LoginActivity : AppCompatActivity() {
     private var tag: String = "LoginActivity"
@@ -96,12 +98,30 @@ class LoginActivity : AppCompatActivity() {
                     override fun onSuccess() {
                         Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
                         //Starting a data change listener for the userData
-                        Database().databaseDataChangeListener(
-                            "users",
-                            userID,
-                            Database.userData,
-                            "userData",
-                            null
+                        Database().databaseDataChangeListener("users", userID, Database.userData, "userData", object : ResultListener {
+                            /**
+                             * This function is triggered when the databasechangelistenr is successful
+                             */
+                            override fun onSuccess() {
+                                val userCollectiveID = Database.userData[0]?.data?.get("collectiveID")
+                                //Checking if the collectiveID for the user is null
+                                if (userCollectiveID == null) {
+                                    //Starting an intent for CollectiveActivity
+                                    val intent = Intent(this@LoginActivity, CollectiveActivity::class.java)
+                                    //Adding a flag to clear the top activity
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                    //Starting the activity
+                                    startActivity(intent)
+                                }
+                            }
+                            /**
+                             * This function is triggered when the databasechangelistenr is a failure
+                             */
+                            override fun onFailure(error: Exception) {
+                                Log.e(tag, "Error initializing a database listener for userData ")
+                            }
+
+                        }
                         )
 
                         val collectiveID = Database.userData[0]?.data?.get("collectiveID")
