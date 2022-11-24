@@ -54,10 +54,10 @@ class CreateUserActivity : AppCompatActivity() {
         if(CreatePassword.text.toString() == "" || CreateConfirmPassword.text.toString() == "" || CreateUser.text.toString() == "" || CreateName.text.toString() == "" || CreateEmail.text.toString() == ""){
             Toast.makeText(this@CreateUserActivity, "All fields must be filled", Toast.LENGTH_SHORT).show()
         }
-        else if (CreateName.text.toString().length > 20){
+        else if (CreateName.text.toString().length >= 15){
             Toast.makeText(this@CreateUserActivity, "Username is too long", Toast.LENGTH_SHORT).show()
         }
-        else if (CreateName.text.toString().length < 6){
+        else if (CreateName.text.toString().length <= 4){
             Toast.makeText(this@CreateUserActivity, "Username is too short", Toast.LENGTH_SHORT).show()
         }
         else if (CreatePassword.text.toString() != CreateConfirmPassword.text.toString()){
