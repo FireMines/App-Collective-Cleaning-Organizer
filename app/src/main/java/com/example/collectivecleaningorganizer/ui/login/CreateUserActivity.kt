@@ -1,7 +1,5 @@
 package com.example.collectivecleaningorganizer.ui.login
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +13,6 @@ import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.UniqueUsernameListener
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_create_user.*
-import kotlinx.android.synthetic.main.activity_view_task.*
 import java.lang.Exception
 
 
@@ -26,31 +23,43 @@ class CreateUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_user)
         init()
+    }
 
+    /**
+     * Adds eventlistener for all buttons
+     */
+    private fun init(){
         // Takes the user back to the Login Activity
         createUserBack_btn.setOnClickListener{
             this.finish()
         }
-    }
 
-    private fun init(){
         CreateUserButton.setOnClickListener{
             addUser()
         }
     }
 
+    /**
+     * Informs the user if the database is not reached
+     */
+    private fun dbError(){
+        Toast.makeText(
+            this@CreateUserActivity,
+            "Error when communicating with the database",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    /**
+     * Adds user authentication to the database if the fields are filled in properly:
+     * All fields must be filled
+     * Password and confirm password must be similar
+     * The username given is between 4 and 15 characters long
+     * The username is unique
+     * The email is unique
+     * The given password is of adequate strength
+     */
     private fun addUser(){
-        //Se i database om email allerede er i bruk
-
-        //Se i database om brukernavn er unikt, dersom dette er et krav
-
-        //Les alle tekstfelt og sørg for at confirm password og password har lik verdi
-
-        //Send inn data til database dersom over er gyldig
-
-        //En eller annen konfirmasjonsskjerm dersom handlingene over forekommer plettfritt
-
-        //Opprett heller en error streng som fylles ettersom med krav
         if(CreatePassword.text.toString() == "" || CreateConfirmPassword.text.toString() == "" || CreateUser.text.toString() == "" || CreateName.text.toString() == "" || CreateEmail.text.toString() == ""){
             Toast.makeText(this@CreateUserActivity, "All fields must be filled", Toast.LENGTH_SHORT).show()
         }
@@ -63,7 +72,6 @@ class CreateUserActivity : AppCompatActivity() {
         else if (CreatePassword.text.toString() != CreateConfirmPassword.text.toString()){
             Toast.makeText(this@CreateUserActivity, "Entered passwords are not the same", Toast.LENGTH_SHORT).show()
         }
-        //Helt tomt crasher appen foreløpig
         else {
             Database().checkUniqueUsername(
                 CreateName.text.toString().lowercase(),
@@ -71,9 +79,7 @@ class CreateUserActivity : AppCompatActivity() {
                     override fun onSuccess(unique: Boolean) {
                         if (unique) {
                             val auth = FirebaseAuth.getInstance()
-
-                            //val auth = FirebaseAuth.getInstance()
-                            //Sjekk at suksess
+                            //Creates auth user needed to log in
                             auth.createUserWithEmailAndPassword(
                                 CreateEmail.text.toString(),
                                 CreatePassword.text.toString()
@@ -85,7 +91,7 @@ class CreateUserActivity : AppCompatActivity() {
                                         "User created",
                                         Toast.LENGTH_SHORT
                                     ).show()
-
+                                    //Adds the username to a collection holding usernames and user ids
                                     val uid = hashMapOf(
                                         "uid" to auth.uid.toString()
                                     )
@@ -95,15 +101,16 @@ class CreateUserActivity : AppCompatActivity() {
                                         uid,
                                         object : ResultListener {
                                             override fun onSuccess() {
-                                                //Navn lagt til ett av stedene
-                                                Log.e(tag, "Bruh")
+
                                             }
 
                                             override fun onFailure(error: Exception) {
                                                 Log.e(tag, "Failure with listener")
+                                                dbError()
                                             }
                                         })
 
+                                    //Adds user to the database
                                     val username = hashMapOf(
                                         "username" to CreateName.text.toString().lowercase()
                                     )
@@ -113,18 +120,19 @@ class CreateUserActivity : AppCompatActivity() {
                                         username,
                                         object : ResultListener {
                                             override fun onSuccess() {
-                                                //Navn lagt til ett av stedene
-                                                Log.e(tag, "Bruh")
+
                                             }
 
                                             override fun onFailure(error: Exception) {
                                                 Log.e(tag, "Failure with listener")
+                                                dbError()
                                             }
                                         })
 
                                     login()
 
                                 } else {
+                                    //Password to weak or email not unique
                                     Toast.makeText(
                                         this@CreateUserActivity,
                                         "Email is not unique or password is too weak",
@@ -145,11 +153,7 @@ class CreateUserActivity : AppCompatActivity() {
 
                     override fun onFailure(error: Exception) {
                         Log.e(tag, "Failure to connect to database")
-                        Toast.makeText(
-                            this@CreateUserActivity,
-                            "Error communicating with database",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        dbError()
                     }
                 })
         }
@@ -158,7 +162,6 @@ class CreateUserActivity : AppCompatActivity() {
     /**
      * A function that is used to retrieve the user data and store it in a cache.
      * This function calls on another function and listens for a callback
-     * @param userID is the ID of the user
      */
     private fun login(){
         val userID = FirebaseAuth.getInstance().uid.toString()
@@ -187,6 +190,7 @@ class CreateUserActivity : AppCompatActivity() {
             //if onFailure() is called back, it means that the retrieval of user data and storing it to a cache was a failure
             override fun onFailure(error: Exception) {
                 Log.e(tag, "An error occurred while trying to retrieve the user data.", error)
+                dbError()
             }
         })
     }
@@ -217,6 +221,7 @@ class CreateUserActivity : AppCompatActivity() {
                 //if onFailure() is called back, it means that the retrieval of user collective data and storing it to a cache was a failure
                 override fun onFailure(error: Exception) {
                     Log.e(tag, "An error occurred while trying to retrieve the collective data.", error)
+                    dbError()
                 }
             })
     }

@@ -35,11 +35,11 @@ class FriendRequestsActivity: AppCompatActivity() {
 
     }
 
+    /**
+     * Initializes the ui by adding all friendrequests present in the database to the scrollview
+     * Also responsible for adding onclicklisteners
+     */
     private fun init() {
-        //Hent venner fra database og vis i scrollview
-
-        //Testdata
-
         val uId = Database.userData[0]?.id.toString()
 
         // Takes the user back to the Friends Activity
@@ -59,12 +59,17 @@ class FriendRequestsActivity: AppCompatActivity() {
 
             override fun onFailure(error: Exception) {
                 Log.e(tag, "Failure to get friend requests")
+                dbError()
             }
 
         })
 
     }
 
+    /**
+     * Adds a request to the ui
+     * @param name the name of the person who has sent the request
+     */
     private fun addRequestsScroll(name: String) {
         val view = layoutInflater.inflate(R.layout.friend, null)
         view.FriendName.text = name
@@ -75,6 +80,9 @@ class FriendRequestsActivity: AppCompatActivity() {
         RequestsScroll.addView(view)
     }
 
+    /**
+     * Informs the user if the database is not reached
+     */
     private fun dbError(){
         Toast.makeText(
             this@FriendRequestsActivity,
@@ -83,6 +91,11 @@ class FriendRequestsActivity: AppCompatActivity() {
         ).show()
     }
 
+    /**
+     * Adds a friend by accepting their request, the friend is added for both users in the database and the request is removed
+     * Also removes the friend request from the ui
+     * @param name the name of the friend to be added
+     */
     private fun addFriend(name: String) {
         val it = RequestsScroll.iterator()
         while (it.hasNext()) {
@@ -91,10 +104,9 @@ class FriendRequestsActivity: AppCompatActivity() {
                 it.remove()
             }
         }
-        //Finn id i db
-        //Sett friend felt i begge dber til å være hverandre sitt navn
         val userName = Database.userData[0]?.data?.get("username").toString()
         val userId = Database.userData[0]?.id.toString()
+        //Adds friend to the person who sent the friend request
         Database().getUid(name, object : StringListener {
             override fun onSuccess(uId: String) {
                 Database().getFriendsFromDB("users", uId, object : FriendListListener {
@@ -110,7 +122,7 @@ class FriendRequestsActivity: AppCompatActivity() {
                                 }
 
                                 override fun onFailure(error: Exception) {
-                                    Log.e(tag, "Failure with listener")
+                                    Log.e(tag, "Failure to update value in database")
                                     dbError()
                                 }
                             })
@@ -125,11 +137,12 @@ class FriendRequestsActivity: AppCompatActivity() {
             }
 
             override fun onFailure(error: Exception) {
-                Log.e(tag, "not good")
+                Log.e(tag, "Failure to get userId")
                 dbError()
             }
         })
 
+        //Adds friend to the person who accepted the friend request
         Database().getFriendsFromDB("users", userId, object : FriendListListener {
             override fun onSuccess(friendList: ArrayList<String>) {
                 friendList.add(name)
@@ -143,7 +156,7 @@ class FriendRequestsActivity: AppCompatActivity() {
                         }
 
                         override fun onFailure(error: Exception) {
-                            Log.e(tag, "Failure with listener")
+                            Log.e(tag, "Failure to update value in database")
                             dbError()
                         }
                     })
@@ -155,6 +168,7 @@ class FriendRequestsActivity: AppCompatActivity() {
             }
 
         })
+        //Removes the friend request from the database
         Database().getFriendRequestListFromDB("users", userId, object : FriendListListener {
             override fun onSuccess(friendList: ArrayList<String>) {
                 val it = friendList.iterator()
@@ -178,7 +192,7 @@ class FriendRequestsActivity: AppCompatActivity() {
                         }
 
                         override fun onFailure(error: Exception) {
-                            Log.e(tag, "Failure with listener")
+                            Log.e(tag, "Failure to update value in database")
                             dbError()
                         }
                     })
