@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.android.synthetic.main.activity_create_task.back_btn
 import kotlinx.android.synthetic.main.activity_edit_task.*
 import java.util.*

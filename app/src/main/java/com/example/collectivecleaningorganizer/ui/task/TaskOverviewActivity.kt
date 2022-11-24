@@ -3,7 +3,6 @@ package com.example.collectivecleaningorganizer.ui.task
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.core.view.iterator
@@ -11,14 +10,8 @@ import androidx.core.view.size
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.LogOutActivity
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
-import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
-import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.activity_task_overview.*
 import kotlinx.android.synthetic.main.task_layout.view.*
@@ -28,19 +21,11 @@ class TaskOverviewActivity : AppCompatActivity() {
     private var username = Database.userData[0]?.get("username").toString()
     var userID = Database.userData[0]?.id.toString()
 
-    private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_overview)
-        if (userID == null) {
-            Log.d("TaskOverview: Error", "the userID is null")
-            return
-        }
-
 
         val collectiveID = Database.userData[0]?.data?.get("collectiveID")
-        if (collectiveID == null) {
-        }
 
         //Starting a listener for the collective and listens for any changes done to the collective data
         Database().databaseDataChangeListener("collective", collectiveID.toString(), Database.userCollectiveData,"collectiveData", object : ResultListener {
