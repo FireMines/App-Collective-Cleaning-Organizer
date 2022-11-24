@@ -3,6 +3,7 @@ package com.example.collectivecleaningorganizer.ui.friends
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.iterator
 import com.example.collectivecleaningorganizer.Database
@@ -154,7 +155,7 @@ class FriendsActivity : AppCompatActivity(){
         //val idArr = arrayListOf<String>()
         //idArr.add(userId.toString())
         FriendRequest.text.toString()
-        Database().getUid(FriendRequest.text.toString(), object : StringListener {
+        Database().getUid(FriendRequest.text.toString().lowercase(), object : StringListener {
             override fun onSuccess(uId: String) {
                 Database().getFriendsFromDB("users", uId, object : FriendListListener {
                     override fun onSuccess(friendList: ArrayList<String>) {
@@ -183,6 +184,7 @@ class FriendsActivity : AppCompatActivity(){
                                             override fun onSuccess() {
                                                 //Gi konf på request sent
                                                 Log.e("Bruh", "Bruh")
+                                                Toast.makeText(this@FriendsActivity, "Request sent", Toast.LENGTH_SHORT).show()
                                             }
 
                                             override fun onFailure(error: Exception) {
@@ -190,12 +192,17 @@ class FriendsActivity : AppCompatActivity(){
                                             }
                                         })
                                     }
+                                    else{
+                                        Toast.makeText(this@FriendsActivity, "You have already sent a request to this user", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                                 override fun onFailure(error: Exception) {
                                     Log.e("getFriends", "Failure to get friends")
                                 }
                                 })
-                            }
+                            } else{
+                            Toast.makeText(this@FriendsActivity, "This person is already your friend", Toast.LENGTH_SHORT).show()
+                        }
                         }
                     override fun onFailure(error: Exception) {
                         Log.e("getFriendRequests", "Failure to get friend requests")

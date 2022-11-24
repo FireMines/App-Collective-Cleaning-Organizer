@@ -39,7 +39,7 @@ class FriendRequestsActivity: AppCompatActivity() {
 
         val uId = Database.userData[0]?.id.toString()
 
-        // Takes the user back to the Login Activity
+        // Takes the user back to the Friends Activity
         friendRequestsBack_btn.setOnClickListener{
             this.finish()
         }
