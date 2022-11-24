@@ -297,22 +297,26 @@ class Utilities {
                         val intent = Intent(context, TaskOverviewActivity::class.java)
                         //Starts new activity
                         context.startActivity(intent)
-                        true
+                        //true
                     }
                 }
                 // if the menu id is collective
                 R.id.collective -> {
-                    val intent = Intent(context, CollectiveActivity::class.java)
+                    var intent = Intent(context, SpecificCollectiveActivity::class.java)
+                    if (collectiveID == null) {
+                        intent = Intent(context, CollectiveActivity::class.java)
+                    }
+
                     //Starts new activity
                     context.startActivity(intent)
-                    true
+                    //true
                 }
                 //if the menu id is friends
                 R.id.friends -> {
                     val intent = Intent(context, FriendsActivity::class.java)
                     //Starts new activity
                     context.startActivity(intent)
-                    true
+                    //true
                 }
             }
             false

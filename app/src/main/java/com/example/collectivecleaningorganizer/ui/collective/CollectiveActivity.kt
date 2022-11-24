@@ -44,15 +44,6 @@ class CollectiveActivity : AppCompatActivity() {
         //Setting the content view of the activity
         setContentView(R.layout.activity_collective)
 
-        //Initializing a variable for the collectiveID retrieved from the userdata
-        val collectiveID = Database.userData[0]?.data?.get("collectiveID")
-        //Checking if the user is apart of a collective
-        if (collectiveID != null) {
-            //Sending the user to the Activity called "SpecificCollectiveActivity" which shows detailed information about the collective the user is in
-            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-            return
-        }
-
         //Handles the applications navigation
         Utilities().navigation(this, R.id.collective, bottom_navigator_collective_invite)
 
