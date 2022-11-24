@@ -236,6 +236,14 @@ class Database {
      */
     fun databaseDataChangeListener(collection:String, documentID:String, dataList:MutableList<DocumentSnapshot?>, listenerKey : String, resultListener: ResultListener?): MutableMap<String,ListenerRegistration>{
         //Creating the snapshot listener and adding it to a listenerMap so that we can remove it when needed
+        //Checking if there is already a listener enabled with the same key
+        if (listenerMap.contains(listenerKey)) {
+            //Removing the listener
+            listenerMap[listenerKey]?.remove()
+
+            Log.e(tag, "There is already a listener with the same key. Removing the previous one")
+
+        }
         listenerMap[listenerKey] = db.collection(collection).document(documentID)
             .addSnapshotListener { snapshot, e ->
             if (e != null) {
