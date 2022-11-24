@@ -387,6 +387,8 @@ class CollectiveActivity : AppCompatActivity() {
             //Adding the userID to the intent
             intent.putExtra("uid", userID)
             startActivity(intent)
+            //Finishing the activity the user was on
+            this.finish()
         }
         catch (error : Exception) {
             Toast.makeText(this, "An error occurred. Error: $error", Toast.LENGTH_LONG).show()

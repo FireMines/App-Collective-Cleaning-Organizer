@@ -295,10 +295,10 @@ class Utilities {
                     }
                     else {
                         val intent = Intent(app, TaskOverviewActivity::class.java)
-                        //Finishing the activity the user was on
-                        app.finish()
                         //Starts new activity
                         app.startActivity(intent)
+                        //Finishing the activity the user was on
+                        app.finish()
                     }
                 }
                 // if the menu id is collective
@@ -308,18 +308,18 @@ class Utilities {
                         intent = Intent(app, CollectiveActivity::class.java)
                     }
 
-                    //Finishing the activity the user was on
-                    app.finish()
                     //Starts new activity
                     app.startActivity(intent)
+                    //Finishing the activity the user was on
+                    app.finish()
                 }
                 //if the menu id is friends
                 R.id.friends -> {
                     val intent = Intent(app, FriendsActivity::class.java)
-                    //Finishing the activity the user was on
-                    app.finish()
                     //Starts new activity
                     app.startActivity(intent)
+                    //Finishing the activity the user was on
+                    app.finish()
                 }
             }
             false
