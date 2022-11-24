@@ -50,6 +50,8 @@ class TaskOverviewActivity : AppCompatActivity() {
         // Starts addTaskActivity when clicking on Add Task button
         add_btn.setOnClickListener {
             startActivity(intentAddTaskPage)
+            //Finishing the current Activity
+            this.finish()
         }
 
         // Deletes tasks marked in checkbox when clicked
@@ -73,6 +75,8 @@ class TaskOverviewActivity : AppCompatActivity() {
         // Sends user to logout activity when clicking on settings wheel
         logoutImageView.setOnClickListener {
             startActivity(intentLogoutPage)
+            //Finishing the current Activity
+            this.finish()
         }
 
         //Handles the applications navigation
@@ -143,6 +147,8 @@ class TaskOverviewActivity : AppCompatActivity() {
             newIntent.putExtra("index", index)
 
             startActivity(newIntent)
+            //Finishing the current Activity
+            this.finish()
         }
         catch (error : Exception) {
             Toast.makeText(this, "An error occurred when trying to open the task. Try again ", Toast.LENGTH_LONG).show()

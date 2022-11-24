@@ -98,6 +98,8 @@ class TaskActivity : AppCompatActivity() {
             newIntent.putExtra("index", intent.getIntExtra("index", 0))
 
             startActivity(newIntent)
+            //Finishing the current Activity
+            this.finish()
         }
         catch (error : Exception) {
             Toast.makeText(this, "An error occurred when trying to edit the task. Try again ", Toast.LENGTH_LONG).show()
