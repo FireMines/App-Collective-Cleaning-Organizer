@@ -17,6 +17,7 @@ import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
     private var tag: String = "LoginActivity"
+
     // declares instance of firebaseAuth
     private lateinit var auth: FirebaseAuth
 
@@ -69,10 +70,13 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-        catch (error : Exception) {
-            Toast.makeText(this, "An error occurred when trying to log in. Try again ", Toast.LENGTH_LONG).show()
-            Log.e(tag, "Error when trying to run the login() function",error)
+        } catch (error: Exception) {
+            Toast.makeText(
+                this,
+                "An error occurred when trying to log in. Try again ",
+                Toast.LENGTH_LONG
+            ).show()
+            Log.e(tag, "Error when trying to run the login() function", error)
         }
     }
 
@@ -81,36 +85,46 @@ class LoginActivity : AppCompatActivity() {
      * This function calls on another function and listens for a callback
      * @param userID is the ID of the user
      */
-    private fun retrieveUserDataAndStoreInCache(userID : String) {
+    private fun retrieveUserDataAndStoreInCache(userID: String) {
         //Calling retrieveDataAndAddToCache() function to retrieve the user data from DB and add it to a cache
-        Database().retrieveDataAndAddToCache("users", userID, Database.userData, object : ResultListener {
-            //if onSuccess() is called back, it means that the retrieval of user data and storing it to a cache was successful
-            override fun onSuccess() {
-                Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
-                //Starting a data change listener for the userData
-                Database().databaseDataChangeListener("users", userID, Database.userData, "userData",null)
+        Database().retrieveDataAndAddToCache(
+            "users",
+            userID,
+            Database.userData,
+            object : ResultListener {
+                //if onSuccess() is called back, it means that the retrieval of user data and storing it to a cache was successful
+                override fun onSuccess() {
+                    Log.d(tag, "Successfully retrieved the user data and stored it in a cache")
+                    //Starting a data change listener for the userData
+                    Database().databaseDataChangeListener(
+                        "users",
+                        userID,
+                        Database.userData,
+                        "userData",
+                        null
+                    )
 
-                val collectiveID = Database.userData[0]?.data?.get("collectiveID")
+                    val collectiveID = Database.userData[0]?.data?.get("collectiveID")
 
 
-                //Checking if the user is apart of a collective or not
-                if (collectiveID == null) {
-                    //initializing an intent for CollectiveActivity
-                    val intent = Intent(this@LoginActivity,CollectiveActivity::class.java)
-                    //Adding the userID to the intent
-                    intent.putExtra("uid",userID)
-                    startActivity(intent)
+                    //Checking if the user is apart of a collective or not
+                    if (collectiveID == null) {
+                        //initializing an intent for CollectiveActivity
+                        val intent = Intent(this@LoginActivity, CollectiveActivity::class.java)
+                        //Adding the userID to the intent
+                        intent.putExtra("uid", userID)
+                        startActivity(intent)
+                    } else {
+                        //Calling a function to retrieve the user collective data from DB and add it to a cache
+                        retrieveUserCollectiveDataAndStoreInCache(collectiveID.toString(), userID)
+                    }
                 }
-                else {
-                    //Calling a function to retrieve the user collective data from DB and add it to a cache
-                    retrieveUserCollectiveDataAndStoreInCache(collectiveID.toString(), userID)
+
+                //if onFailure() is called back, it means that the retrieval of user data and storing it to a cache was a failure
+                override fun onFailure(error: Exception) {
+                    Log.e(tag, "An error occurred while trying to retrieve the user data.", error)
                 }
-            }
-            //if onFailure() is called back, it means that the retrieval of user data and storing it to a cache was a failure
-            override fun onFailure(error: Exception) {
-                Log.e(tag, "An error occurred while trying to retrieve the user data.", error)
-            }
-        })
+            })
     }
 
     /**
@@ -119,28 +133,49 @@ class LoginActivity : AppCompatActivity() {
      * @param collectiveID is the ID of the collective
      * @param userID is the ID of the user
      */
-    private fun retrieveUserCollectiveDataAndStoreInCache(collectiveID : String, userID: String) {
-        //Calling retrieveDataAndAddToCache() function to retrieve the user collective data from DB and add it to a cache
-        Database().retrieveDataAndAddToCache(
-            "collective",
-            collectiveID,
-            Database.userCollectiveData,
-            object : ResultListener {
-                //if onSuccess() is called back, it means that the retrieval of user collective data and storing it to a cache was successful
-                override fun onSuccess() {
-                    Log.d(tag, "Successfully retrieved the collective data and stored it in a cache")
+    private fun retrieveUserCollectiveDataAndStoreInCache(collectiveID: String, userID: String) {
+        try {
+            //Calling retrieveDataAndAddToCache() function to retrieve the user collective data from DB and add it to a cache
+            Database().retrieveDataAndAddToCache(
+                "collective",
+                collectiveID,
+                Database.userCollectiveData,
+                object : ResultListener {
+                    //if onSuccess() is called back, it means that the retrieval of user collective data and storing it to a cache was successful
+                    override fun onSuccess() {
+                        Log.d(
+                            tag,
+                            "Successfully retrieved the collective data and stored it in a cache"
+                        )
 
-                    //Initializing am intent for the TaskOverviewActivity
-                    val intent = Intent(this@LoginActivity, TaskOverviewActivity::class.java)
-                    //Adding the userID to the intent
-                    intent.putExtra("uid", userID)
-                    startActivity(intent)
-                }
-                //if onFailure() is called back, it means that the retrieval of user collective data and storing it to a cache was a failure
-                override fun onFailure(error: Exception) {
-                    Log.e(tag, "An error occurred while trying to retrieve the collective data.", error)
-                }
-            })
+                        //Initializing am intent for the TaskOverviewActivity
+                        val intent = Intent(this@LoginActivity, TaskOverviewActivity::class.java)
+                        //Adding the userID to the intent
+                        intent.putExtra("uid", userID)
+                        startActivity(intent)
+                    }
+
+                    //if onFailure() is called back, it means that the retrieval of user collective data and storing it to a cache was a failure
+                    override fun onFailure(error: Exception) {
+                        Log.e(
+                            tag,
+                            "An error occurred while trying to retrieve the collective data.",
+                            error
+                        )
+                    }
+                })
+        } catch (error: Exception) {
+            Toast.makeText(
+                this,
+                "An error occurred when trying to retrieve user collective data and store it in cache. Try again ",
+                Toast.LENGTH_LONG
+            ).show()
+            Log.e(
+                tag,
+                "Error when trying to run the retrieveUserCollectiveDataAndStoreInCache() function",
+                error
+            )
+        }
     }
 }
 
