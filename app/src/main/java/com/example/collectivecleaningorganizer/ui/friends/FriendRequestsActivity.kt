@@ -44,6 +44,8 @@ class FriendRequestsActivity: AppCompatActivity() {
 
         // Takes the user back to the Friends Activity
         friendRequestsBack_btn.setOnClickListener{
+            val newIntent = Intent(this, FriendsActivity::class.java)
+            startActivity(newIntent)
             this.finish()
         }
 

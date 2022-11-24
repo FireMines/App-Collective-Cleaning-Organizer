@@ -270,5 +270,6 @@ class FriendsActivity : AppCompatActivity(){
     private fun seeRequests(){
         val newIntent = Intent(this, FriendRequestsActivity::class.java)
         startActivity(newIntent)
+        this.finish()
     }
 }
