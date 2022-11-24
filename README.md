@@ -8,7 +8,8 @@ An app to help members of a collective housing to better clean and organize ther
 To run this application you need to use the NTNU VPN.
 
 This application is written in kotlin and uses the Gradle build system.
-To run the app import the project into android studio by using "Import Project".
+To run the app, unzip the zipped code file and import the project into android studio by using "Import Project".
+Then, click on the kotlin file called "MainActivity" and run that file. The app should be running then
 
 
 ## Firebase
