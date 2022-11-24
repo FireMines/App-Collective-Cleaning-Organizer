@@ -25,6 +25,8 @@ class EditTaskActivity : AppCompatActivity() {
     private val tag : String = "EditTaskActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Calling a function to check if the user is still supposed to be in the collective he/she is currently viewing
+        Utilities().checkIfUserIsSupposedToBeInCollective(this)
         val userID = intent.getStringExtra("uid")
         if (userID == null) {
             Log.d("TaskOverview: Error", "the userID is null")

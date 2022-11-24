@@ -27,6 +27,8 @@ class FriendRequestsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friendrequests)
+        //Calling a function to check if the user is still supposed to be in the collective he/she is currently viewing
+        Utilities().checkIfUserIsSupposedToBeInCollective(this)
         init()
 
         //Handles the applications navigation

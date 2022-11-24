@@ -39,6 +39,8 @@ class CreateTaskActivity : AppCompatActivity() {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_task)
+        //Calling a function to check if the user is still supposed to be in the collective he/she is currently viewing
+        Utilities().checkIfUserIsSupposedToBeInCollective(this)
         val userID = Database.userData[0]?.id.toString()
         if (userID == null) {
             Log.e(tag, "the userID is null")

@@ -53,7 +53,7 @@ class CollectiveActivity : AppCompatActivity() {
             Utilities().alertDialogBuilder(this,"Log out", "Are you sure you want to log out?", null)
                 .setPositiveButton("OK") { _, _ ->
                     //Calling the logout function
-                    logout()
+                    Utilities().logout(this)
                 }
                 .setNegativeButton("Cancel", null)
                 .create()
@@ -127,29 +127,6 @@ class CollectiveActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * A function that is used to log out a new user that does not create or join a collective.
-     *  The function calls the firebase auth.sigOut() method.
-     *  The function removes both the database listener for userData and collectiveData
-     */
-    private fun logout() {
-        try {
-            //Signing out
-            Firebase.auth.signOut()
-            //Removing the listens for the userdata if it exists
-            Database.listenerMap["userData"]?.remove()
-            //Removing the listener for the collective data if it exists
-            Database.listenerMap["collectiveData"]?.remove()
-            startActivity(Intent(this, LoginActivity::class.java))
-
-            Toast.makeText(this,"Successfully logged out"
-                ,Toast.LENGTH_LONG).show()
-        }
-        catch (error : Exception) {
-            Toast.makeText(this, "An error occurred when trying to log out. Try again ", Toast.LENGTH_LONG).show()
-            Log.e(tag, "Error when trying to run the logout() function",error)
-        }
-    }
 
     /**
      * A function that creates an popup window/dialog allowing the user to see all collective invites the user has received in a spinner and choose one to join.
