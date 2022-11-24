@@ -88,26 +88,7 @@ class SpecificCollectiveActivity : AppCompatActivity() {
             startActivity(Intent(this, CollectiveRemoveMembers::class.java))
         }
 
-        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        //navigationBarView.selectedItemId = R.id.collective
-
-
-        //navigationBarView.setOnItemSelectedListener { it ->
-        //    when(it.itemId) {
-        //        R.id.taskOverView -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-        //        }
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //        }
-        //    }
-        //    false
-        //}
-
+        //Handles the applications navigation
         Utilities().navigation(this, R.id.collective, bottom_navigator_specific_collective)
     }
 

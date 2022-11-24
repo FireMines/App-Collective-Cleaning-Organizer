@@ -39,27 +39,9 @@ class LogOutActivity : AppCompatActivity() {
             logout()
         }
 
+        //Handles the applications navigation
         Utilities().navigation(this, R.id.taskOverView, bottom_navigator_log_out)
 
-        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        //navigationBarView.selectedItemId = R.id.taskOverView
-
-        //navigationBarView.setOnItemSelectedListener { it ->
-        //    when(it.itemId) {
-        //        R.id.taskOverView -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-        //            true
-        //        }
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //        }
-        //    }
-        //    false
-      //  }
     }
 
     /**

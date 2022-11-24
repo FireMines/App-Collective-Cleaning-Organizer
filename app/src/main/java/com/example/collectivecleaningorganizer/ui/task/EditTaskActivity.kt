@@ -78,6 +78,7 @@ class EditTaskActivity : AppCompatActivity() {
         }
         showMembersToAssign()
 
+        //Handles the applications navigation
         Utilities().navigation(this,R.id.taskOverView,bottom_navigator_edit_task)
     }
 

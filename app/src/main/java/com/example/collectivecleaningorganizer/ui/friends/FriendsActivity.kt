@@ -41,35 +41,10 @@ class FriendsActivity : AppCompatActivity(){
         }
         init()
 
-
-        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        //navigationBarView.selectedItemId = R.id.friends
-
-        //navigationBarView.setOnItemSelectedListener { it ->
-        //    when(it.itemId) {
-        //        R.id.taskOverView -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-        //            true
-        //        }
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //        }
-        //    }
-        //    false
-       // }
-
+       //Handles the applications navigation
        Utilities().navigation(this, R.id.friends, bottom_navigator_friends)
 
     }
-
-
-
-
-
 
 
     private fun init(){

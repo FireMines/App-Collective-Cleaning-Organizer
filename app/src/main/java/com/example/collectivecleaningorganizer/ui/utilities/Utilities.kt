@@ -272,25 +272,36 @@ class Utilities {
         taskDueDate.text = "$day/$month/$year"
     }
 
-    fun navigation(context: Context, id: Int, navigationBarview : NavigationBarView) {
-
-        navigationBarview.selectedItemId = id
-
-        navigationBarview.setOnItemSelectedListener {
-
+    /**
+     * A function that enables navigation of the bottom navigation bar
+     * @param context is the context we want to use
+     * @param id is the id of the selected menu item
+     * @param navigationBarview selected navigation bar
+     */
+    fun navigation(context: Context, id: Int, navigationbarview : NavigationBarView) {
+        //Sets id of menu item
+        navigationbarview.selectedItemId = id
+        //Clicking on any of the icons in navigation bar
+        navigationbarview.setOnItemSelectedListener {
             when(it.itemId) {
+                // if the menu id is taskOverView
                 R.id.taskOverView -> {
                     val intent = Intent(context, TaskOverviewActivity::class.java)
+                    //Starts new activity
                     context.startActivity(intent)
                     true
                 }
+                // if the menu id is collective
                 R.id.collective -> {
                     val intent = Intent(context, CollectiveActivity::class.java)
+                    //Starts new activity
                     context.startActivity(intent)
                     true
                 }
+                //if the menu id is friends
                 R.id.friends -> {
                     val intent = Intent(context, FriendsActivity::class.java)
+                    //Starts new activity
                     context.startActivity(intent)
                     true
                 }

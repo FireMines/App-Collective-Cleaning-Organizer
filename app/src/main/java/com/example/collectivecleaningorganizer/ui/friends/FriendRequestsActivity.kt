@@ -26,28 +26,9 @@ class FriendRequestsActivity: AppCompatActivity() {
         setContentView(R.layout.activity_friendrequests)
         init()
 
+        //Handles the applications navigation
         Utilities().navigation(this, R.id.friends, bottom_navigator_friend_request)
 
-        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        //navigationBarView.selectedItemId = R.id.friends
-
-        //navigationBarView.setOnItemSelectedListener { it ->
-        //    when (it.itemId) {
-        //        R.id.taskOverView -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-        //            true
-        //        }
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //            true
-        //        }
-        //    }
-        //    false
-       // }
     }
 
     private fun init() {

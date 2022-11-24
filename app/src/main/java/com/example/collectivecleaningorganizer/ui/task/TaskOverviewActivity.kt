@@ -85,28 +85,9 @@ class TaskOverviewActivity : AppCompatActivity() {
             startActivity(intentLogoutPage)
         }
 
-        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        //navigationBarView.selectedItemId = R.id.taskOverView
-
-        //navigationBarView.setOnItemSelectedListener { it ->
-        //    when(it.itemId) {
-        //        R.id.taskOverView -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, CollectiveActivity::class.java))
-        //            true
-        //        }
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //        }
-        //    }
-        //    false
-      //  }
-
+        //Handles the applications navigation
         Utilities().navigation(this, R.id.taskOverView, bottom_navigator_task_overview)
     }
-
 
 
     private fun dbSync(userID : String) {

@@ -35,27 +35,8 @@ class CollectiveInviteUsers : AppCompatActivity() {
         //Setting the content view of the activity
         setContentView(R.layout.activity_collective_invite_users)
 
+        //Handles the applications navigation
         Utilities().navigation(this, R.id.collective, bottom_navigator_collective_invite)
-
-        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        //navigationBarView.selectedItemId = R.id.collective
-
-        //navigationBarView.setOnItemSelectedListener { it ->
-        //    when(it.itemId) {
-        //        R.id.taskOverView -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, CollectiveActivity::class.java))
-        //            true
-        //        }
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //        }
-        //    }
-        //    false
-       // }
 
         //An onclick listener for the back arrow
         backButton.setOnClickListener {

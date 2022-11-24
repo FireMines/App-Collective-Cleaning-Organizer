@@ -56,27 +56,9 @@ class CollectiveRemoveMembers : AppCompatActivity() {
         //Attaching the ArrayAdapter to the listView
         membersListView.adapter = listViewAdapter
 
+        //Handles the applications navigation
         Utilities().navigation(this, R.id.collective, bottom_navigator_remove_members)
 
-        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        //navigationBarView.selectedItemId = R.id.collective
-
-        //navigationBarView.setOnItemSelectedListener { it ->
-        //    when(it.itemId) {
-        //        R.id.taskOverView -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, CollectiveActivity::class.java))
-        //            true
-        //        }
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //        }
-        //    }
-        //    false
-       // }
         //An onclick listener for the back arrow
         backButton.setOnClickListener {
             this.finish()

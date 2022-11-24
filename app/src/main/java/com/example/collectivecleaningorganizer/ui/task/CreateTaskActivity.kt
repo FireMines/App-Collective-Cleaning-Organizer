@@ -61,27 +61,9 @@ class CreateTaskActivity : AppCompatActivity() {
         //Calling the showMembersToAssign() to populate the listview with collective members
         showMembersToAssign()
 
+        //Handles the applications navigation
         Utilities().navigation(this, R.id.taskOverView, bottom_navigator_create_task)
 
-        //val navigationBarView = findViewById<BottomNavigationView>(R.id.bottom_navigator)
-        //navigationBarView.selectedItemId = R.id.taskOverView
-
-        //navigationBarView.setOnItemSelectedListener { it ->
-        //    when(it.itemId) {
-        //        R.id.taskOverView -> {
-        //            startActivity(Intent(this, TaskOverviewActivity::class.java))
-        //            true
-        //        }
-        //        R.id.collective -> {
-        //            startActivity(Intent(this, SpecificCollectiveActivity::class.java))
-        //            true
-        //        }
-        //        R.id.friends -> {
-        //            startActivity(Intent(this, FriendsActivity::class.java))
-        //        }
-        //    }
-        //    false
-        //}
 
         taskDueDate.setOnClickListener{
             Utilities().showDatePickerDialog(this, taskDueDate)
