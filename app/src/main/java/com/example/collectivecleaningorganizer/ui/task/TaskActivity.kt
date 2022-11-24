@@ -20,7 +20,10 @@ import kotlinx.android.synthetic.main.activity_view_task.taskName
 import kotlinx.android.synthetic.main.activity_view_task.view.*
 import kotlinx.android.synthetic.main.task_layout.view.*
 
-
+/**
+ * This is an AppCompatActivity class for the TaskActivity
+ * It is used to create a page where the user can see the full details of the task he/she clicked
+ */
 class TaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +33,15 @@ class TaskActivity : AppCompatActivity() {
             return
         }
         setContentView(R.layout.activity_view_task)
-
+        //Setting the title of the layout
         setTitle("Task description page")
 
-
+        //Retrieving the task details from the intent
         taskName.text           = intent.getStringExtra("name").toString()
         taskDueDate.text        = intent.getStringExtra("dueDate").toString()
         taskDescription.text    = intent.getStringExtra("description").toString()
+
+        //Creating an arraylist for the assigned members
         val assigned : ArrayList<String>   = intent.getStringArrayListExtra("assigned") as ArrayList<String>
 
         // Makes list of all users assigned to a task

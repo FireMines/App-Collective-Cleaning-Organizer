@@ -15,7 +15,10 @@ import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import kotlinx.android.synthetic.main.activity_friendrequests.*
 import kotlinx.android.synthetic.main.friend.view.*
 import java.lang.Exception
-
+/**
+ * This is an AppCompatActivity class for the Friend requests activity.
+ * It is used to create a Friend request page for the user to see any friend requests
+ */
 class FriendRequestsActivity: AppCompatActivity() {
     private var tag: String = "FriendRequestsActivity"
     override fun onCreate(savedInstanceState: Bundle?) {

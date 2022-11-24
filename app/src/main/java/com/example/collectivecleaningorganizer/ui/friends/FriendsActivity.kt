@@ -16,7 +16,10 @@ import kotlinx.android.synthetic.main.activity_friends.*
 import kotlinx.android.synthetic.main.friend.view.*
 import java.lang.Exception
 
-
+/**
+ * This is an AppCompatActivity class for the Friends activity.
+ * It is used to create a Friends page for the user to see all of his/her friends and add friends etc.
+ */
 class FriendsActivity : AppCompatActivity(){
     private var tag: String = "FriendsActivity"
     override fun onCreate(savedInstanceState: Bundle?) {

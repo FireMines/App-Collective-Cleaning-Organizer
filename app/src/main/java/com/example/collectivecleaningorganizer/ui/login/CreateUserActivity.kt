@@ -15,7 +15,10 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_create_user.*
 import java.lang.Exception
 
-
+/**
+ * This is an AppCompatActivity class for the CreateUserActivity
+ * It is used to create a page where the user can create a new user
+ */
 class CreateUserActivity : AppCompatActivity() {
     private var tag: String = "CreateUserActivity"
 

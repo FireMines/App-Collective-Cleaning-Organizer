@@ -13,7 +13,10 @@ import kotlinx.android.synthetic.main.activity_create_task.*
 
 
 import kotlin.collections.ArrayList
-
+/**
+ * This is an AppCompatActivity class for the CreateTaskActivity
+ * It is used to create a page where the user can create a new task
+ */
 class CreateTaskActivity : AppCompatActivity() {
     //Initializing a tag used to indicate which file Log is writing about
     private val tag = "CreateTaskActivity"
@@ -30,12 +33,7 @@ class CreateTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_task)
 
-        val userID = Database.userData[0]?.id.toString()
-        if (userID == null) {
-            Log.e(tag, "the userID is null")
-            return
-        }
-
+        //Setting an onclick event listener for the saveOrCreateButton
         saveOrCreateButton.setOnClickListener{
             //Calling the function used to create the task by adding it to the DB
             createTask()
@@ -57,13 +55,15 @@ class CreateTaskActivity : AppCompatActivity() {
         //Handles the applications navigation
         Utilities().navigation(this, R.id.taskOverView, bottom_navigator_create_task)
 
-
+        //Setting an onclick event listener for the taskDueDate textview
         taskDueDate.setOnClickListener{
             Utilities().showDatePickerDialog(this, taskDueDate)
         }
+        //Setting an onclick event listener for the deleteCategory button
         deleteCategoryButton.setOnClickListener {
             Utilities().deleteCategory(this,categoriesArrayList,collectiveID.toString())
         }
+        //Setting an onclick event listener for the createNewCattegory button
         createNewCategoryButton.setOnClickListener {
             Utilities().createNewCategory(this,categoriesArrayList,collectiveID.toString())
         }

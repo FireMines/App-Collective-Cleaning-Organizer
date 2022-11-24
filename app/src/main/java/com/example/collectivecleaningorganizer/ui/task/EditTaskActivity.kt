@@ -13,7 +13,10 @@ import kotlinx.android.synthetic.main.activity_create_task.back_btn
 import kotlinx.android.synthetic.main.activity_edit_task.*
 import java.util.*
 
-
+/**
+ * This is an AppCompatActivity class for the EditTaskActivity
+ * It is used to create a page where the user can edit the task he/she has selected
+ */
 class EditTaskActivity : AppCompatActivity() {
 
     var collectiveTasks : ArrayList<MutableMap<String,Any>>? = Database.userCollectiveData[0]?.data?.get("tasks") as ArrayList<MutableMap<String, Any>>?
@@ -27,6 +30,7 @@ class EditTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val userID = intent.getStringExtra("uid")
+        //Checking if the userID from the intent is invalid
         if (userID == null) {
             Log.d("TaskOverview: Error", "the userID is null")
             return
@@ -35,6 +39,7 @@ class EditTaskActivity : AppCompatActivity() {
         assigned    = intent.getStringArrayListExtra("assigned") as ArrayList<String>
 
         setContentView(R.layout.activity_edit_task)
+        //Setting the title of the layout
         setTitle("Task description page")
 
         // Sets data in the intent from the edit texts

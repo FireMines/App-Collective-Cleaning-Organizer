@@ -13,7 +13,10 @@ import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlin.Exception
-
+/**
+ * This is an AppCompatActivity class for the LoginActivity
+ * It is used to create a page where the user can log into the application
+ */
 class LoginActivity : AppCompatActivity() {
     private var tag: String = "LoginActivity"
 

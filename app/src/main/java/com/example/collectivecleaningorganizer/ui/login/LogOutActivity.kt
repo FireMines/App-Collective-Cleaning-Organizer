@@ -12,7 +12,10 @@ import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_log_out.*
-
+/**
+ * This is an AppCompatActivity class for the LogOutActivity
+ * It is used to create a page where the user can log out
+ */
 class LogOutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

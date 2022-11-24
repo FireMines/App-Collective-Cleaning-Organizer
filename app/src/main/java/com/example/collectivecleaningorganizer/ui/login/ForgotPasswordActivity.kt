@@ -7,7 +7,10 @@ import android.widget.Toast
 import com.example.collectivecleaningorganizer.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_forgot_password.*
-
+/**
+ * This is an AppCompatActivity class for the ForgotPasswordActivity
+ * It is used to create a page where the user can reset their password if forgotten
+ */
 class ForgotPasswordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

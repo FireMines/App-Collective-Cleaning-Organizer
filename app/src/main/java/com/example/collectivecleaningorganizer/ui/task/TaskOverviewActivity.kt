@@ -18,7 +18,10 @@ import kotlinx.android.synthetic.main.activity_specific_collective.*
 import kotlinx.android.synthetic.main.activity_task_overview.*
 import kotlinx.android.synthetic.main.task_layout.view.*
 
-
+/**
+ * This is an AppCompatActivity class for the TaskOverViewActivity
+ * It is used to create a page where the user can see all the tasks in the collective
+ */
 class TaskOverviewActivity : AppCompatActivity() {
     private var username = Database.userData[0]?.get("username").toString()
     var userID = Database.userData[0]?.id.toString()
@@ -27,6 +30,7 @@ class TaskOverviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_overview)
 
+        //Retrieving the collectiveID from the cached user data from DB
         val collectiveID = Database.userData[0]?.data?.get("collectiveID")
 
         //Starting a listener for the collective and listens for any changes done to the collective data
@@ -41,14 +45,14 @@ class TaskOverviewActivity : AppCompatActivity() {
                 Log.e("TaskOverviewActivity", "Failure with listener")
             }
         })
+        //Creating an intent for the activity CreateTaskActivity
+        val intentCreateTaskPage: Intent = Intent(this, CreateTaskActivity::class.java)
+        intentCreateTaskPage.putExtra("uid",userID)
 
-        val intentAddTaskPage: Intent = Intent(this, CreateTaskActivity::class.java)
-        intentAddTaskPage.putExtra("uid",userID)
 
-
-        // Starts addTaskActivity when clicking on Add Task button
+        // Starts createTaskActivity when clicking on Add Task button
         add_btn.setOnClickListener {
-            startActivity(intentAddTaskPage)
+            startActivity(intentCreateTaskPage)
             //Finishing the current Activity
             this.finish()
         }
