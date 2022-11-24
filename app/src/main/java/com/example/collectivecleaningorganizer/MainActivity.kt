@@ -6,7 +6,10 @@ import android.os.Bundle
 import com.example.collectivecleaningorganizer.ui.login.LoginActivity
 
 
-
+/**
+ * This is an AppCompatActivity main activity class.
+ * It is used to run the app, by sending the user straight to the login page
+ */
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
