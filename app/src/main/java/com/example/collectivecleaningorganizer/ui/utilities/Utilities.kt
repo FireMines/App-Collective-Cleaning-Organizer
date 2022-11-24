@@ -13,10 +13,13 @@ import com.example.collectivecleaningorganizer.R
 import com.example.collectivecleaningorganizer.ui.collective.CollectiveActivity
 import com.example.collectivecleaningorganizer.ui.collective.SpecificCollectiveActivity
 import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
+import com.example.collectivecleaningorganizer.ui.login.LoginActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskActivity
 import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_create_task.*
 import org.w3c.dom.Text
 import java.util.*
@@ -320,6 +323,51 @@ class Utilities {
                 }
             }
             false
+        }
+    }
+    /**
+     * A function that is used to log out a new user that does not create or join a collective.
+     *  The function calls the firebase auth.sigOut() method.
+     *  The function removes both the database listener for userData and collectiveData
+     */
+     fun logout(context: Context) {
+        try {
+            //Signing out
+            Firebase.auth.signOut()
+            //Removing the listens for the userdata if it exists
+            Database.listenerMap["userData"]?.remove()
+            //Removing the listener for the collective data if it exists
+            Database.listenerMap["collectiveData"]?.remove()
+            //Creating an intent for the login activity
+            val intent = Intent(context, LoginActivity::class.java)
+            //Sending the user back to login page
+            context.startActivity(intent)
+
+            Toast.makeText(context,"Successfully logged out"
+                ,Toast.LENGTH_LONG).show()
+        }
+        catch (error : Exception) {
+            Toast.makeText(context, "An error occurred when trying to log out. Try again ", Toast.LENGTH_LONG).show()
+            Log.e("Logout", "Error when trying to run the logout() function",error)
+        }
+    }
+
+    /**
+     * A function used to check if the user is supposed to be in an activity
+     * @param context is the activity the function is called from
+     */
+    fun checkIfUserIsSupposedToBeInCollective(context: Context) {
+        //Initializing the collective id retrieved from the collective data in the DB
+        val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
+        //Initializing the collective id retrieved from the userData in the DB
+        val userCollectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
+        //Checking if the logged in user is not apart of the collective, and handling it accordingly
+        if (collectiveID != userCollectiveID) {
+            Toast.makeText(context, "Are you supposed to be in this collective? Please log in again" , Toast.LENGTH_SHORT).show()
+            //Logging the user out
+            Utilities().logout(context)
+            Log.e("Utilities", "User's collectiveID dosnt match the collectiveID the user is viewing. Logging user out")
+            return
         }
     }
 }
