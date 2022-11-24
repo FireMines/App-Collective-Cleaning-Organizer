@@ -7,16 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import android.widget.GridLayout.Spec
 import com.example.collectivecleaningorganizer.*
-import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.OnDataChange
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import io.grpc.okhttp.internal.Util
 import kotlinx.android.synthetic.main.activity_specific_collective.*
 import java.lang.Exception
 /**

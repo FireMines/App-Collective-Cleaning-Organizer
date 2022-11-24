@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.collectivecleaningorganizer.ui.utilities.*
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 

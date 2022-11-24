@@ -1,7 +1,6 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +9,11 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.DatabaseRequestListener
 import com.example.collectivecleaningorganizer.ui.utilities.FriendListListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_collective_invite_users.*
-import kotlinx.android.synthetic.main.activity_friends.*
 import java.lang.Exception
 /**
  * This is an AppCompatActivity class for a CollectiveActivity.
