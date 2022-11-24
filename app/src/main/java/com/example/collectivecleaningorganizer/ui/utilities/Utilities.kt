@@ -353,22 +353,5 @@ class Utilities {
         }
     }
 
-    /**
-     * A function used to check if the user is supposed to be in an activity
-     * @param context is the activity the function is called from
-     */
-    fun checkIfUserIsSupposedToBeInCollective(context: Context) {
-        //Initializing the collective id retrieved from the collective data in the DB
-        val collectiveID : String = Database.userCollectiveData[0]?.id.toString()
-        //Initializing the collective id retrieved from the userData in the DB
-        val userCollectiveID = Database.userData[0]?.data?.get("collectiveID").toString()
-        //Checking if the logged in user is not apart of the collective, and handling it accordingly
-        if (collectiveID != userCollectiveID) {
-            Toast.makeText(context, "Are you supposed to be in this collective? Please log in again" , Toast.LENGTH_SHORT).show()
-            //Logging the user out
-            Utilities().logout(context)
-            Log.e("Utilities", "User's collectiveID dosnt match the collectiveID the user is viewing. Logging user out")
-            return
-        }
-    }
+
 }

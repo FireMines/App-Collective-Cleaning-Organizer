@@ -36,9 +36,6 @@ class CollectiveRemoveMembers : AppCompatActivity() {
         //Setting the content view of the activity
         setContentView(R.layout.activity_collective_remove_members)
 
-        //Calling a function to check if the user is still supposed to be in the collective he/she is currently viewing
-        Utilities().checkIfUserIsSupposedToBeInCollective(this)
-
         //Initializing a temporary arraylist which is empty
         val temporaryMembersToDeleteList : ArrayList<String> = arrayListOf()
 

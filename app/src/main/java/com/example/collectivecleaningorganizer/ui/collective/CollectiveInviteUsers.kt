@@ -31,9 +31,6 @@ class CollectiveInviteUsers : AppCompatActivity() {
         //Setting the content view of the activity
         setContentView(R.layout.activity_collective_invite_users)
 
-        //Calling a function to check if the user is still supposed to be in the collective he/she is currently viewing
-        Utilities().checkIfUserIsSupposedToBeInCollective(this)
-
         //Handles the applications navigation
         Utilities().navigation(this, R.id.collective, bottom_navigator_collective_invite)
 

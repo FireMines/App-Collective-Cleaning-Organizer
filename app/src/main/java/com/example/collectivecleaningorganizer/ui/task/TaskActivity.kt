@@ -30,8 +30,7 @@ class TaskActivity : AppCompatActivity() {
             return
         }
         setContentView(R.layout.activity_view_task)
-        //Calling a function to check if the user is still supposed to be in the collective he/she is currently viewing
-        Utilities().checkIfUserIsSupposedToBeInCollective(this)
+
         setTitle("Task description page")
 
 

@@ -36,9 +36,6 @@ class SpecificCollectiveActivity : AppCompatActivity() {
         //Setting the content view of the activity
         setContentView(R.layout.activity_specific_collective)
 
-        //Calling a function to check if the user is still supposed to be in the collective he/she is currently viewing
-        Utilities().checkIfUserIsSupposedToBeInCollective(this)
-
         //Sending a database request to retrieve the latest collective information
         Database().getDataFromDB("collective", collectiveID, object : DatabaseRequestListener {
             @SuppressLint("LongLogTag")

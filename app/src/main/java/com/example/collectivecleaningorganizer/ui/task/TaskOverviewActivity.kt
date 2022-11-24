@@ -32,8 +32,7 @@ class TaskOverviewActivity : AppCompatActivity() {
         //Starting a listener for the collective and listens for any changes done to the collective data
         Database().databaseDataChangeListener("collective", collectiveID.toString(), Database.userCollectiveData,"collectiveData", object : ResultListener {
             override fun onSuccess() {
-                //Calling a function to check if the user is still supposed to be in the collective he/she is currently viewing
-                Utilities().checkIfUserIsSupposedToBeInCollective(this@TaskOverviewActivity)
+
                 dbSync(userID)
 
             }
