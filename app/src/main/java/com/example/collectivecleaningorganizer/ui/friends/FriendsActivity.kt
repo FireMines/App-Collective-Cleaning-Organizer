@@ -194,9 +194,11 @@ class FriendsActivity : AppCompatActivity(){
      * The field is not empty
      * The user is not yourself
      * The user exists
+     * The user has not already sent a friend request to you
      */
     private fun sendRequest(){
         val userName = Database.userData[0]?.data?.get("username").toString()
+        val userId = Database.userData[0]?.id.toString()
         if (FriendRequest.text.toString() == ""){
             Toast.makeText(
                 this@FriendsActivity,
@@ -223,81 +225,110 @@ class FriendsActivity : AppCompatActivity(){
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            Database().getFriendsFromDB(
-                                "users",
-                                uId,
-                                object : FriendListListener {
-                                    override fun onSuccess(friendList: ArrayList<String>) {
-                                        val it = friendList.iterator()
-                                        var dupe = false
-                                        while (it.hasNext()) {
-                                            if (it.next().toString() == userName) {
-                                                dupe = true
-                                            }
+                            Database().getFriendRequestListFromDB("users", userId, object : FriendListListener{
+                                override fun onSuccess(friendList: ArrayList<String>) {
+                                    val it = friendList.iterator()
+                                    var dupe = false
+                                    while (it.hasNext()) {
+                                        if (it.next().toString() == FriendRequest.text.toString().lowercase()) {
+                                            dupe = true
                                         }
-                                        if (!dupe) {
-                                            Database().getFriendRequestListFromDB(
-                                                "users",
-                                                uId,
-                                                object : FriendListListener {
-                                                    override fun onSuccess(friendList: ArrayList<String>) {
-                                                        val it = friendList.iterator()
-                                                        var dupe = false
-                                                        while (it.hasNext()) {
-                                                            if (it.next().toString() == userName) {
-                                                                dupe = true
-                                                            }
+                                    }
+                                    if (!dupe) {
+                                        Database().getFriendsFromDB(
+                                            "users",
+                                            uId,
+                                            object : FriendListListener {
+                                                override fun onSuccess(friendList: ArrayList<String>) {
+                                                    val it = friendList.iterator()
+                                                    var dupe = false
+                                                    while (it.hasNext()) {
+                                                        if (it.next().toString() == userName) {
+                                                            dupe = true
                                                         }
-                                                        if (!dupe) {
-                                                            friendList.add(userName)
-                                                            Database().updateValueInDB(
-                                                                "users",
-                                                                uId,
-                                                                "FriendRequests",
-                                                                friendList,
-                                                                object : ResultListener {
-                                                                    override fun onSuccess() {
+                                                    }
+                                                    if (!dupe) {
+                                                        Database().getFriendRequestListFromDB(
+                                                            "users",
+                                                            uId,
+                                                            object : FriendListListener {
+                                                                override fun onSuccess(friendList: ArrayList<String>) {
+                                                                    val it = friendList.iterator()
+                                                                    var dupe = false
+                                                                    while (it.hasNext()) {
+                                                                        if (it.next()
+                                                                                .toString() == userName
+                                                                        ) {
+                                                                            dupe = true
+                                                                        }
+                                                                    }
+                                                                    if (!dupe) {
+                                                                        friendList.add(userName)
+                                                                        Database().updateValueInDB(
+                                                                            "users",
+                                                                            uId,
+                                                                            "FriendRequests",
+                                                                            friendList,
+                                                                            object :
+                                                                                ResultListener {
+                                                                                override fun onSuccess() {
+                                                                                    Toast.makeText(
+                                                                                        this@FriendsActivity,
+                                                                                        "Request sent",
+                                                                                        Toast.LENGTH_SHORT
+                                                                                    ).show()
+                                                                                }
+
+                                                                                override fun onFailure(error: Exception) {
+                                                                                    Log.e(tag, "Failure to update value in database")
+                                                                                    dbError()
+                                                                                }
+                                                                            })
+                                                                    } else {
                                                                         Toast.makeText(
                                                                             this@FriendsActivity,
-                                                                            "Request sent",
+                                                                            "You have already sent a request to this user",
                                                                             Toast.LENGTH_SHORT
                                                                         ).show()
                                                                     }
+                                                                }
 
-                                                                    override fun onFailure(error: Exception) {
-                                                                        Log.e(tag, "Failure to update value in database")
-                                                                        dbError()
-                                                                    }
-                                                                })
-                                                        } else {
-                                                            Toast.makeText(
-                                                                this@FriendsActivity,
-                                                                "You have already sent a request to this user",
-                                                                Toast.LENGTH_SHORT
-                                                            ).show()
-                                                        }
+                                                                override fun onFailure(error: Exception) {
+                                                                    Log.e(tag, "Failure to get friends"
+                                                                    )
+                                                                    dbError()
+                                                                }
+                                                            })
+                                                    } else {
+                                                        Toast.makeText(
+                                                            this@FriendsActivity,
+                                                            "This person is already your friend",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
                                                     }
+                                                }
 
-                                                    override fun onFailure(error: Exception) {
-                                                        Log.e(tag, "Failure to get friends")
-                                                        dbError()
-                                                    }
-                                                })
-                                        } else {
-                                            Toast.makeText(
-                                                this@FriendsActivity,
-                                                "This person is already your friend",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
+                                                override fun onFailure(error: Exception) {
+                                                    Log.e(tag, "Failure to get friend requests")
+                                                    dbError()
+                                                }
+
+                                            })
                                     }
-
-                                    override fun onFailure(error: Exception) {
-                                        Log.e(tag, "Failure to get friend requests")
-                                        dbError()
+                                    else{
+                                        Toast.makeText(
+                                            this@FriendsActivity,
+                                            "This person has already sent a friend request to you",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
+                                }
+                                override fun onFailure(error: Exception) {
+                                    Log.e(tag, "Failure to get friend requests")
+                                    dbError()
+                                }
+                            })
 
-                                })
                         }
                     }
                     override fun onFailure(error: Exception) {
