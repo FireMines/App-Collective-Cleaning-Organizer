@@ -88,59 +88,40 @@ class FriendsActivity : AppCompatActivity(){
      * Removes select friend from the ui and the database of both persons
      * @param name friend to be removed
      */
-    private fun removeFriend(name:String){
-        val i = FriendsScroll.iterator()
-        while (i.hasNext()){
-            val check = i.next()
-            if (check.FriendName.text.toString() == name){
-                i.remove()
-            }
-        }
-        val username = Database.userData[0]?.data?.get("username").toString()
-        val uId = Database.userData[0]?.id.toString()
-        //Removes friend from own database field
-        Database().getFriendsFromDB("users", uId, object : FriendListListener{
-            override fun onSuccess(friendList: ArrayList<String>) {
-                val it = friendList.iterator()
-                while (it.hasNext()) {
-                    if (it.next().toString() == name) {
-                        it.remove()
+    private fun removeFriend(name:String) {
+        Utilities().alertDialogBuilder(
+            this,
+            "Remove friend",
+            "Are you sure you want to remove " + name + " from your friendslist?",
+            null
+        )
+            .setPositiveButton("yes") { _, _ ->
+                val i = FriendsScroll.iterator()
+                while (i.hasNext()) {
+                    val check = i.next()
+                    if (check.FriendName.text.toString() == name) {
+                        i.remove()
                     }
                 }
-                    Database().updateValueInDB("users", uId, "Friends", friendList, object : ResultListener {
-                        override fun onSuccess() {
-
-                        }
-
-                        override fun onFailure(error: Exception) {
-                            Log.e(tag, "Failure to update value in database")
-                            dbError()
-                        }
-                    })
-                }
-            override fun onFailure(error: Exception) {
-                Log.e(tag, "Failure to get friends")
-                dbError()
-            }
-        })
-        //Removes friend from friend's database field
-        Database().getUid(name, object : StringListener {
-            override fun onSuccess(uId: String) {
+                val username = Database.userData[0]?.data?.get("username").toString()
+                val uId = Database.userData[0]?.id.toString()
+                //Removes friend from own database field
                 Database().getFriendsFromDB("users", uId, object : FriendListListener {
                     override fun onSuccess(friendList: ArrayList<String>) {
                         val it = friendList.iterator()
                         while (it.hasNext()) {
-                            if (it.next().toString() == username) {
+                            if (it.next().toString() == name) {
                                 it.remove()
                             }
                         }
-                        Database().updateValueInDB("users", uId, "Friends", friendList, object : ResultListener {
+                        Database().updateValueInDB(
+                            "users",
+                            uId,
+                            "Friends",
+                            friendList,
+                            object : ResultListener {
                                 override fun onSuccess() {
-                                    Toast.makeText(
-                                        this@FriendsActivity,
-                                        "Friend removed",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+
                                 }
 
                                 override fun onFailure(error: Exception) {
@@ -155,13 +136,54 @@ class FriendsActivity : AppCompatActivity(){
                         dbError()
                     }
                 })
-            }
+                //Removes friend from friend's database field
+                Database().getUid(name, object : StringListener {
+                    override fun onSuccess(uId: String) {
+                        Database().getFriendsFromDB("users", uId, object : FriendListListener {
+                            override fun onSuccess(friendList: ArrayList<String>) {
+                                val it = friendList.iterator()
+                                while (it.hasNext()) {
+                                    if (it.next().toString() == username) {
+                                        it.remove()
+                                    }
+                                }
+                                Database().updateValueInDB(
+                                    "users",
+                                    uId,
+                                    "Friends",
+                                    friendList,
+                                    object : ResultListener {
+                                        override fun onSuccess() {
+                                            Toast.makeText(
+                                                this@FriendsActivity,
+                                                "Friend removed",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
 
-            override fun onFailure(error: Exception) {
-                Log.e(tag, "Failure to get user id")
-                dbError()
+                                        override fun onFailure(error: Exception) {
+                                            Log.e(tag, "Failure to update value in database")
+                                            dbError()
+                                        }
+                                    })
+                            }
+
+                            override fun onFailure(error: Exception) {
+                                Log.e(tag, "Failure to get friends")
+                                dbError()
+                            }
+                        })
+                    }
+
+                    override fun onFailure(error: Exception) {
+                        Log.e(tag, "Failure to get user id")
+                        dbError()
+                    }
+                })
             }
-        })
+            .setNegativeButton("No", null)
+            .create()
+            .show()
     }
 
     /**
