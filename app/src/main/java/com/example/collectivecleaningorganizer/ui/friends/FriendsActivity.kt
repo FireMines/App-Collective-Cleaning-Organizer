@@ -38,10 +38,10 @@ class FriendsActivity : AppCompatActivity(){
 
     }
 
-
+    /**
+     * Initializes the ui by adding all friends present in the database to the scrollview
+     */
     private fun init(){
-        //Hent venner fra database og vis i scrollview
-
         val uId = Database.userData[0]?.id.toString()
 
         Database().getFriendsFromDB("users", uId, object : FriendListListener {
@@ -60,6 +60,10 @@ class FriendsActivity : AppCompatActivity(){
 
     }
 
+    /**
+     * Adds a friend to the scroll view in the ui
+     * @param name is the friend to be added
+     */
     private fun addFriendScroll(name: String){
         val view = layoutInflater.inflate(R.layout.friend, null)
         view.FriendName.text = name
@@ -69,6 +73,9 @@ class FriendsActivity : AppCompatActivity(){
         FriendsScroll.addView(view)
     }
 
+    /**
+     * Informs the user if the database is not reached
+     */
     private fun dbError(){
         Toast.makeText(
             this@FriendsActivity,
@@ -77,9 +84,11 @@ class FriendsActivity : AppCompatActivity(){
         ).show()
     }
 
+    /**
+     * Removes select friend from the ui and the database of both persons
+     * @param name friend to be removed
+     */
     private fun removeFriend(name:String){
-        //Er du sikker alert maybe?
-        //Om navn ikke er unikt kan en id legges til i hvert element og brukes isteden
         val i = FriendsScroll.iterator()
         while (i.hasNext()){
             val check = i.next()
@@ -89,6 +98,7 @@ class FriendsActivity : AppCompatActivity(){
         }
         val username = Database.userData[0]?.data?.get("username").toString()
         val uId = Database.userData[0]?.id.toString()
+        //Removes friend from own database field
         Database().getFriendsFromDB("users", uId, object : FriendListListener{
             override fun onSuccess(friendList: ArrayList<String>) {
                 val it = friendList.iterator()
@@ -103,7 +113,7 @@ class FriendsActivity : AppCompatActivity(){
                         }
 
                         override fun onFailure(error: Exception) {
-                            Log.e(tag, "Failure with listener")
+                            Log.e(tag, "Failure to update value in database")
                             dbError()
                         }
                     })
@@ -113,7 +123,7 @@ class FriendsActivity : AppCompatActivity(){
                 dbError()
             }
         })
-
+        //Removes friend from friend's database field
         Database().getUid(name, object : StringListener {
             override fun onSuccess(uId: String) {
                 Database().getFriendsFromDB("users", uId, object : FriendListListener {
@@ -134,7 +144,7 @@ class FriendsActivity : AppCompatActivity(){
                                 }
 
                                 override fun onFailure(error: Exception) {
-                                    Log.e(tag, "Failure with listener")
+                                    Log.e(tag, "Failure to update value in database")
                                     dbError()
                                 }
                             })
@@ -154,18 +164,27 @@ class FriendsActivity : AppCompatActivity(){
         })
     }
 
-
+    /**
+     * Sends a friend request to a user so long as:
+     * The user is not already your friend
+     * You have not already sent a request to this user
+     * The field is not empty
+     * The user is not yourself
+     * The user exists
+     */
     private fun sendRequest(){
-        //Steder som nevner userId burde endres til cache
-        //val userId = FirebaseAuth.getInstance().uid.toString()
-        val userId = Database.userData[0]?.data?.get("username").toString()
-        //val idArr = arrayListOf<String>()
-        //idArr.add(userId.toString())
-        //FriendRequest.text.toString()
+        val userName = Database.userData[0]?.data?.get("username").toString()
         if (FriendRequest.text.toString() == ""){
             Toast.makeText(
                 this@FriendsActivity,
                 "The field cannot be empty",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        else if (FriendRequest.text.toString().lowercase() == userName){
+            Toast.makeText(
+                this@FriendsActivity,
+                "You cannot become friends with yourself",
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -189,7 +208,7 @@ class FriendsActivity : AppCompatActivity(){
                                         val it = friendList.iterator()
                                         var dupe = false
                                         while (it.hasNext()) {
-                                            if (it.next().toString() == userId) {
+                                            if (it.next().toString() == userName) {
                                                 dupe = true
                                             }
                                         }
@@ -202,14 +221,12 @@ class FriendsActivity : AppCompatActivity(){
                                                         val it = friendList.iterator()
                                                         var dupe = false
                                                         while (it.hasNext()) {
-                                                            if (it.next()
-                                                                    .toString() == userId
-                                                            ) {
+                                                            if (it.next().toString() == userName) {
                                                                 dupe = true
                                                             }
                                                         }
                                                         if (!dupe) {
-                                                            friendList.add(userId)
+                                                            friendList.add(userName)
                                                             Database().updateValueInDB(
                                                                 "users",
                                                                 uId,
@@ -225,7 +242,7 @@ class FriendsActivity : AppCompatActivity(){
                                                                     }
 
                                                                     override fun onFailure(error: Exception) {
-                                                                        Log.e(tag, "Failure with listener")
+                                                                        Log.e(tag, "Failure to update value in database")
                                                                         dbError()
                                                                     }
                                                                 })
@@ -267,6 +284,10 @@ class FriendsActivity : AppCompatActivity(){
                 })
         }
     }
+
+    /**
+     * This function changes the activity to friendrequests
+     */
     private fun seeRequests(){
         val newIntent = Intent(this, FriendRequestsActivity::class.java)
         startActivity(newIntent)
