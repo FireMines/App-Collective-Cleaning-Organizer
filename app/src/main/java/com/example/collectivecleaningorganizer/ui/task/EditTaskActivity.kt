@@ -76,7 +76,7 @@ class EditTaskActivity : AppCompatActivity() {
         //A click listener for the back button.
         back_btn.setOnClickListener {
             //Finishes this (EditTaskActivity) and goes back to the TaskActivity
-            startActivity(Intent(this, TaskActivity::class.java))
+            startActivity(Intent(this, TaskOverviewActivity::class.java))
             //Finishing the current Activity
             this.finish()
         }
