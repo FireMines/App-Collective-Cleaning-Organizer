@@ -16,6 +16,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_log_out.*
 
 class LogOutActivity : AppCompatActivity() {
+    private var tag: String = "LogoutActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_out)
@@ -50,11 +51,17 @@ class LogOutActivity : AppCompatActivity() {
      *  The function removes both the database listener for userData and collectiveData
      */
     private fun logout() {
-        Firebase.auth.signOut()
-        Database.listenerMap["userData"]?.remove()
-        Database.listenerMap["collectiveData"]?.remove()
-        startActivity(Intent(this, LoginActivity::class.java))
+        try {
+            Firebase.auth.signOut()
+            Database.listenerMap["userData"]?.remove()
+            Database.listenerMap["collectiveData"]?.remove()
+            startActivity(Intent(this, LoginActivity::class.java))
 
-        Toast.makeText(this, "Logout Successful",Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Logout Successful", Toast.LENGTH_LONG).show()
+        }
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying to log out. Try again ", Toast.LENGTH_LONG).show()
+            Log.e(tag, "Error when trying to run the logout() function",error)
+        }
     }
 }
