@@ -48,26 +48,34 @@ class LoginActivity : AppCompatActivity() {
      * @param userID is the id of the user
      */
     private fun login() {
-        val email = emailLogin.text.toString()
-        val password = passwordLogin.text.toString()
+        try {
+            val email = emailLogin.text.toString()
+            val password = passwordLogin.text.toString()
 
-        // uses email and password as login credentials
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
-                Log.d("log in", "login:success")
-                Toast.makeText(this, "Successful login", Toast.LENGTH_SHORT).show()   // displays message to user
+            // uses email and password as login credentials
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d("log in", "login:success")
+                    Toast.makeText(this, "Successful login", Toast.LENGTH_SHORT)
+                        .show()   // displays message to user
 
-                //DB request to retrieve any user data
-                val userID = task.result.user?.uid.toString()
-                //Calling function to retrieve the user data from DB and add it to a cache
-                retrieveUserDataAndStoreInCache(userID)
+                    //DB request to retrieve any user data
+                    val userID = task.result.user?.uid.toString()
+                    //Calling function to retrieve the user data from DB and add it to a cache
+                    retrieveUserDataAndStoreInCache(userID)
 
-            } else {
-                Log.w("log in", "login:failure")
-                Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.w("log in", "login:failure")
+                    Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+        catch (error : Exception) {
+            Toast.makeText(this, "An error occurred when trying to log in. Try again ", Toast.LENGTH_LONG).show()
+            Log.e(tag, "Error when trying to run the login() function",error)
+        }
     }
+
     /**
      * A function that is used to retrieve the user data and store it in a cache.
      * This function calls on another function and listens for a callback
