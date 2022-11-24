@@ -9,15 +9,10 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
-import com.example.collectivecleaningorganizer.ui.friends.FriendsActivity
-import com.example.collectivecleaningorganizer.ui.task.TaskOverviewActivity
 import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.StringListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import io.grpc.okhttp.internal.Util
 import kotlinx.android.synthetic.main.activity_collective_remove_members.*
-import kotlinx.android.synthetic.main.activity_specific_collective.*
 import java.lang.Exception
 /**
  * This is an AppCompatActivity class for a CollectiveRemoveMembers Activity.
