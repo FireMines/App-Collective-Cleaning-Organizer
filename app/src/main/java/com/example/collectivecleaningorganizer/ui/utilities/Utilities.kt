@@ -279,6 +279,9 @@ class Utilities {
      * @param navigationBarview selected navigation bar
      */
     fun navigation(context: Context, id: Int, navigationbarview : NavigationBarView) {
+        //Retrieving the collectiveID from the userdata
+        val collectiveID = Database.userData[0]?.data?.get("collectiveID")
+
         //Sets id of menu item
         navigationbarview.selectedItemId = id
         //Clicking on any of the icons in navigation bar
@@ -286,10 +289,16 @@ class Utilities {
             when(it.itemId) {
                 // if the menu id is taskOverView
                 R.id.taskOverView -> {
-                    val intent = Intent(context, TaskOverviewActivity::class.java)
-                    //Starts new activity
-                    context.startActivity(intent)
-                    true
+                    //Checking if the user isnt apart of a collective
+                    if (collectiveID == null) {
+                        Toast.makeText(context, "Please join a collective first", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        val intent = Intent(context, TaskOverviewActivity::class.java)
+                        //Starts new activity
+                        context.startActivity(intent)
+                        true
+                    }
                 }
                 // if the menu id is collective
                 R.id.collective -> {

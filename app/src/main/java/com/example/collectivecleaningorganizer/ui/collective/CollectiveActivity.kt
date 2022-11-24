@@ -19,6 +19,8 @@ import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_collective.*
+import kotlinx.android.synthetic.main.activity_collective.bottom_navigator_collective_invite
+import kotlinx.android.synthetic.main.activity_collective_invite_users.*
 import kotlin.Exception
 
 /**
@@ -50,6 +52,9 @@ class CollectiveActivity : AppCompatActivity() {
             startActivity(Intent(this, SpecificCollectiveActivity::class.java))
             return
         }
+
+        //Handles the applications navigation
+        Utilities().navigation(this, R.id.collective, bottom_navigator_collective_invite)
 
         //Sends user back to the login page if user does not create or join an existing collective
         backToLoginPageButton.setOnClickListener {
