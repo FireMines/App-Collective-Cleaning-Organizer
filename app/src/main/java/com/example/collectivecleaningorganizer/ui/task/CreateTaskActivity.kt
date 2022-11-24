@@ -1,5 +1,6 @@
 package com.example.collectivecleaningorganizer.ui.task
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.Window
 import android.widget.*
 import com.example.collectivecleaningorganizer.Database
 import com.example.collectivecleaningorganizer.R
+import com.example.collectivecleaningorganizer.ui.collective.CollectiveRemoveMembers
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import kotlinx.android.synthetic.main.activity_create_task.*
 
@@ -44,7 +46,9 @@ class CreateTaskActivity : AppCompatActivity() {
 
         //A click listener for the back button.
         back_btn.setOnClickListener{
-            //Finishes this (CreateTaskActivity) and goes back to the TaskOverViewActivity
+            //Starting the activity called "TaskOverViewActivity"
+            startActivity(Intent(this, TaskOverviewActivity::class.java))
+            //Finishing the current Activity
             this.finish()
         }
 
@@ -182,7 +186,9 @@ class CreateTaskActivity : AppCompatActivity() {
             //Adding the new task array to the DB
             Database().updateValueInDB("collective",collectiveID.toString(),"tasks",tasksArray,null)
 
-            //Finishing the CreateTaskActivity and returning back to the TaskOverviewActivity
+            //Returning back to the TaskOverviewActivity
+            startActivity(Intent(this, TaskOverviewActivity::class.java))
+            //Finishing the current Activity
             this.finish()
         }
         catch (error : Exception) {

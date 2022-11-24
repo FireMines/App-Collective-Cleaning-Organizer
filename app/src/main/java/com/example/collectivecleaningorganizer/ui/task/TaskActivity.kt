@@ -68,6 +68,9 @@ class TaskActivity : AppCompatActivity() {
 
         // Takes the user back to the Task Overview Activity
         back_btn.setOnClickListener{
+            //Starting the activity called "TaskOverViewActivity"
+            startActivity(Intent(this, TaskOverviewActivity::class.java))
+            //Finishing the current Activity
             this.finish()
         }
 

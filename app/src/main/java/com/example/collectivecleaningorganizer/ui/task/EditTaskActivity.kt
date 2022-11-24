@@ -1,6 +1,7 @@
 package com.example.collectivecleaningorganizer.ui.task
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -75,6 +76,8 @@ class EditTaskActivity : AppCompatActivity() {
         //A click listener for the back button.
         back_btn.setOnClickListener {
             //Finishes this (EditTaskActivity) and goes back to the TaskActivity
+            startActivity(Intent(this, TaskActivity::class.java))
+            //Finishing the current Activity
             this.finish()
         }
         showMembersToAssign()
@@ -128,7 +131,9 @@ class EditTaskActivity : AppCompatActivity() {
                 null
             )
 
-            //Finishing the CreateTaskActivity and returning back to the TaskOverviewActivity
+            //Finishing the EditTaskActivity and returning back to the TaskOverviewActivity
+            startActivity(Intent(this, TaskOverviewActivity::class.java))
+            //Finishing the current Activity
             this.finish()
         }
         catch (error : Exception) {
