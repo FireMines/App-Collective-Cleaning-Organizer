@@ -33,8 +33,7 @@ The application has the following features:
 * Create a category
 * Delete a category
 * View all tasks for the collective
-* View tasks assigned to only the logged in use
-* Sort tasks by selected category
+* Filter tasks assigned to only the logged in use
 * Send friend requests and accept friend requests
 * Remove friends
 * Invite members to collective by either username or from friends list
