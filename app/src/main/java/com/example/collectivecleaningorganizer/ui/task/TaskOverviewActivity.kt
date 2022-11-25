@@ -30,6 +30,8 @@ class TaskOverviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_overview)
 
+        Utilities().userRemovedFromCollective(this)
+
         //Retrieving the collectiveID from the cached user data from DB
         val collectiveID = Database.userData[0]?.data?.get("collectiveID")
 

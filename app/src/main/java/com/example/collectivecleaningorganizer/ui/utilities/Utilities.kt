@@ -353,5 +353,40 @@ class Utilities {
         }
     }
 
+    /**
+     * This function is used to send the user back to the collective page if the user is removed from the collective
+     * @param app is the activity
+     */
+    fun userRemovedFromCollective(app:AppCompatActivity) {
+        val userID = Database.userData[0]?.id.toString()
+        //Starting a data change listener for the userData
+        Database().databaseDataChangeListener("users", userID, Database.userData, "userRemovedFromCollective", object : ResultListener {
+            /**
+             * This function is triggered when the databasechangelistenr is successful
+             */
+            override fun onSuccess() {
+                val userCollectiveID = Database.userData[0]?.data?.get("collectiveID")
+                //Checking if the collectiveID for the user is null
+                if (userCollectiveID == null) {
+                        //Starting an intent for CollectiveActivity
+                        val intent = Intent(app, CollectiveActivity::class.java)
+                        //Adding a flag to clear the top activity
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        //Starting the activity
+                        app.startActivity(intent)
+                    Database.listenerMap["userRemovedFromCollective"]?.remove()
+                }
+            }
+            /**
+             * This function is triggered when the databasechangelistenr is a failure
+             */
+            override fun onFailure(error: Exception) {
+                Log.e("Test", "Error initializing a database listener for userData ")
+            }
+
+        }
+        )
+    }
+
 
 }
