@@ -374,7 +374,9 @@ class Utilities {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         //Starting the activity
                         app.startActivity(intent)
+                        app.finish()
                     Database.listenerMap["userRemovedFromCollective"]?.remove()
+                    Database.listenerMap.remove("userRemovedFromCollective")
                 }
             }
             /**

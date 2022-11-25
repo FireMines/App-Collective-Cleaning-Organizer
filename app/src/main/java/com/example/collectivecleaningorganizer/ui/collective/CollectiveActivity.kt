@@ -1,8 +1,10 @@
 package com.example.collectivecleaningorganizer.ui.collective
 
 import android.content.Intent
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -17,7 +19,10 @@ import com.example.collectivecleaningorganizer.ui.utilities.ResultListener
 import com.example.collectivecleaningorganizer.ui.utilities.Utilities
 import kotlinx.android.synthetic.main.activity_collective.*
 import kotlinx.android.synthetic.main.activity_collective.bottom_navigator_collective_invite
+import java.util.concurrent.ThreadLocalRandom
 import kotlin.Exception
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 /**
  * This is an AppCompatActivity class for a CollectiveActivity.
@@ -181,8 +186,8 @@ class CollectiveActivity : AppCompatActivity() {
      * @return string of the generated unique collectiveID
      */
     private fun generateUniqueCollectiveID(collectiveName: String): String {
-        //Creating a random 4 digit number
-        val randomNumber: String = String.format("%04d", (0..9999).random())
+        //Generating a random number using the hashcode as a seed
+        val randomNumber : String = String.format("%04d", Random(hashCode()).nextInt(0,9999))
 
         //Creating and returning a unique collective ID consisting of the collective name and the random number
         return "$collectiveName#$randomNumber"
